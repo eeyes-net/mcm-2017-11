@@ -16,6 +16,26 @@
 2. 竞赛报名
 3. 成员招募
 
+## 部署
+
+```bash
+git clone https://github.com/eeyes-net/mcm-2017-11.git
+cd mcm-2017-11/
+composer install
+php artisan migrate
+php artisan vendor:publish
+php artisan install
+```
+
+## 开发与测试
+
+```bash
+php artisan ide-helper:meta
+php artisan ide-helper:generate
+php artisan ide-helper:model
+php artisan db:seed
+```
+
 ## LICENSE
 
 [MIT License](https://opensource.org/licenses/MIT)

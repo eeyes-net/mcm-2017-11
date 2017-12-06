@@ -3,37 +3,54 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Library\Eeyes\Api\Permission;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use phpCAS;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
+    protected $redirectTo = '/';
 
-    use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        phpCAS::client(CAS_VERSION_2_0, config('cas.host'), config('cas.port'), config('cas.context'));
+        phpCAS::setNoCasServerValidation();
+    }
+
+    public function login()
+    {
+        phpCAS::forceAuthentication();
+        $net_id = phpCAS::getUser();
+        $user = User::where('username', $net_id)->first();
+        if (!$user) {
+            $user = new User([
+                'username' => $net_id,
+                'stu_id' => '',
+                'name' => '',
+                'department' => '',
+                'major' => '',
+                'class' => '',
+                'contact' => '',
+                'email' => time() . '@example.com',
+                'password' => '*',
+                'group' => 'student', // default as student
+            ]);
+            $user->save();
+        }
+        Auth::login($user);
+        return redirect()->intended('/');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        Session::flush();
+        session_unset();
+        session_destroy();
+        return redirect(phpCAS::getServerLogoutURL() . '?' . http_build_query([
+                'service' => url('/'),
+            ]));
     }
 }
