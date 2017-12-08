@@ -6,28 +6,29 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="/favicon.ico">
-    <title>西安交通大学数学建模官方网站</title>
-    <link href="/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/jumbotron.css" rel="stylesheet">
+    <title>后台管理 - 西安交通大学数学建模官方网站</title>
+    <link href="/css/admin.css" rel="stylesheet">
 </head>
 
 <body>
+    @include('admin.layouts.header')
 
-    @include('index.layouts.navbar')
-
-    @include('index.layouts.jumbotron')
-
-    <main id="main">
-        <div class="container">
-            @yield('main')
+    <div class="container-fluid">
+        <div class="row" id="admin">
+            <nav class="col-sm-3 col-md-2 d-sm-block bg-light sidebar">
+                <admin-layouts-sidebar></admin-layouts-sidebar>
+            </nav>
+            <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+                @yield('main')
+            </main>
         </div>
-    </main>
+        <div class="row">
+            <footer class="footer col-sm-9 ml-sm-auto col-md-10 pt-3">
+                @include('layouts.footer')
+            </footer>
+        </div>
+    </div>
 
-    @include('index.layouts.footer')
-
-    <script src="/dist/js/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="/dist/js/popper.min.js"></script>
-    <script src="/dist/js/bootstrap.min.js"></script>
-    <script src="/dist/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="/js/admin.js"></script>
 </body>
 </html>

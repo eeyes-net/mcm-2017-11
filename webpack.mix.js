@@ -13,3 +13,15 @@ let mix = require('laravel-mix');
 
 mix.js('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css');
+mix
+    .js('resources/assets/js/admin.js', 'public/js')
+    .sass('resources/assets/sass/admin.scss', 'public/css')
+    .copy('node_modules/ckeditor/config.js', 'public/dist/ckeditor/config.js')
+    .copy('node_modules/ckeditor/contents.css', 'public/dist/ckeditor/contents.css')
+    .copy('node_modules/ckeditor/styles.js', 'public/dist/ckeditor/styles.js')
+    .copyDirectory('node_modules/ckeditor/adapters', 'public/dist/ckeditor/adapters')
+    .copyDirectory('node_modules/ckeditor/lang', 'public/dist/ckeditor/lang')
+    .copyDirectory('node_modules/ckeditor/plugins', 'public/dist/ckeditor/plugins')
+    .copyDirectory('node_modules/ckeditor/skins', 'public/dist/ckeditor/skins')
+    .sourceMaps()
+;

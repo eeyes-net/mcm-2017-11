@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class PostController extends Controller
 {
@@ -29,9 +29,10 @@ class PostController extends Controller
 
     public function update(Request $request, Post $post)
     {
-        $post->update($request->validate([
-            'title' => 'required',
-            'content' => 'required',
+        $post->update($request->only([
+            'title',
+            'content',
+            'create_at',
         ]));
         return $post;
     }
