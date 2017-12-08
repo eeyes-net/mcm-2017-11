@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h2>编辑公告</h2>
-        <admin-post-editor type="edit" :post-id="postId" @submit="update"></admin-post-editor>
+        <h2>编辑竞赛</h2>
+        <admin-match-editor type="edit" :match-id="matchId" @submit="update"></admin-match-editor>
     </div>
 </template>
 
@@ -9,18 +9,19 @@
     export default {
         data() {
             return {
-                postId: 0
+                matchId: 0
             }
         },
         mounted() {
-            this.postId = this.$router.currentRoute.params.post_id;
+            this.matchId = this.$router.currentRoute.params.match_id;
         },
         methods: {
             update(form) {
-                axios.put('/api/admin/post/' + this.postId, {
+                axios.put('/api/admin/match/' + this.matchId, {
                     title: form.title,
-                    content: form.content,
+                    expired_at: form.expired_at,
                     created_at: form.created_at,
+                    status: form.status,
                 }).then(response => {
                     alert('更新成功');
                 });

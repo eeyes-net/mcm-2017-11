@@ -14,7 +14,7 @@
                 <router-link class="nav-link" to="/admin/team">队伍</router-link>
             </li>
             <li class="nav-item">
-                <router-link class="nav-link" to="/admin/match">比赛</router-link>
+                <router-link class="nav-link" to="/admin/match">竞赛</router-link>
             </li>
             <li class="nav-item">
                 <router-link class="nav-link" to="/admin/recruit">招募</router-link>

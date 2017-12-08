@@ -15,7 +15,8 @@
     export default {
         data() {
             return {
-                postsData: {}
+                postsData: {},
+                paginationLimit: 10
             };
         },
         mounted() {
@@ -26,11 +27,6 @@
             let page = to.query.page || 1;
             this.getPosts(page);
             next();
-        },
-        computed: {
-            paginationLimit() {
-                return 10;
-            }
         },
         methods: {
             getPosts(page = 1) {

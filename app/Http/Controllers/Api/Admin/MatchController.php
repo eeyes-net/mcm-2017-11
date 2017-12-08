@@ -18,7 +18,7 @@ class MatchController extends Controller
     {
         $data = $request->validate([
             'title' => 'required',
-            'expired_at' => 'required',
+            'expired_at' => 'required|date',
             'status' => 'required',
         ]);
         if ($data['status'] !== 'open') {

@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h2>发布新公告</h2>
-        <admin-post-editor @submit="store"></admin-post-editor>
+        <h2>发布新竞赛</h2>
+        <admin-match-editor @submit="store"></admin-match-editor>
     </div>
 </template>
 
@@ -9,9 +9,10 @@
     export default {
         methods: {
             store(form) {
-                axios.post('/api/admin/post', {
+                axios.post('/api/admin/match', {
                     title: form.title,
-                    content: form.content
+                    expired_at: form.expired_at,
+                    status: form.status
                 }).then(response => {
                     alert('保存成功');
                 });
