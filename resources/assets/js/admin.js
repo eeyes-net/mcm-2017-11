@@ -35,7 +35,6 @@ Vue.component('admin-match-editor', require('./components/admin/match/Editor.vue
 
 const router = new VueRouter({
     mode: 'history',
-    linkExactActiveClass: 'active',
     routes: [
         {path: '/admin', component: Vue.component('admin-index')},
         {path: '/admin/post', component: Vue.component('admin-post-index')},

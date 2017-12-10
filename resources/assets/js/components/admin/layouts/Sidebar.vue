@@ -2,7 +2,7 @@
     <div>
         <ul class="nav nav-pills flex-column">
             <li class="nav-item">
-                <router-link class="nav-link" to="/admin">概况</router-link>
+                <router-link class="nav-link must-exact" to="/admin">概况</router-link>
             </li>
             <li class="nav-item">
                 <router-link class="nav-link" to="/admin/post">公告</router-link>

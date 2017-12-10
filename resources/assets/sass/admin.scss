@@ -79,13 +79,17 @@ h1 {
   padding-left: 0;
   padding-right: 0;
 }
-//
-//.nav-pills .nav-link.router-link-active {
-//  color: $nav-pills-link-active-color;
-//  background-color: $nav-pills-link-active-bg;
-//}
-//
-//.nav-pills .nav-link.router-link-exact-active {
-//  color: $nav-pills-link-active-color;
-//  background-color: $nav-pills-link-active-bg;
-//}
+
+.nav-pills {
+  .nav-link.must-exact.router-link-active {
+    color: $link-color;
+    background-color: transparent;
+  }
+
+  .nav-link.router-link-active,
+  .nav-link.router-link-exact-active,
+  .nav-link.must-exact.router-link-exact-active {
+    color: $nav-pills-link-active-color;
+    background-color: $nav-pills-link-active-bg;
+  }
+}
