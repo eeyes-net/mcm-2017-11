@@ -35,7 +35,7 @@ class MatchController extends Controller
 
     public function team(Match $match)
     {
-        return $match->teams()->paginate();
+        return $match->teams()->with('users')->paginate();
     }
 
     public function apply(Request $request, Match $match)

@@ -16,6 +16,11 @@ class RecruitController extends Controller
         return Recruit::latest()->paginate();
     }
 
+    public function show(Recruit $recruit)
+    {
+        return $recruit;
+    }
+
     public function update(Request $request, Recruit $recruit)
     {
         $recruit->update($request->only([

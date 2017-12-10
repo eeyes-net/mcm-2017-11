@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        return User::paginate();
+        return User::latest()->paginate();
     }
 
     public function show(User $user)
@@ -20,7 +20,7 @@ class UserController extends Controller
 
     public function team(User $user)
     {
-        return $user->teams()->get();
+        return $user->teams()->with('users')->get();
     }
 
     public function update(Request $request, User $user)
@@ -33,6 +33,7 @@ class UserController extends Controller
             'class',
             'contact',
             'email',
+            'group',
         ]));
         return $user;
     }
