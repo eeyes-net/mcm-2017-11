@@ -14,6 +14,7 @@
                     content: form.content
                 }).then(response => {
                     alert('保存成功');
+                    this.$router.back();
                 });
             }
         }

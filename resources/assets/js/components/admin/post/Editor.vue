@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-form @submit.prevent="submit">
+        <b-form @submit.prevent="$emit('submit', form)">
             <b-form-group label="公告标题">
                 <b-form-input type="text" v-model="form.title" required></b-form-input>
             </b-form-group>
@@ -20,12 +20,10 @@
     export default {
         props: [
             'type',
-            'postId'
+            'post'
         ],
         data() {
             return {
-                post: {},
-                isEdit: false,
                 form: {
                     id: 0,
                     title: '',
@@ -34,31 +32,17 @@
                 }
             }
         },
-        mounted() {
-            this.isEdit = (this.type === 'edit');
-        },
-        watch: {
-            postId() {
-                if (this.isEdit) {
-                    this.getPost(this.postId);
-                }
+        computed: {
+            isEdit() {
+                return this.type === 'edit';
             }
         },
-        methods: {
-            submit() {
-                this.$emit('submit', this.form);
-            },
-            getPost(id) {
-                setTimeout(() => { // TODO: hack for vue-ckeditor2 issue https://github.com/dangvanthanh/vue-ckeditor2/issues/39 , may be removed if issue fixed.
-                axios.get('/api/admin/post/' + id)
-                    .then(response => {
-                        this.post = response.data;
-                        this.form.id = this.post.id;
-                        this.form.title = this.post.title;
-                        this.form.content = this.post.content;
-                        this.form.created_at = this.post.created_at;
-                    });
-                }, 1000);
+        watch: {
+            post(to, from) {
+                this.form.id = to.id;
+                this.form.title = to.title;
+                this.form.content = to.content;
+                this.form.created_at = to.created_at;
             }
         }
     }

@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2>编辑公告</h2>
-        <admin-post-editor type="edit" :post-id="postId" @submit="update"></admin-post-editor>
+        <admin-post-editor type="edit" :post="post" @submit="update"></admin-post-editor>
     </div>
 </template>
 
@@ -9,20 +9,40 @@
     export default {
         data() {
             return {
-                postId: 0
+                post: {
+                    id: 0,
+                    title: '',
+                    content: '',
+                    created_at: '',
+                    updated_at: ''
+                }
             }
         },
         mounted() {
-            this.postId = this.$router.currentRoute.params.post_id;
+            this.getPost();
+        },
+        beforeRouteUpdate (to, from, next) {
+            this.getPost(to);
+            next();
         },
         methods: {
+            getPost(route) {
+                route = route || this.$router.currentRoute;
+                setTimeout(() => { // TODO: hack for vue-ckeditor2 issue https://github.com/dangvanthanh/vue-ckeditor2/issues/39 , may be removed if issue fixed.
+                axios.get('/api/admin/post/' + route.params.post_id)
+                    .then(response => {
+                        this.post = response.data;
+                    });
+                }, 1000);
+            },
             update(form) {
-                axios.put('/api/admin/post/' + this.postId, {
+                axios.put('/api/admin/post/' + form.id, {
                     title: form.title,
                     content: form.content,
                     created_at: form.created_at,
                 }).then(response => {
                     alert('更新成功');
+                    this.$router.back();
                 });
             }
         }

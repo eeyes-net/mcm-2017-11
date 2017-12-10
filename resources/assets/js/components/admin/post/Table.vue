@@ -15,8 +15,8 @@
                     <td>{{ post.title }}</td>
                     <td>{{ post.created_at }}</td>
                     <td>
-                        <b-button variant="primary" @click="edit(post)">编辑</b-button>
-                        <b-button variant="danger" @click="destory(post)">删除</b-button>
+                        <b-button variant="primary" @click="$emit('edit', post)">编辑</b-button>
+                        <b-button variant="danger" @click="$emit('destroy', post)">删除</b-button>
                     </td>
                 </tr>
             </tbody>
@@ -28,14 +28,6 @@
     export default {
         props: [
             'posts'
-        ],
-        methods: {
-            edit(post) {
-                this.$emit('edit', post);
-            },
-            destory(post) {
-                this.$emit('destory', post);
-            }
-        }
+        ]
     }
 </script>
