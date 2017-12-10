@@ -34,7 +34,7 @@ Route::namespace('Api')->group(function () {
         Route::post('/', 'RecruitController@store')->middleware('auth');
         Route::delete('{id}', 'RecruitController@destroy')->middleware('auth');
     });
-    Route::prefix('admin')->namespace('Admin')->middleware(['auth', /*'admin'*/])->group(function () {
+    Route::prefix('admin')->namespace('Admin')->middleware(['auth', 'admin'])->group(function () {
         Route::prefix('post')->group(function () {
             Route::get('/', 'PostController@index');
             Route::post('/', 'PostController@store');
@@ -67,6 +67,7 @@ Route::namespace('Api')->group(function () {
         });
         Route::prefix('recruit')->group(function () {
             Route::get('/', 'RecruitController@index');
+            Route::get('{recruit}', 'RecruitController@show');
             Route::put('{recruit}', 'RecruitController@update');
             Route::delete('{recruit}', 'RecruitController@destroy');
         });

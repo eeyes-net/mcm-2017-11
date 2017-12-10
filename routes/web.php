@@ -14,4 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::view('admin/{path?}', 'admin.admin')->where('path', '.*');
+Route::view('admin/{path?}', 'admin.admin')
+    ->where('path', '.*')
+    ->middleware(['auth', 'admin']);
