@@ -1,10 +1,7 @@
 <template>
     <div>
         <h2>
-            队伍列表
-            <span class="float-right">
-                <b-button variant="primary" @click="create">创建新队伍</b-button>
-            </span>
+            参赛队伍列表
         </h2>
         <admin-team-table :teams="teamsData.data" @showUser="showUser" @edit="edit" @destory="destory"></admin-team-table>
         <b-pagination :total-rows="teamsData.total" v-model="teamsData.current_page" :per-page="teamsData.per_page" :limit="10" @change="changePage"></b-pagination>
@@ -25,6 +22,11 @@
             this.getTeams(to);
             next();
         },
+        computed: {
+            matchId() {
+                return this.$router.currentRoute.params.match_id;
+            }
+        },
         methods: {
             showUser(user) {
                 this.$router.push('/admin/user/' + user.id + '/edit');
@@ -32,7 +34,7 @@
             getTeams(route) {
                 route = route || this.$router.currentRoute;
                 let page = route.query.page || 1;
-                axios.get('/api/admin/team', {
+                axios.get('/api/admin/match/' + route.params.match_id + '/team', {
                     params: {
                         page: page
                     }
@@ -41,21 +43,21 @@
                 });
             },
             create() {
-                this.$router.push('/admin/team/create');
+                this.$router.push('/admin/match/' + this.matchId + '/apply');
             },
             edit(team) {
                 this.$router.push('/admin/team/' + team.id + '/edit');
             },
             destory(team) {
-                if (confirm('您确定要删除 #' + team.id + ' 吗？')) {
-                    axios.delete('/api/admin/team/' + team.id)
+                if (confirm('您确定要取消 #' + team.id + ' 的报名吗？')) {
+                    axios.delete('/api/admin/match/' + this.matchId + '/team/' + team.id)
                         .then(response => {
                             this.getTeams();
                         });
                 }
             },
             changePage(page) {
-                this.$router.push('/admin/team?page=' + page);
+                this.$router.push('/admin/match/' + this.matchId + '/team?page=' + page);
             }
         }
     }

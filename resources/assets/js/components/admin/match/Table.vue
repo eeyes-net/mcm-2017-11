@@ -23,9 +23,9 @@
                     <td>{{ match.expired_at }}</td>
                     <td>{{ match.created_at }}</td>
                     <td>
-                        <b-button variant="outline-info" @click="exportList(match)">导出名单</b-button>
-                        <b-button variant="primary" @click="edit(match)">编辑</b-button>
-                        <b-button variant="danger" @click="destory(match)">删除</b-button>
+                        <b-button variant="outline-info" @click="$emit('showTeams', match)">名单</b-button>
+                        <b-button variant="primary" @click="$emit('edit', match)">编辑</b-button>
+                        <b-button variant="danger" @click="$emit('destory', match)">删除</b-button>
                     </td>
                 </tr>
             </tbody>
@@ -37,17 +37,6 @@
     export default {
         props: [
             'matches'
-        ],
-        methods: {
-            exportList(match) {
-                this.$emit('exportList', match);
-            },
-            edit(match) {
-                this.$emit('edit', match);
-            },
-            destory(match) {
-                this.$emit('destory', match);
-            }
-        }
+        ]
     }
 </script>
