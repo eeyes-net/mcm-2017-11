@@ -20,8 +20,8 @@ class CheckForAdminGroup
     public function handle($request, Closure $next, $guard = null)
     {
         $user = Auth::guard($guard)->user();
-        if ($user->group !== 'admin' && $user->group !== 'root') {
-            throw new AuthorizationException('抱歉，您不是管理员。');
+        if ($user->group !== 'admin') {
+            return redirect('/login/admin');
         }
         return $next($request);
     }

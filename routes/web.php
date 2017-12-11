@@ -14,6 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('login', 'Auth\OAuthLoginController@login')->name('login');
+Route::get('login/admin', 'Auth\OAuthLoginController@loginAdmin');
+Route::get('login/callback', 'Auth\OAuthLoginController@callback');
+Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+
 Route::view('admin/{path?}', 'admin.admin')
     ->where('path', '.*')
     ->middleware(['auth', 'admin']);
