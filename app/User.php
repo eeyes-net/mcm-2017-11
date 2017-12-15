@@ -31,4 +31,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Team::class)->withTimestamps();
     }
+
+    public function isAdmin()
+    {
+        return $this->group === 'admin';
+    }
 }
