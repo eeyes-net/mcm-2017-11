@@ -1,0 +1,56 @@
+.mcm-post {
+  padding-top: 32px;
+
+  .panel {
+    padding: 0;
+    border: none;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
+    border-radius: 0;
+
+      .panel-heading {
+      padding: 28px 24px;
+      background-color: #fff;
+      border-bottom: 1px dashed #e9eef5;
+
+      &::before {
+        content: "";
+        position: absolute;
+        display: block;
+        width: 25px;
+        height: 21px;
+        margin-top: -2px;
+        background-image: url(../../../assets/images/announcement.png);
+      }
+
+      .panel-title {
+        margin-left: 32px;
+        font-size: 1em;
+        color: #336ea7;
+      }
+    }
+
+    .panel-body {
+      padding: 0;
+
+      .list-striped > li:nth-of-type(odd) {
+        background-color: #fafcfd;
+      }
+
+      .list-group-item {
+        border: none;
+
+        &:hover {
+          background-color: #eceff3 !important;
+        }
+
+        .title {
+          padding-left: 24px;
+        }
+
+        .date {
+          color: #7e838b;
+        }
+      }
+    }
+  }
+}

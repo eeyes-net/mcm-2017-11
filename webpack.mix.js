@@ -23,5 +23,7 @@ mix
     .copyDirectory('node_modules/ckeditor/lang', 'public/dist/ckeditor/lang')
     .copyDirectory('node_modules/ckeditor/plugins', 'public/dist/ckeditor/plugins')
     .copyDirectory('node_modules/ckeditor/skins', 'public/dist/ckeditor/skins')
+    .js('resources/assets/js/index.js', 'public/js')
+    .sass('resources/assets/sass/index.scss', 'public/css')
     .sourceMaps()
 ;

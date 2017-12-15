@@ -1,0 +1,87 @@
+.mcm-recruit {
+  .options > div {
+    margin-bottom: 18px;
+  }
+
+  .options .btn {
+    border-radius: 0;
+  }
+
+  .panel {
+    padding: 18px;
+    border: none;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
+    border-radius: 0;
+
+    @media (min-width: 768px) {
+      height: 282px;
+    }
+
+    @media (min-width: 992px) {
+      height: 230px;
+    }
+
+    .panel-heading {
+      padding: 0;
+      background-color: initial;
+      border-bottom: none;
+
+      .panel-title {
+        height: 24px;
+        line-height: 24px;
+        overflow: hidden;
+      }
+
+      .label {
+        border-radius: 0;
+      }
+
+      .created-at {
+        font-size: 12px;
+      }
+    }
+
+    .panel-body {
+      padding: 4px 0 0;
+      font-size: 12px;
+
+      .row {
+        margin-left: 0;
+        margin-right: 0;
+        line-height: 24px;
+        max-height: 96px;
+        overflow: hidden;
+
+        .item-title {
+          font-weight: bold;
+          padding-left: 0;
+          padding-right: 0;
+        }
+
+        .item-content {
+          padding-left: 0;
+          padding-right: 0;
+        }
+      }
+    }
+  }
+
+  .modal {
+    .modal-body {
+      textarea.form-control,
+      input[type="text"].form-control,
+      button.btn {
+        border-radius: 0;
+      }
+
+      button.btn[type="submit"] {
+        background-color: #2e8de6;
+        color: #fff;
+
+        &:hover {
+          background-color: #2675bf;
+        }
+      }
+    }
+  }
+}

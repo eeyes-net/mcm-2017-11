@@ -1,0 +1,151 @@
+@mixin transition {
+  transition: 0.2s ease-in background-color;
+  -moz-transition: 0.2s ease-in background-color;
+  -webkit-transition: 0.2s ease-in background-color;
+  -o-transition: 0.2s ease-in background-color;
+}
+
+html {
+  font-size: 14px;
+}
+
+body {
+  background-color: #eceff3;
+  font-family: "PingFang SC", "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", sans-serif;
+  padding-top: 50px;
+}
+
+a {
+  color: #47494e;
+}
+
+.navbar {
+  color: #2c312f;
+  background-color: #fff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.20);
+
+  .navbar-nav > li.active > a {
+    background-color: inherit;
+
+    &:hover {
+      background-color: inherit;
+    }
+
+    &::after,
+    &:hover::after {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background-color: #8ca4ba;
+    }
+
+    @media (min-width: 768px) {
+      &::after,
+      &:hover::after {
+        content: "";
+        display: block;
+        position: absolute;
+        left: 15px;
+        right: 15px;
+        top: initial;
+        bottom: 0;
+        width: initial;
+        height: 4px;
+        background-color: #8ca4ba;
+      }
+    }
+  }
+
+  .navbar-nav > li {
+    .navbar-text,
+    form {
+      margin-right: 15px;
+      margin-left: 15px;
+    }
+
+    .navbar-btn {
+      border-radius: 0;
+      background-color: inherit;
+
+      &:hover {
+        background-color: inherit;
+      }
+    }
+  }
+}
+
+.jumbotron {
+  padding-top: 100px;
+  padding-bottom: 100px;
+  color: #fff;
+  background: url(../../images/banner.jpg) center center no-repeat;
+  background-size: cover;
+  -o-background-size: cover;
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
+  text-align: center;
+
+  h1 {
+    font-size: 36px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+}
+
+.pagination {
+  display: block;
+  padding: 36px 0;
+  text-align: center;
+
+  & > li {
+    display: inline-block;
+    margin: 0 5px;
+
+    span,
+    a {
+      padding: 0;
+      text-align: center;
+      line-height: 40px;
+      width: 40px;
+      height: 40px;
+      border-radius: 0 !important;
+    }
+
+    a.active {
+      border: 1px solid #336ea7;
+      background-color: initial;
+    }
+  }
+}
+
+.container {
+  @media (min-width: 1360px) {
+    width: 1330px;
+  }
+
+  @media (min-width: 1440px) {
+    width: 1410px;
+  }
+
+  @media (min-width: 1536px) {
+    width: 1506px;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-md-right {
+    text-align: right;
+  }
+}
+
+#comfirm, #edit {
+  border: none;
+  background-color: #2e8de6;
+  color: #fff;
+}

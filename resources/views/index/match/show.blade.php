@@ -1,3 +1,11 @@
-<h1>{{ $post->title }}</h1>
-<p>{{ $post->created_at }}</p>
-<section>{!! $post->content !!}</section>
+@extends('index.layouts.master')
+
+@section('main')
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1>{{ $match->title }}</h1>
+            <p>{{ $match->expired_at }}</p>
+            <p>{{ $match->status }}</p>
+        </div>
+    </div>
+@stop

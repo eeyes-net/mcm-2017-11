@@ -25,6 +25,8 @@ composer install
 php artisan migrate
 php artisan vendor:publish
 php artisan install
+npm install
+npm run production
 ```
 
 ## 开发与测试
@@ -34,6 +36,7 @@ php artisan ide-helper:meta
 php artisan ide-helper:generate
 php artisan ide-helper:model
 php artisan db:seed
+npm run watch
 ```
 
 ## LICENSE
