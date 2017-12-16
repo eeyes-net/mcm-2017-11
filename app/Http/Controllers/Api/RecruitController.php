@@ -16,9 +16,16 @@ class RecruitController extends Controller
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Recruit::latest()->paginate();
+        $tags = $request->get('tags');
+        $tags = explode(',', $tags);
+        $query = new Recruit();
+        foreach ($tags as $tag) {
+            $query = $query->orWhere('tags', 'like', "%{$tag}%");
+        }
+        $recruits = $query->latest()->paginate(12);
+        return $recruits;
     }
 
     /**
