@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="/favicon.ico">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>后台管理 - 西安交通大学数学建模官方网站</title>
+    <link rel="icon" href="/favicon.ico">
     <link href="/css/admin.css" rel="stylesheet">
 </head>
 

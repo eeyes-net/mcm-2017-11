@@ -41,6 +41,8 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+\Carbon\Carbon::setLocale('zh');
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application
