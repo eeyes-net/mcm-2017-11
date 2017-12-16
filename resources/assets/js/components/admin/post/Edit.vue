@@ -28,12 +28,10 @@
         methods: {
             getPost(route) {
                 route = route || this.$router.currentRoute;
-                setTimeout(() => { // TODO: hack for vue-ckeditor2 issue https://github.com/dangvanthanh/vue-ckeditor2/issues/39 , may be removed if issue fixed.
                 axios.get('/api/admin/post/' + route.params.post_id)
                     .then(response => {
                         this.post = response.data;
                     });
-                }, 1000);
             },
             update(form) {
                 axios.put('/api/admin/post/' + form.id, {
