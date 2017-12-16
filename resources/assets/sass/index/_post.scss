@@ -7,7 +7,7 @@
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
     border-radius: 0;
 
-      .panel-heading {
+    .panel-heading {
       padding: 28px 24px;
       background-color: #fff;
       border-bottom: 1px dashed #e9eef5;
@@ -51,6 +51,32 @@
           color: #7e838b;
         }
       }
+    }
+  }
+
+  .modal {
+
+    .modal-content {
+      border: none;
+      border-radius: 0;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
+    }
+
+    .modal-header {
+      padding: 28px 28px 12px 28px;
+
+      .modal-title {
+        margin-bottom: 4px;
+      }
+
+      .post-date {
+        color: #7e838b;
+      }
+    }
+
+    .modal-body {
+      padding: 24px 24px;
+      line-height: 24px;
     }
   }
 }

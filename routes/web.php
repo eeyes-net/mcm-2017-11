@@ -21,10 +21,10 @@ Route::post('logout', 'Auth\OAuthLoginController@logout')->name('logout');
 Route::namespace('Index')->group(function () {
     Route::get('/', 'PostController@index');
     Route::get('post', 'PostController@index');
-    Route::get('post/{id}', 'PostController@show');
+    Route::get('post/{post}', 'PostController@show');
     Route::get('match', 'MatchController@index');
-    Route::get('match/{id}', 'MatchController@show');
-    Route::post('match/{id}/apply', 'MatchController@apply');
+    Route::get('match/{match}', 'MatchController@show');
+    Route::post('match/{match}/apply', 'MatchController@apply');
     Route::get('recruit', 'RecruitController@index');
 });
 

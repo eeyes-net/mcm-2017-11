@@ -10,16 +10,16 @@
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="#">全部</a>
+                            <a role="menuitem" tabindex="-1" href="/recruit">全部</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="#">招募代码</a>
+                            <a role="menuitem" tabindex="-1" href="/recruit?tags=招募代码">招募代码</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="#">招募算法</a>
+                            <a role="menuitem" tabindex="-1" href="/recruit?tags=招募算法">招募算法</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="#">招募文书</a>
+                            <a role="menuitem" tabindex="-1" href="/recruit?tags=招募文书">招募文书</a>
                         </li>
                     </ul>
                 </div>
@@ -29,49 +29,51 @@
             </div>
         </div>
 
-        <div class="row" id="list">
-            @foreach ($recruits as $recruit)
-                <div class="col-md-3 col-sm-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <span class="panel-title">队伍招募</span>
-                            <?php $tags = explode(',', $recruit->tags); ?>
-                            @foreach($tags as $tag)
-                                <span class="label label-info">{{ $tag }}</span>
-                            @endforeach
-                            <p class="created-at">{{ $recruit->created_at }}</p>
-                        </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-4 col-md-6 col-sm-12 item-title">
-                                    当前队员
-                                </div>
-                                <div class="col-lg-8 col-md-6 col-sm-12 item-content">
-                                    {{ $recruit->members }}
-                                </div>
+        <div id="pjax-container">
+            <div class="row" id="list">
+                @foreach ($recruits as $recruit)
+                    <div class="col-md-3 col-sm-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span class="panel-title">队伍招募</span>
+                                <?php $tags = explode(',', $recruit->tags); ?>
+                                @foreach($tags as $tag)
+                                    <span class="label label-info">{{ $tag }}</span>
+                                @endforeach
+                                <p class="created-at">{{ $recruit->created_at }}</p>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-4 col-md-6 col-sm-12 item-title">
-                                    队伍描述
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-6 col-sm-12 item-title">
+                                        当前队员
+                                    </div>
+                                    <div class="col-lg-8 col-md-6 col-sm-12 item-content">
+                                        {{ $recruit->members }}
+                                    </div>
                                 </div>
-                                <div class="col-lg-8 col-md-6 col-sm-12 item-content">
-                                    {{ $recruit->description }}
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-6 col-sm-12 item-title">
+                                        队伍描述
+                                    </div>
+                                    <div class="col-lg-8 col-md-6 col-sm-12 item-content">
+                                        {{ $recruit->description }}
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-4 col-md-6 col-sm-12 item-title">
-                                    联系方式
-                                </div>
-                                <div class="col-lg-8 col-md-6 col-sm-12 item-content">
-                                    {{ $recruit->contact }}
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-6 col-sm-12 item-title">
+                                        联系方式
+                                    </div>
+                                    <div class="col-lg-8 col-md-6 col-sm-12 item-content">
+                                        {{ $recruit->contact }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
+            {{ $recruits->links() }}
         </div>
-        {{ $recruits->links() }}
 
         <div class="modal fade" id="sign" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">

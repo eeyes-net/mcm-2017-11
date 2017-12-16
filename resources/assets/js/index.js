@@ -1,3 +1,4 @@
-window.$ = window.jQuery = require('jquery');
-window.Popper = require('popper.js');
-require('bootstrap-sass');
+require('./bootstrap-index');
+require('./index/post');
+require('./index/match');
+require('./index/recruit');

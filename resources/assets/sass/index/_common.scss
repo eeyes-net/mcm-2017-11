@@ -20,6 +20,7 @@ a {
 }
 
 .navbar {
+  padding-right: inherit;
   color: #2c312f;
   background-color: #fff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.20);
@@ -148,4 +149,8 @@ a {
   border: none;
   background-color: #2e8de6;
   color: #fff;
+}
+
+.modal-backdrop {
+  background-color: #566;
 }
