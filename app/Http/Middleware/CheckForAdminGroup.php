@@ -19,7 +19,7 @@ class CheckForAdminGroup
     {
         /** @var \App\User $user */
         $user = Auth::guard($guard)->user();
-        if ($user->isAdmin()) {
+        if (!$user->isAdmin()) {
             return redirect('/login/admin');
         }
         return $next($request);

@@ -91,7 +91,7 @@ class OAuthLoginController extends LoginController
             return redirect(route('login'));
         }
         $user = Auth::user();
-        if ($user->group === 'admin') {
+        if ($user->isAdmin()) {
             return redirect()->intended('/admin');
         }
         if (!Session::has('admin_authorization')) {
