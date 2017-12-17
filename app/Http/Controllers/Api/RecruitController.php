@@ -50,7 +50,10 @@ class RecruitController extends Controller
             'description' => 'required',
             'contact' => 'required',
         ]);
-        $data['members'] = implode(' ', $team->users()->pluck('name')->toArray());
+        if (is_array($data['tags'])) {
+            $data['tags'] = implode(',', $data['tags']);
+        }
+        $data['members'] = implode(',', $team->users()->pluck('name')->toArray());
         $recruit = new Recruit($data);
         $recruit = $team->recruits()->save($recruit);
         return $recruit;

@@ -3,7 +3,7 @@
 @section('main')
     <div class="mcm-recruit">
         <div class="row options">
-            <div class="col-md-6">
+            <div class="col-sm-6">
                 <div class="dropdown">
                     <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">
                         全部 <span class="caret"></span>
@@ -23,9 +23,10 @@
                         </li>
                     </ul>
                 </div>
+                `
             </div>
-            <div class="col-md-6 text-md-right">
-                <button type="button" class="btn btn-default sponsored" data-toggle="modal" data-target="#sign">发布招募</button>
+            <div class="col-sm-6 text-md-right">
+                <button type="button" class="btn btn-default create-recruit">发布招募</button>
             </div>
         </div>
 
@@ -75,7 +76,7 @@
             {{ $recruits->links() }}
         </div>
 
-        <div class="modal fade" id="sign" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -93,27 +94,27 @@
                                 <label>选择招募类型</label>
                                 <div>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" value="developer"> 招募代码
+                                        <input type="checkbox" name="tags" value="招募代码"> 招募代码
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" value="algorithm"> 招募算法
+                                        <input type="checkbox" name="tags" value="招募算法"> 招募算法
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" value="writer"> 招募文书
+                                        <input type="checkbox" name="tags" value="招募文书"> 招募文书
                                     </label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>当前队员</label>
-                                <textarea class="form-control" maxlength="48" placeholder="请留下您的队伍中当前队员信息"></textarea>
+                                <select name="team_id"></select>
                             </div>
                             <div class="form-group">
                                 <label for="name">队伍描述</label>
-                                <textarea class="form-control" maxlength="48" placeholder="请添加您的队伍描述，不超过48个字"></textarea>
+                                <textarea name="description" class="form-control" maxlength="48" placeholder="请添加您的队伍描述，不超过48个字"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>联系方式</label>
-                                <input type="text" class="form-control" placeholder="请留下您的联系方式">
+                                <input type="text" name="contact" class="form-control" placeholder="请留下您的联系方式">
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn">发布招募</button>

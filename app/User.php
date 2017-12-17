@@ -36,4 +36,13 @@ class User extends Authenticatable
     {
         return $this->group === 'admin';
     }
+
+    public function getAppliedMatchesIdAttribute() {
+        $matches_id = [];
+        /** @var Team $team */
+        foreach($this->teams as $team) {
+            $matches_id = array_merge($matches_id, $team->matches->pluck('id')->toArray());
+        }
+        return array_values(array_unique($matches_id));
+    }
 }

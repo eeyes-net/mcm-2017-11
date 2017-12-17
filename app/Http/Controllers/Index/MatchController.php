@@ -4,13 +4,19 @@ namespace App\Http\Controllers\Index;
 
 use App\Http\Controllers\Controller;
 use App\Match;
+use Illuminate\Support\Facades\Auth;
 
 class MatchController extends Controller
 {
     public function index()
     {
+        $applied_matches_id = [];
+        if (Auth::check()) {
+            $applied_matches_id = Auth::user()->appliedMatchesId;
+        }
         return view('index.match.index', [
             'matches' => Match::orderByRaw('status DESC, expired_at DESC, created_at DESC')->paginate(12),
+            'applied_matches_id' => $applied_matches_id,
         ]);
     }
 

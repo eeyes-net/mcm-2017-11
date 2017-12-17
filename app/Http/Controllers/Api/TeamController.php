@@ -17,8 +17,17 @@ class TeamController extends Controller
     public function index()
     {
         $user = Auth::user();
-        // TODO 过滤队员信息
-        return $user->teams()->with('users')->get();
+        $teams = $user->teams()->with('users')->get()->toArray();
+        foreach ($teams as &$team) {
+            unset($team['pivot']);
+            foreach ($team['users'] as &$user) {
+                $user = [
+                    'id' => $user['id'],
+                    'name' => $user['name'],
+                ];
+            }
+        }
+        return $teams;
     }
 
     /**

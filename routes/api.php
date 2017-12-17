@@ -26,7 +26,7 @@ Route::namespace('Api')->group(function () {
         Route::post('{match}/apply', 'MatchController@apply')->middleware('auth');
     });
     Route::prefix('team')->group(function () {
-        Route::get('/', 'TeamController@index');
+        Route::get('/', 'TeamController@index')->middleware('auth');
         Route::post('/', 'TeamController@store')->middleware('auth');
     });
     Route::prefix('recruit')->group(function () {

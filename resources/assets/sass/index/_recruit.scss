@@ -68,6 +68,11 @@
 
   .modal {
     .modal-body {
+
+      textarea.form-control {
+        resize: vertical;
+      }
+
       textarea.form-control,
       input[type="text"].form-control,
       button.btn {

@@ -12,12 +12,19 @@
                             </div>
                             <div class="panel-body">
                                 <p class="expires-at">报名截止日期 <span>{{ $match->expired_at }}</span></p>
-                                @if ($match->status === 'open')
-                                    <button type="button" class="btn btn-default available" data-toggle="modal" data-target="#sign">立即报名</button>
+                                @if (auth()->check() && in_array($match->id, $applied_matches_id))
+                                    @if ($match->status === 'open')
+                                        <button type="button" class="btn btn-default sign" data-toggle="modal" data-target="#sign">已报名</button>
+                                    @else
+                                        <button type="button" class="btn btn-default" disabled="disabled">已报名</button>
+                                    @endif
                                 @else
-                                    <button type="button" class="btn btn-default" disabled="disabled">已截止</button>
+                                    @if ($match->status === 'open')
+                                        <button type="button" class="btn btn-default available" data-toggle="modal" data-target="#sign">立即报名</button>
+                                    @else
+                                        <button type="button" class="btn btn-default" disabled="disabled">已截止</button>
+                                    @endif
                                 @endif
-                                {{--<button type="button" class="btn btn-default sign" disabled="disabled" >已报名</button>--}}
                             </div>
                         </div>
                     </div>
