@@ -27,22 +27,12 @@
 
         <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                            &times;
-                        </button>
-                        <h4 class="modal-title">
-                            （公告标题）
-                        </h4>
-                        <span class="post-date">（发布日期）</span>
-                    </div>
-                    <div class="modal-body">
-                        <div class="post-content">
-                            （公告内容）
-                        </div>
-                    </div>
-                </div>
+                @include('index.post.layouts.content', [
+                    'post' => new \App\Post([
+                        'title' => '（公告标题）',
+                        'content' => '（公告内容）',
+                    ]),
+                ])
             </div>
         </div>
     </div>

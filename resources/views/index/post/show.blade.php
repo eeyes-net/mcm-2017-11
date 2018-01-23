@@ -1,13 +1,15 @@
 @extends('index.layouts.master')
 
 @section('main')
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <h1>{{ $post->title }}</h1>
-            <p>{{ $post->created_at }}</p>
-            <section>
-                {!! $post->content !!}
-            </section>
+    <div class="mcm-post">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="mcm-post-content">
+                    @include('index.post.layouts.content', [
+                        'no_button' => true
+                    ])
+                </div>
+            </div>
         </div>
     </div>
 @stop

@@ -18,7 +18,7 @@
             <ul class="nav navbar-nav navbar-right">
                 @if (auth()->check())
                     <li>
-                        <p class="navbar-text">欢迎：{{ auth()->user()->name }}</p></li>
+                        <p class="navbar-text">欢迎：{{ auth()->user()->name }}</p>
                     </li>
                     <li>
                         <form action="{{ url('/logout') }}" method="POST">
