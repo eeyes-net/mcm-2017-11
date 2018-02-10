@@ -11,7 +11,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li @if(request()->is('/') || request()->is('post')) class="active" @endif><a href="{{ url('/post') }}">公告</a></li>
+                <li @if(request()->is('/') || request()->is('post') || request()->is('post/*')) class="active" @endif><a href="{{ url('/post') }}">公告</a></li>
                 <li @if(request()->is('match')) class="active" @endif><a href="{{ url('/match') }}">竞赛报名</a></li>
                 <li @if(request()->is('recruit')) class="active" @endif><a href="{{ url('/recruit') }}">发起组队</a></li>
             </ul>

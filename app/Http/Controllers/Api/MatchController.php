@@ -14,7 +14,7 @@ class MatchController extends Controller
 {
     public function index()
     {
-        return Match::latest()->paginate();
+        return Match::ordered()->paginate();
     }
 
     public function show(Match $match)

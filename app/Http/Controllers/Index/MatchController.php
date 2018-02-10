@@ -15,7 +15,7 @@ class MatchController extends Controller
             $applied_matches_id = Auth::user()->appliedMatchesId;
         }
         return view('index.match.index', [
-            'matches' => Match::orderByRaw('status DESC, expired_at DESC, created_at DESC')->paginate(12),
+            'matches' => Match::ordered()->paginate(12),
             'applied_matches_id' => $applied_matches_id,
         ]);
     }

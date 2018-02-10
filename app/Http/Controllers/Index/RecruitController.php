@@ -18,6 +18,7 @@ class RecruitController extends Controller
         }
         $recruits = $query->latest()->paginate(12);
         return view('index.recruit.index', [
+            'tags' => $tags,
             'recruits' => $recruits,
         ]);
     }

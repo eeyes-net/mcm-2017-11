@@ -16,4 +16,9 @@ class Match extends Model
     {
         return $this->belongsToMany(Team::class)->withTimestamps();
     }
+
+    public function scopeOrdered($query)
+    {
+        return $query->orderByRaw('status DESC, expired_at DESC, created_at DESC');
+    }
 }

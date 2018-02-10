@@ -6,7 +6,7 @@
             <div class="col-sm-6">
                 <div class="dropdown">
                     <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">
-                        全部 <span class="caret"></span>
+                        <span class="tags">{{ empty($tags) ? '全部' : implode(',', $tags)  }}</span> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                         <li role="presentation">
@@ -23,10 +23,17 @@
                         </li>
                     </ul>
                 </div>
-                `
             </div>
             <div class="col-sm-6 text-md-right">
                 <button type="button" class="btn btn-default create-recruit">发布招募</button>
+            </div>
+        </div>
+
+        <div class="row tips">
+            <div class="col-sm-12">
+                <div class="content">
+                    <p>声明：这里仅提供发布招募的功能，请根据招募者提供的联系方式私下交流，然后由发起者在个人中心中的队伍管理处添加队员。</p>
+                </div>
             </div>
         </div>
 
