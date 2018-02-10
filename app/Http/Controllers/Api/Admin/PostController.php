@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
+use App\Events\PostsTableUpdated;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ class PostController extends Controller
             'title' => 'required',
             'content' => 'required',
         ]));
+        event(new PostsTableUpdated());
         return $post;
     }
 
@@ -34,6 +36,7 @@ class PostController extends Controller
             'content',
             'create_at',
         ]));
+        event(new PostsTableUpdated());
         return $post;
     }
 

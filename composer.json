@@ -10,10 +10,12 @@
         "guzzlehttp/guzzle": "^6.3",
         "jasig/phpcas": "^1.3",
         "laravel/framework": "5.5.*",
-        "laravel/tinker": "~1.0"
+        "laravel/tinker": "~1.0",
+        "predis/predis": "^1.1",
         "spatie/laravel-pjax": "^1.3"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.1",
         "barryvdh/laravel-ide-helper": "^2.4",
         "doctrine/dbal": "^2.6",
         "filp/whoops": "~2.0",
