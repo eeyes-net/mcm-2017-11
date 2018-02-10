@@ -17,7 +17,7 @@ jQuery(function ($) {
             return true;
         });
         $(document).pjax('.pagination a', '#pjax-container', {
-            scrollTo: $('#main').offset().top - $('.navbar').height()
+            scrollTo: $('#main').offset().top - $('.navbar').height() - 30
         });
         $(document).on('pjax:complete', function () {
             registerLinkListener();

@@ -4,11 +4,22 @@ jQuery(function ($) {
     }
     var registerLinkListener = function () {
         $(document).pjax('.dropdown a, .pagination a', '#pjax-container', {
-            scrollTo: $('#main').offset().top - $('.navbar').height()
+            scrollTo: $('#main').offset().top - $('.navbar').height() - 30
         });
+        var getQueryVars = function (name) {
+            var values = location.search.substr(1).split('&');
+            for (var i = 0; i < values.length; ++i) {
+                var pair = values[i].split('=', 2);
+                if (pair[0] === name) {
+                    return decodeURIComponent(pair[1]);
+                }
+            }
+            return null;
+        };
         $(document).on('pjax:complete', function () {
             registerLinkListener();
         });
+        $('.dropdown .btn .tags').text(getQueryVars('tags') || '全部');
     };
     registerLinkListener();
 

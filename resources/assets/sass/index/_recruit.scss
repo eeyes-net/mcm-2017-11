@@ -67,7 +67,16 @@
   }
 
   .modal {
+    .modal-content {
+      border: none;
+      border-radius: 0;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
+    }
+
     .modal-body {
+      form {
+        margin-bottom: -10px;
+      }
 
       textarea.form-control {
         resize: vertical;
