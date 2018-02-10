@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
+use App\Events\MatchesTableUpdated;
 use App\Http\Controllers\Controller;
 use App\Match;
 use App\Team;
@@ -25,6 +26,7 @@ class MatchController extends Controller
             $data['status'] = 'close';
         }
         $match = Match::create($data);
+        event(new MatchesTableUpdated());
         return $match;
     }
 
@@ -63,6 +65,7 @@ class MatchController extends Controller
             $data['status'] = 'close';
         }
         $match->update($data);
+        event(new MatchesTableUpdated());
         return $match;
     }
 
