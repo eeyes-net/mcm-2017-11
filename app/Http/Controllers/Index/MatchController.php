@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Index;
 use App\Http\Controllers\Controller;
 use App\Match;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class MatchController extends Controller
 {
@@ -14,8 +15,11 @@ class MatchController extends Controller
         if (Auth::check()) {
             $applied_matches_id = Auth::user()->appliedMatchesId;
         }
+        $matches = Cache::tags('matches')->remember('matches' . request('page'), 1440, function () {
+            return Match::ordered()->paginate(12);
+        });
         return view('index.match.index', [
-            'matches' => Match::ordered()->paginate(12),
+            'matches' => $matches,
             'applied_matches_id' => $applied_matches_id,
         ]);
     }
