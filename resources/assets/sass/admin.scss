@@ -93,3 +93,14 @@ h1 {
     background-color: $nav-pills-link-active-bg;
   }
 }
+
+.navbar-btn {
+  color: $navbar-dark-color;
+  background-color: inherit;
+  border: 1px solid $navbar-dark-color;
+  border-radius: 0;
+
+  &:hover {
+    background-color: inherit;
+  }
+}

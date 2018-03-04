@@ -18,6 +18,10 @@
             <ul class="nav navbar-nav navbar-right">
                 @if (auth()->check())
                     <li><a href="{{ url('/home') }}">欢迎您：{{ auth()->user()->name }}</a></li>
+                    <li><a href="{{ url('/home') }}">个人中心</a></li>
+                    @if (auth()->user()->isAdmin())
+                        <li><a href="{{ url('/admin') }}">后台管理</a></li>
+                    @endif
                     <li>
                         <form action="{{ url('/logout') }}" method="POST">
                             {{ csrf_field() }}
