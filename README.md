@@ -2,10 +2,6 @@
 
 <http://mcm.xjtu.edu.cn>
 
-## 部署
-
-<https://laravel.com/docs/5.5/installation>
-
 ## 说明
 
 产品原型 <http://ssynh3.axshare.com>
@@ -17,6 +13,12 @@
 3. 成员招募
 
 ## 部署
+
+<https://laravel.com/docs/5.5/installation>
+
+由于部分 Composer 包限制，需要 `php >= 7.2`，可以改用低版本的 Composer 包，最低达到 `php 7.0`
+
+### 部署脚本
 
 ```bash
 git clone https://github.com/eeyes-net/mcm-2017-11.git
