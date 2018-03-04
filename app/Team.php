@@ -12,7 +12,7 @@ class Team extends Model
     ];
     public function users()
     {
-        return $this->belongsToMany(User::class)->withTimestamps();
+        return $this->belongsToMany(User::class)->withPivot(['position', 'status'])->withTimestamps();
     }
 
     public function matches()
@@ -23,5 +23,10 @@ class Team extends Model
     public function recruits()
     {
         return $this->hasMany(Recruit::class);
+    }
+
+    public function isLeader($user_id) {
+        $leader = $this->users()->wherePivot('position', 'leader')->first();
+        return $leader->id === $user_id;
     }
 }

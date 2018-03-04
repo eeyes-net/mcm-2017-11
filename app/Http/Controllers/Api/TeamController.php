@@ -24,6 +24,12 @@ class TeamController extends Controller
                 $user = [
                     'id' => $user['id'],
                     'name' => $user['name'],
+                    'stu_id' => $user['stu_id'],
+                    'class' => $user['class'],
+                    'department' => $user['department'],
+                    'contact' => $user['contact'],
+                    'email' => $user['email'],
+                    'position' => $user['pivot']['position'],
                 ];
             }
         }

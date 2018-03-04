@@ -17,9 +17,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if (auth()->check())
-                    <li>
-                        <p class="navbar-text">欢迎：{{ auth()->user()->name }}</p>
-                    </li>
+                    <li><a href="{{ url('/home') }}">欢迎您：{{ auth()->user()->name }}</a></li>
                     <li>
                         <form action="{{ url('/logout') }}" method="POST">
                             {{ csrf_field() }}

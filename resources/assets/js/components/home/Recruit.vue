@@ -1,0 +1,170 @@
+<template>
+    <div class="home-recruit">
+        <h2>我的招募</h2>
+
+        <b-row>
+            <b-col sm="6" md="4" lg="3" v-for="recruit in recruits" :key="recruit.id">
+                <b-card>
+                    <h4 slot="header">队伍编号：{{ recruit.team_id }}
+                        <b-badge variant="info" v-for="(tag, index) in recruit.tags.split(',')" :key="index">{{ tag }}</b-badge>
+                    </h4>
+                    <b-row :no-gutters="true">
+                        <b-col cols="3" sm="5" xl="4">当前队员：</b-col>
+                        <b-col cols="9" sm="7" xl="8">{{ recruit.members }}</b-col>
+                    </b-row>
+                    <b-row :no-gutters="true">
+                        <b-col cols="3" sm="5" xl="4">队伍描述：</b-col>
+                        <b-col cols="9" sm="7" xl="8">{{ recruit.description }}</b-col>
+                    </b-row>
+                    <b-row :no-gutters="true">
+                        <b-col cols="3" sm="5" xl="4">联系方式：</b-col>
+                        <b-col cols="9" sm="7" xl="8">{{ recruit.contact }}</b-col>
+                    </b-row>
+                    <div class="home-recruit-edit-cover">
+                        <button class="edit" @click="edit(recruit)">编辑</button>
+                        <button class="delete" @click="destroy(recruit)">删除</button>
+                    </div>
+                </b-card>
+            </b-col>
+        </b-row>
+
+        <b-modal title="修改招募信息" class="recruit-edit-modal" v-model="modalShow" ok-title="保存" cancel-title="取消" @ok="handleOk" @hidden="modalHidden">
+            <b-alert variant="danger" dismissible :show="errors.length > 0"><p v-for="error in errors">{{ error }}</p></b-alert>
+            <b-form @submit="update()">
+                <b-form-group horizontal :label-cols="3" label="队伍编号">
+                    <b-form-input :disabled="true" placeholder="请输入您的姓名" v-model="form.team_id"></b-form-input>
+                </b-form-group>
+                <b-form-group horizontal :label-cols="3" label="选择招募类型">
+                    <b-form-checkbox-group v-model="form.tags" :options="recruitTagOptions"></b-form-checkbox-group>
+                </b-form-group>
+                <b-form-group horizontal :label-cols="3" label="当前队员">
+                    <b-form-textarea placeholder="请留下您的队伍中当前队员信息" v-model="form.members" :rows="3"></b-form-textarea>
+                </b-form-group>
+                <b-form-group horizontal :label-cols="3" label="队伍描述">
+                    <b-form-textarea placeholder="请添加您的队伍描述，不超过48个字" v-model="form.department" :rows="3"></b-form-textarea>
+                </b-form-group>
+                <b-form-group horizontal :label-cols="3" label="联系方式">
+                    <b-form-input placeholder="请留下您的联系方式" v-model="form.major"></b-form-input>
+                </b-form-group>
+            </b-form>
+        </b-modal>
+    </div>
+</template>
+
+<script>
+    export default {
+        data() {
+            return {
+                recruitTagOptions: [
+                    '招募代码',
+                    '招募算法',
+                    '招募文书'
+                ],
+                recruits: [],
+                form: {
+                    id: 0,
+                    team_id: 0,
+                    tags: [],
+                    members: '',
+                    description: '',
+                    contact: ''
+                },
+                modalShow: false,
+                errors: []
+            };
+        },
+        mounted() {
+            this.get();
+        },
+        methods: {
+            get() {
+                axios.get('/api/recruit/current_user').then(response => {
+                    this.recruits = response.data;
+                });
+            },
+            edit(recruit) {
+                this.form.id = recruit.id;
+                this.form.team_id = recruit.team_id;
+                this.form.tags = recruit.tags.split(',');
+                this.form.members = recruit.members;
+                this.form.description = recruit.description;
+                this.form.contact = recruit.contact;
+                this.modalShow = true;
+            },
+            update() {
+                let form = this.form;
+                axios.put('/api/recruit/' + form.id, {
+                    tags: form.tags.join(','),
+                    members: form.members,
+                    description: form.description,
+                    contact: form.contact
+                }).then(response => {
+                    if (response.data.id) {
+                        let i = _.find(this.recruits, {id: response.data.id});
+                        this.recruits[i] = response.data;
+                        this.errors = [];
+                        this.get();
+                        this.modalShow = false;
+                    } else if (response.data.message) {
+                        this.errors = _.flatten(_.toArray(response.data));
+                    } else {
+                        this.errors = ['出现了一些问题，请重试。'];
+                    }
+                }).catch(error => {
+                    if (typeof error.response.data === 'object') {
+                        this.errors = _.flatten(_.toArray(error.response.data));
+                    } else {
+                        this.errors = ['出现了一些问题，请重试。'];
+                    }
+                });
+            },
+            destroy(recruit) {
+                if (confirm('确定删除这条招募？\n\n'
+                        + '队伍编号：' + recruit.team_id + '\n'
+                        + '招募类型：' + recruit.tags + '\n'
+                        + '当前队员：' + recruit.members + '\n'
+                        + '队伍描述：' + recruit.description + '\n'
+                        + '联系方式：' + recruit.contact)) {
+                    axios.delete('/api/recruit/' + recruit.id).then(response => {
+                        if (response.data.id) {
+                            this.errors = [];
+                            this.get();
+                            this.modalShow = false;
+                        } else if (response.data.message) {
+                            this.errors = _.flatten(_.toArray(response.data));
+                            this.showErrors();
+                        } else {
+                            this.errors = ['出现了一些问题，请重试。'];
+                            this.showErrors();
+                        }
+                    }).catch(error => {
+                        if (typeof error.response.data === 'object') {
+                            this.errors = _.flatten(_.toArray(error.response.data));
+                            this.showErrors();
+                        } else {
+                            this.errors = ['出现了一些问题，请重试。'];
+                            this.showErrors();
+                        }
+                    });
+                }
+            },
+            showErrors() {
+                alert(this.errors);
+            },
+            handleOk(e) {
+                e.preventDefault();
+                this.update();
+            },
+            modalHidden() {
+                $('.sidebar').width('');
+            }
+        },
+        watch: {
+            modalShow(val) {
+                if (val) {
+                    $('.sidebar').width($('.sidebar').width());
+                }
+            }
+        }
+    };
+</script>

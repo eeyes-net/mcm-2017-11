@@ -28,6 +28,7 @@ Route::namespace('Index')->group(function () {
     Route::get('recruit', 'RecruitController@index');
 });
 
+Route::view('home', 'home.index')->middleware(['auth']);
 
 Route::view('admin/{path?}', 'admin.admin')
     ->where('path', '.*')

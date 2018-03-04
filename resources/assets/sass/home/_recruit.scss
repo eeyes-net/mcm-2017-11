@@ -1,0 +1,86 @@
+.home-recruit {
+  .card {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: none;
+    border-radius: 0;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
+    overflow: hidden;
+
+    @media (min-width: 576px) {
+      height: 260px;
+    }
+
+    &:hover {
+      overflow: visible;
+
+      .card-body {
+        background-color: inherit;
+      }
+    }
+
+    .card-header {
+      padding: 0;
+      background-color: initial;
+      border-bottom: none;
+
+      h4 {
+        margin: 0 0 15px;
+        padding: 0;
+        font-size: 1em;
+
+        .badge {
+          margin-right: .4em;
+          border-radius: 0;
+        }
+      }
+    }
+  }
+
+  .card-body {
+    padding: 0;
+    font-size: .9em;
+    line-height: 1.8;
+
+    .row {
+      margin-bottom: .4em;
+    }
+
+    .home-recruit-edit-cover {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      opacity: 0;
+      background-color: rgba(0, 0, 0, .5);
+      @include transition;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      .edit,
+      .delete {
+        position: absolute;
+        top: 50%;
+        margin-top: -32px;
+        margin-left: -32px;
+        width: 64px;
+        height: 64px;
+        color: #fff;
+        background: rgba(0, 0, 0, .5);
+        border-radius: 100%;
+        border: 2px solid #fff;
+      }
+
+      .edit {
+        left: 30%;
+      }
+
+      .delete {
+        left: 70%;
+      }
+    }
+  }
+}

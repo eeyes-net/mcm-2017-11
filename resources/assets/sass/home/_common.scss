@@ -1,0 +1,127 @@
+@mixin transition {
+  transition: 0.2s ease-in all;
+  -moz-transition: 0.2s ease-in all;
+  -webkit-transition: 0.2s ease-in all;
+  -o-transition: 0.2s ease-in all;
+}
+
+html {
+  font-size: 14px;
+}
+
+body {
+  background-color: #eceff3;
+  font-family: "PingFang SC", "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", sans-serif;
+  padding-top: 50px;
+}
+
+a {
+  color: #47494e;
+}
+
+.home-index {
+  & > div {
+    margin-bottom: 4em;
+  }
+
+  h2 {
+    font-size: 1.3em;
+    margin: 1em 0;
+  }
+}
+
+.navbar {
+  padding-right: inherit;
+  color: #2c312f;
+  background-color: #fff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.20);
+
+  .navbar-nav > li.active > a {
+    background-color: inherit;
+
+    &:hover {
+      background-color: inherit;
+    }
+
+    &::after,
+    &:hover::after {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background-color: #8ca4ba;
+    }
+
+    @media (min-width: 768px) {
+      &::after,
+      &:hover::after {
+        content: "";
+        display: block;
+        position: absolute;
+        left: 15px;
+        right: 15px;
+        top: initial;
+        bottom: 0;
+        width: initial;
+        height: 4px;
+        background-color: #8ca4ba;
+      }
+    }
+  }
+
+  .navbar-nav > li {
+    .navbar-text,
+    form {
+      margin-right: 15px;
+      margin-left: 15px;
+    }
+
+    .navbar-btn {
+      border-radius: 0;
+      background-color: inherit;
+
+      &:hover {
+        background-color: inherit;
+      }
+    }
+  }
+}
+
+.sidebar {
+  position: fixed;
+  top: 3.5rem;
+  bottom: 0;
+  left: 0;
+  padding: 20px 0;
+  background-color: #2d435a;
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 1000;
+
+  .nav-pills {
+    color: #fff;
+
+    .nav-link {
+      padding: 1em 0;
+      display: block;
+      text-align: center;
+      border-radius: 0;
+
+      &.active {
+        color: #47494e;
+        background-color: #eceff3;
+      }
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  @media (max-width: 576px) {
+    display: none;
+  }
+}

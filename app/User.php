@@ -29,7 +29,7 @@ class User extends Authenticatable
 
     public function teams()
     {
-        return $this->belongsToMany(Team::class)->withTimestamps();
+        return $this->belongsToMany(Team::class)->withPivot(['position', 'status'])->withTimestamps();
     }
 
     public function isAdmin()

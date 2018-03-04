@@ -1,20 +1,20 @@
 <header>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="{{ url('/') }}">数学建模</a>
+    <nav class="navbar navbar-expand-md fixed-top">
+        <a class="navbar-brand" href="{{ url('/') }}">西交数模</a>
         <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ action('Index\PostController@index') }}">公告 <span class="sr-only">(current)</span></a>
+                <li class="nav-item @if(request()->is('/') || request()->is('post') || request()->is('post/*')) active @endif">
+                    <a class="nav-link" href="{{ url('/post') }}">公告</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ action('Index\MatchController@index') }}">竞赛报名</a>
+                <li class="nav-item @if(request()->is('match')) active @endif">
+                    <a class="nav-link" href="{{ url('/match') }}">竞赛报名</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ action('Index\RecruitController@index') }}">发起组队</a>
+                <li class="nav-item @if(request()->is('recruit')) active @endif">
+                    <a class="nav-link" href="{{ url('/recruit') }}">发起组队</a>
                 </li>
             </ul>
             <ul class="navbar-nav">

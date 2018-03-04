@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class RecruitController extends Controller
 {
     /**
-     * 所有队友招募信息
+     * 所有招募信息
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
@@ -29,8 +29,25 @@ class RecruitController extends Controller
     }
 
     /**
-     * 发布队友招募信息
+     * 当前用户管理的队伍的招募信息
+     *
      * @param Request $request
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function currentUser(Request $request)
+    {
+        $user = Auth::user();
+        $team_ids = $user->teams()->wherePivot('position', 'leader')->pluck('teams.id');
+        $recruits = Recruit::whereIn('team_id', $team_ids)->get();
+        return $recruits;
+    }
+
+    /**
+     * 发布招募信息
+     *
+     * @param Request $request
+     *
      * @return $this|\Illuminate\Database\Eloquent\Model
      * @throws CustomException
      */
@@ -39,9 +56,9 @@ class RecruitController extends Controller
         $data = $request->validate([
             'team_id' => 'required|numeric',
         ]);
+        $user = Auth::user();
         $team = Team::find($data['team_id']);
-        $user = $team->users()->wherePivot('position', 'leader')->first();
-        if ($user->id !== Auth::user()->id) {
+        if (!$team->isLeader($user->id)) {
             throw new CustomException('这支队伍不由您来管理');
         }
         $data = $request->validate([
@@ -60,17 +77,43 @@ class RecruitController extends Controller
     }
 
     /**
-     * 删除队友招募信息
-     * @param int $id 招募对应的ID
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|static|static[]
+     * 修改招募信息
+     *
+     * @param Recruit $recruit
+     * @param Request $request
+     *
+     * @return Recruit
      * @throws CustomException
      */
-    public function destroy($id)
+    public function update(Recruit $recruit, Request $request)
     {
         $user = Auth::user();
-        $recruit = Recruit::find($id);
-        if (!$recruit || $recruit->user_id != $user->id) {
-            throw new CustomException('不是当前用户');
+        if (!$recruit->team->isLeader($user->id)) {
+            throw new CustomException('当前用户不是这支队伍的管理员');
+        }
+        $recruit->update($request->only([
+            'tags',
+            'members',
+            'description',
+            'contact',
+        ]));
+        return $recruit;
+    }
+
+    /**
+     * 删除招募信息
+     *
+     * @param Recruit $recruit
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|static|static[]
+     * @throws CustomException
+     * @throws \Exception
+     */
+    public function destroy(Recruit $recruit)
+    {
+        $user = Auth::user();
+        if (!$recruit->team->isLeader($user->id)) {
+            throw new CustomException('当前用户不是这支队伍的管理员');
         }
         $recruit->delete();
         return $recruit;
