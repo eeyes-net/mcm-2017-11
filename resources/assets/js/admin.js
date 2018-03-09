@@ -14,8 +14,7 @@ require('bootstrap-vue');
 window.CKEDITOR_BASEPATH = '/dist/ckeditor/';
 require('ckeditor');
 // CKEditor Vue Component
-require('vue-ckeditor2');
-Vue.component('ckeditor', require('vue-ckeditor2'));
+Vue.component('ckeditor', require('vue-ckeditor2/src/Ckeditor.vue'));
 
 // Admin Vue Component
 Vue.component('admin-index', require('./components/admin/Index.vue'));
