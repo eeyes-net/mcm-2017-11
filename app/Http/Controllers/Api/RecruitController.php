@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\EvilUserInput;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Recruit;
@@ -61,15 +62,31 @@ class RecruitController extends Controller
         if (!$team->isLeader($user->id)) {
             throw new CustomException('这支队伍不由您来管理');
         }
+
+        // 检查用户数量
+        if ($team->users()->count() >= 3) { // TODO not use hard code 3
+            event(new EvilUserInput());
+        }
+
         $data = $request->validate([
             'tags' => 'required',
             // 'members' => 'required',
             'description' => 'required',
             'contact' => 'required',
         ]);
-        if (is_array($data['tags'])) {
-            $data['tags'] = implode(',', $data['tags']);
+        if (!is_array($data['tags'])) {
+            $data['tags'] = explode(',', $data['tags']);
         }
+
+        // 检查标签是否合法
+        $tags_available = config('mcm.recruit_tags');
+        foreach ($data['tags'] as $tag) {
+            if (!in_array($tag, $tags_available)) {
+                event(new EvilUserInput());
+            }
+        }
+
+        $data['tags'] = implode(',', $data['tags']);
         $data['members'] = implode(',', $team->users()->pluck('name')->toArray());
         $recruit = new Recruit($data);
         $recruit = $team->recruits()->save($recruit);

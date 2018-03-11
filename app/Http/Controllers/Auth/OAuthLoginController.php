@@ -57,6 +57,12 @@ class OAuthLoginController extends LoginController
                 'group' => 'student', // default as student
             ]);
         }
+        if (!in_array($user['group'], [
+            'student',
+            'admin',
+        ])) {
+            abort(401, '非法用户！');
+        }
         Auth::login($user);
         return redirect()->intended('/');
     }

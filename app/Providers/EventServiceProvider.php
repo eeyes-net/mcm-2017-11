@@ -18,6 +18,9 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\MatchesTableUpdated::class => [
             \App\Listeners\UpdateMatchCache::class,
         ],
+        \App\Events\EvilUserInput::class => [
+            \App\Listeners\BanUser::class,
+        ],
     ];
 
     /**
