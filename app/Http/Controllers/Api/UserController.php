@@ -27,6 +27,8 @@ class UserController extends Controller
         $user->update($request->validate([
             'contact' => 'numeric',
             'email' => 'email',
+            'experience' => 'string',
+            'coach_name' => 'string',
         ]));
         return $user;
     }

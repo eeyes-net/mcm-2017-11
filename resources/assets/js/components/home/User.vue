@@ -41,7 +41,7 @@
             </b-row>
             <b-row>
                 <b-col :cols="12" :md="3" :lg="2" class="font-weight-bold">教练姓名</b-col>
-                <b-col :cols="12" :md="9" :lg="10">{{ user.coach }}</b-col>
+                <b-col :cols="12" :md="9" :lg="10">{{ user.coach_name }}</b-col>
             </b-row>
             <b-row v-show="user.group == 'admin'">
                 <b-col :cols="12" :md="3" :lg="2" class="font-weight-bold">用户组</b-col>
@@ -77,7 +77,7 @@
                     <b-form-input placeholder="您之前参加数学建模竞赛经历与获奖情况" v-model="form.experience"></b-form-input>
                 </b-form-group>
                 <b-form-group horizontal :label-cols="3" label="教练姓名">
-                    <b-form-input placeholder="您之前的教练姓名" v-model="form.coach"></b-form-input>
+                    <b-form-input placeholder="您之前的教练姓名" v-model="form.coach_name"></b-form-input>
                 </b-form-group>
             </b-form>
         </b-modal>
@@ -101,7 +101,8 @@
                     group: '',
                     created_at: '',
                     updated_at: '',
-                    tmp: ''
+                    experience: '',
+                    coach_name: ''
                 },
                 form: {
                     id: 0,
@@ -115,7 +116,9 @@
                     email: '',
                     group: '',
                     created_at: '',
-                    updated_at: ''
+                    updated_at: '',
+                    experience: '',
+                    coach_name: ''
                 },
                 modalShow: false,
                 errors: []
@@ -140,13 +143,17 @@
                 this.form.class = this.user.class;
                 this.form.contact = this.user.contact;
                 this.form.email = this.user.email;
+                this.form.experience = this.user.experience;
+                this.form.coach_name = this.user.coach_name;
                 this.modalShow = true;
             },
             update() {
                 let form = this.form;
                 axios.put('/api/user', {
                     contact: form.contact,
-                    email: form.email
+                    email: form.email,
+                    experience: form.experience,
+                    coach_name: form.coach_name
                 }).then(response => {
                     if (response.data.id) {
                         this.user = response.data;
