@@ -54,7 +54,8 @@
                 },
                 options: [
                     { value: 'student', text: '学生' },
-                    { value: 'admin', text: '管理员' }
+                    { value: 'admin', text: '管理员' },
+                    { value: 'banned', text: '禁止登陆' }
                 ]
             }
         },

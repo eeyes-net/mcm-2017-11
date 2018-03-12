@@ -27,7 +27,7 @@ class TeamController extends Controller
 
     public function update(Team $team)
     {
-        throw new CustomException('TODO');
         // TODO
+        throw new \Exception('TODO');
     }
 }

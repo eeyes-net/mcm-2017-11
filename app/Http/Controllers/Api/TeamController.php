@@ -100,5 +100,6 @@ class TeamController extends Controller
     public function update($id)
     {
         // TODO
+        throw new \Exception('TODO');
     }
 }

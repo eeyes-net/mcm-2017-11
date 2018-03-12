@@ -24,7 +24,6 @@ Route::namespace('Index')->group(function () {
     Route::get('post/{post}', 'PostController@show');
     Route::get('match', 'MatchController@index');
     Route::get('match/{match}', 'MatchController@show');
-    Route::post('match/{match}/apply', 'MatchController@apply');
     Route::get('recruit', 'RecruitController@index');
 });
 

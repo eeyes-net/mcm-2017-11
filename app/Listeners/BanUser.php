@@ -3,7 +3,6 @@
 namespace App\Listeners;
 
 use App\Events\EvilUserInput;
-use App\Exceptions\CustomException;
 
 class BanUser
 {
@@ -13,7 +12,10 @@ class BanUser
         $user->group = 'banned';
         $user->save();
         auth()->logout();
-        throw new CustomException('非法数据');
+        session()->flush();
+        session()->save();
+        session_destroy();
+        abort(422, '非法数据');
         // throw new HttpResponseException(RedirectResponse::create(route('logout')));
     }
 }
