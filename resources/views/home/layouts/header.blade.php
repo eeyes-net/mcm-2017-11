@@ -1,7 +1,7 @@
 <header>
-    <nav class="navbar navbar-expand-md fixed-top">
+    <nav class="navbar navbar-light navbar-expand-md fixed-top">
         <a class="navbar-brand" href="{{ url('/') }}">西交数模</a>
-        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
