@@ -25,6 +25,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/home') }}">个人中心</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/admin') }}">后台管理</a>
+                    </li>
                     <li>
                         <form action="{{ url('/logout') }}" method="POST">
                             {{ csrf_field() }}
