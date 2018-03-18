@@ -7,8 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Team;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -146,18 +144,18 @@ class TeamController extends Controller
             }
             $team_user = User::whereStuId($request_user['stu_id'])->first();
             if (!$team_user) {
-                $errors[] = __('学号 :stu_id 的学生不存在或未登录过此网站', [
-                    'stu_id' => $team_user['stu_id'],
+                $errors[] = __('学号 :stu_id 不存在或未登录过此网站', [
+                    'stu_id' => $request_user['stu_id'],
                 ]);
                 continue;
             }
             if (isset($team[$team_user->id])) {
                 continue;
             }
-            if ($team_user->name !== $team_user['name']) {
-                $errors[] = __('学号 :stu_id 的学生姓名不是 :name', [
-                    'stu_id' => $team_user['stu_id'],
-                    'name' => $team_user['name'],
+            if ($team_user->name !== $request_user['name']) {
+                $errors[] = __('学号 :stu_id 用户的姓名不是 :name', [
+                    'stu_id' => $request_user['stu_id'],
+                    'name' => $request_user['name'],
                 ]);
                 continue;
             }
@@ -167,7 +165,7 @@ class TeamController extends Controller
             ];
         }
         if ($errors) {
-            throw new CustomException('用户信息错误', $errors);
+            throw new CustomException('用户信息不匹配', $errors);
         }
 
         $sync_data[$user->id] = [
