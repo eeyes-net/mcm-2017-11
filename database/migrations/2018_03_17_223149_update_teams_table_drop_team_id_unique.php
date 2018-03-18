@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -25,8 +26,12 @@ class UpdateTeamsTableDropTeamIdUnique extends Migration
      */
     public function down()
     {
-        Schema::table('teams', function (Blueprint $table) {
-            $table->string('team_id', '50')->unique();
-        });
+        try {
+            Schema::table('teams', function (Blueprint $table) {
+                $table->unique('team_id');
+            });
+        } catch (QueryException $exception) {
+            \Illuminate\Support\Facades\Log::error($exception->getMessage());
+        }
     }
 }

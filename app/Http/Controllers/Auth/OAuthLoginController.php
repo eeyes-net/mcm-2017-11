@@ -53,6 +53,8 @@ class OAuthLoginController extends LoginController
                 'class' => $data['classid'],
                 'contact' => $data['mobile'],
                 'email' => $data['email'],
+                'experience' => '',
+                'coach_name' => '',
                 'password' => '*',
                 'group' => 'student', // default as student
             ]);

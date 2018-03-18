@@ -34,6 +34,8 @@ class CasLoginController extends LoginController
                 'class' => '',
                 'contact' => '',
                 'email' => $net_id . '@xjtu.edu.cn',
+                'experience' => '',
+                'coach_name' => '',
                 'password' => '*',
                 'group' => 'student', // default as student
             ]);
