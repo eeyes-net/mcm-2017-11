@@ -25,9 +25,12 @@ Route::namespace('Api')->group(function () {
         Route::get('{match}', 'MatchController@show');
         Route::post('{match}/apply', 'MatchController@apply')->middleware('auth');
     });
-    Route::prefix('team')->group(function () {
-        Route::get('/', 'TeamController@index')->middleware('auth');
-        Route::post('/', 'TeamController@store')->middleware('auth');
+    Route::prefix('team')->middleware('auth')->group(function () {
+        Route::get('/', 'TeamController@index');
+        Route::post('/', 'TeamController@store');
+        Route::put('{team}', 'TeamController@update');
+        Route::post('{team}/verify', 'TeamController@verify');
+        Route::delete('{team}', 'TeamController@destory');
     });
     Route::prefix('recruit')->group(function () {
         Route::get('/', 'RecruitController@index');

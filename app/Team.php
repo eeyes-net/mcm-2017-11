@@ -6,10 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Team extends Model
 {
+    const USER_POSITION_LEADER = 'leader';
+    const USER_POSITION_MEMBER = 'member';
+    const USER_STATUS_VERIFIED = 'verified';
+    const USER_STATUS_VERIFYING = 'verifying';
+
     protected $fillable = [
         'team_id',
         'leader_user_id',
     ];
+
     public function users()
     {
         return $this->belongsToMany(User::class)->withPivot(['position', 'status'])->withTimestamps();
@@ -25,8 +31,34 @@ class Team extends Model
         return $this->hasMany(Recruit::class);
     }
 
-    public function isLeader($user_id) {
+    /**
+     * @param User|int $user
+     *
+     * @return bool
+     */
+    public function isLeader($user)
+    {
+        if ($user instanceof User) {
+            $user_id = $user->id;
+        } else {
+            $user_id = $user;
+        }
         $leader = $this->users()->wherePivot('position', 'leader')->first();
         return $leader->id === $user_id;
+    }
+
+    /**
+     * @param User|int $user
+     *
+     * @return bool
+     */
+    public function hasUser($user)
+    {
+        if ($user instanceof User) {
+            $user_id = $user->id;
+        } else {
+            $user_id = $user;
+        }
+        return (bool)$this->users()->where('user_id', $user_id)->count();
     }
 }
