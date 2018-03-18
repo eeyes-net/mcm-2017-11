@@ -41,10 +41,10 @@
                     <b-form-textarea placeholder="请留下您的队伍中当前队员信息" v-model="form.members" :rows="3"></b-form-textarea>
                 </b-form-group>
                 <b-form-group horizontal :label-cols="3" label="队伍描述">
-                    <b-form-textarea placeholder="请添加您的队伍描述，不超过48个字" v-model="form.department" :rows="3"></b-form-textarea>
+                    <b-form-textarea placeholder="请添加您的队伍描述，不超过48个字" v-model="form.description" :rows="3"></b-form-textarea>
                 </b-form-group>
                 <b-form-group horizontal :label-cols="3" label="联系方式">
-                    <b-form-input placeholder="请留下您的联系方式" v-model="form.major"></b-form-input>
+                    <b-form-input placeholder="请留下您的联系方式" v-model="form.contact"></b-form-input>
                 </b-form-group>
             </b-form>
         </b-modal>
@@ -100,7 +100,7 @@
                     contact: form.contact
                 }).then(response => {
                     if (response.data.id) {
-                        let i = _.find(this.recruits, {id: response.data.id});
+                        let i = _.findIndex(this.recruits, {id: response.data.id});
                         this.recruits[i] = response.data;
                         this.errors = [];
                         this.get();

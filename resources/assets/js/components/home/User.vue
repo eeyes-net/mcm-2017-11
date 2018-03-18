@@ -49,9 +49,9 @@
             </b-row>
         </b-card>
 
-        <b-modal title="编辑个人信息" size="lg" class="user-edit-modal" v-model="modalShow" ok-title="保存" cancel-title="取消" @ok="handleOk" @hidden="modalHidden">
+        <b-modal title="编辑个人信息" class="user-edit-modal" v-model="modalShow" ok-title="保存" cancel-title="取消" @ok="update" @hidden="modalHidden">
             <b-alert variant="danger" dismissible :show="errors.length > 0"><p v-for="error in errors">{{ error }}</p></b-alert>
-            <b-form @submit="update()">
+            <b-form @submit="update">
                 <b-form-group horizontal :label-cols="3" label="姓名">
                     <b-form-input :disabled="true" placeholder="请输入您的姓名" v-model="form.name"></b-form-input>
                 </b-form-group>
@@ -147,8 +147,10 @@
                 this.form.coach_name = this.user.coach_name;
                 this.modalShow = true;
             },
-            update() {
+            update(e) {
+                e.preventDefault();
                 let form = this.form;
+                this.errors = [];
                 axios.put('/api/user', {
                     contact: form.contact,
                     email: form.email,
@@ -161,7 +163,7 @@
                         this.get();
                         this.modalShow = false;
                     } else if (response.data.message) {
-                        this.errors = _.flatten(_.toArray(error.response.data));
+                        this.errors = _.flatten(_.toArray(response.data));
                     } else {
                         this.errors = ['出现了一些问题，请重试。'];
                     }
@@ -172,10 +174,6 @@
                         this.errors = ['出现了一些问题，请重试。'];
                     }
                 });
-            },
-            handleOk(e) {
-                e.preventDefault();
-                this.update();
             },
             modalHidden() {
                 $('.sidebar').width('');
