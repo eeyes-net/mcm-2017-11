@@ -53,6 +53,20 @@
                                 <select name="team_id"></select>
                             </div>
                             <div class="form-group">
+                                <label for="name">队伍信息</label>
+                                <table class="table table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th>身份</th>
+                                            <th>姓名</th>
+                                            <th>学号</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="mcm-match-modal-team-info">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group">
                                 <button type="submit" class="btn">报名</button>
                                 <button type="button" class="btn btn-default cancel" data-dismiss="modal">取消</button>
                             </div>

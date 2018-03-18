@@ -62,6 +62,25 @@ jQuery(function ($) {
                     $option.text('队伍编号：' + team.team_id + '（' + team.users.map(user => user.name).join() + '）');
                     $select.append($option);
                 }
+                let teams_key_by_id = _.keyBy(teams, 'id');
+                const position_map = {
+                    leader: '队长',
+                    member: '队员'
+                };
+                $select.on('change', function () {
+                    let team = teams_key_by_id[this.value];
+                    let $team_info = $('.mcm-match-modal-team-info');
+                    $team_info.empty();
+                    for (let i = 0; i < team.users.length; ++i) {
+                        let user = team.users[i];
+                        let $tr = $('<tr></tr>');
+                        $tr.append($('<td></td>').text(position_map[user.position]));
+                        $tr.append($('<td></td>').text(user.name));
+                        $tr.append($('<td></td>').text(user.stu_id));
+                        $team_info.append($tr);
+                    }
+                });
+                $select.trigger('change');
             }
         });
     });
