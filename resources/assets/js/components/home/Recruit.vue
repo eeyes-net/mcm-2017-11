@@ -38,7 +38,7 @@
                     <b-form-checkbox-group v-model="form.tags" :options="recruitTagOptions"></b-form-checkbox-group>
                 </b-form-group>
                 <b-form-group horizontal :label-cols="3" label="当前队员">
-                    <b-form-textarea placeholder="请留下您的队伍中当前队员信息" v-model="form.members" :rows="3"></b-form-textarea>
+                    <b-form-input placeholder="请留下您的队伍中当前队员信息" v-model="form.members" :rows="3"></b-form-input>
                 </b-form-group>
                 <b-form-group horizontal :label-cols="3" label="队伍描述">
                     <b-form-textarea placeholder="请添加您的队伍描述，不超过48个字" v-model="form.description" :rows="3"></b-form-textarea>
@@ -55,11 +55,7 @@
     export default {
         data() {
             return {
-                recruitTagOptions: [
-                    '招募代码',
-                    '招募算法',
-                    '招募文书'
-                ],
+                recruitTagOptions: [],
                 recruits: [],
                 form: {
                     id: 0,
@@ -75,11 +71,17 @@
         },
         mounted() {
             this.get();
+            this.getRecruitTags();
         },
         methods: {
             get() {
                 axios.get('/api/recruit/current_user').then(response => {
                     this.recruits = response.data;
+                });
+            },
+            getRecruitTags() {
+                axios.get('/api/recruit/tags').then(response => {
+                    this.recruitTagOptions = response.data;
                 });
             },
             edit(recruit) {

@@ -12,15 +12,11 @@
                         <li role="presentation">
                             <a role="menuitem" tabindex="-1" href="/recruit">全部</a>
                         </li>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="/recruit?tags=招募代码">招募代码</a>
-                        </li>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="/recruit?tags=招募算法">招募算法</a>
-                        </li>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="/recruit?tags=招募文书">招募文书</a>
-                        </li>
+                        @foreach (config('mcm.recruit_tags') as $item)
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="/recruit?tags={{ $item }}">{{ $item }}</a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -100,15 +96,11 @@
                             <div class="form-group">
                                 <label>选择招募类型</label>
                                 <div>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" name="tags" value="招募代码"> 招募代码
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" name="tags" value="招募算法"> 招募算法
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" name="tags" value="招募文书"> 招募文书
-                                    </label>
+                                    @foreach (config('mcm.recruit_tags') as $item)
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="tags" value="{{ $item }}"> {{ $item }}
+                                        </label>
+                                    @endforeach
                                 </div>
                             </div>
                             <div class="form-group">

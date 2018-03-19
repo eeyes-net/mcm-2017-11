@@ -15,6 +15,8 @@ class RecruitController extends Controller
     /**
      * 所有招募信息
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function index(Request $request)
@@ -36,12 +38,21 @@ class RecruitController extends Controller
      *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function currentUser(Request $request)
+    public function currentUser()
     {
         $user = Auth::user();
         $team_ids = $user->teams()->wherePivot('position', 'leader')->pluck('teams.id');
         $recruits = Recruit::whereIn('team_id', $team_ids)->get();
         return $recruits;
+    }
+
+    /**
+     * 获取所有标签
+     *
+     * @return array
+     */
+    public function tags() {
+        return config('mcm.recruit_tags', []);
     }
 
     /**
@@ -70,7 +81,6 @@ class RecruitController extends Controller
 
         $data = $request->validate([
             'tags' => 'required',
-            // 'members' => 'required',
             'description' => 'required',
             'contact' => 'required',
         ]);
@@ -78,15 +88,18 @@ class RecruitController extends Controller
             $data['tags'] = explode(',', $data['tags']);
         }
 
-        // 检查标签是否合法
+        // 去除非法标签
         $tags_available = config('mcm.recruit_tags');
+        $tags_validated = [];
         foreach ($data['tags'] as $tag) {
             if (!in_array($tag, $tags_available)) {
-                event(new EvilUserInput());
+                $tags_validated[] = $tag;
+            // } else {
+            //     event(new EvilUserInput());
             }
         }
 
-        $data['tags'] = implode(',', $data['tags']);
+        $data['tags'] = implode(',', $tags_validated);
         $data['members'] = implode(',', $team->users()->pluck('name')->toArray());
         $recruit = new Recruit($data);
         $recruit = $team->recruits()->save($recruit);
@@ -108,12 +121,31 @@ class RecruitController extends Controller
         if (!$recruit->team->isLeader($user->id)) {
             throw new CustomException('当前用户不是这支队伍的管理员');
         }
-        $recruit->update($request->only([
-            'tags',
-            'members',
-            'description',
-            'contact',
-        ]));
+
+        // TODO 禁止编辑当前成员
+        $data = $request->validate([
+            'tags' => 'required',
+            'members' => '',
+            'description' => 'required',
+            'contact' => 'required',
+        ]);
+        if (!is_array($data['tags'])) {
+            $data['tags'] = explode(',', $data['tags']);
+        }
+
+        // 去除非法标签
+        $tags_available = config('mcm.recruit_tags');
+        $tags_validated = [];
+        foreach ($data['tags'] as $tag) {
+            if (!in_array($tag, $tags_available)) {
+                $tags_validated[] = $tag;
+                // } else {
+                //     event(new EvilUserInput());
+            }
+        }
+
+        $data['tags'] = implode(',', $data['tags']);
+        $recruit->update($data);
         return $recruit;
     }
 

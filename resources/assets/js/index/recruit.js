@@ -61,7 +61,7 @@ jQuery(function ($) {
                     let team = teams[i];
                     let $option = $('<option></option>');
                     $option.val(team.id);
-                    $option.text('队伍编号：' + team.team_id + '（' + team.users.map(user => user.name).join() + '）');
+                    $option.text('队伍ID：' + team.id + '（' + team.users.map(user => user.name).join() + '）');
                     if (team.users.length >= 3) {
                         $option.prop('disabled', true);
                         $option.text($option.text() + '已满3人');
