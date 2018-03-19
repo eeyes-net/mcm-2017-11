@@ -51,7 +51,8 @@ class RecruitController extends Controller
      *
      * @return array
      */
-    public function tags() {
+    public function tags()
+    {
         return config('mcm.recruit_tags', []);
     }
 
@@ -92,14 +93,14 @@ class RecruitController extends Controller
         $tags_available = config('mcm.recruit_tags');
         $tags_validated = [];
         foreach ($data['tags'] as $tag) {
-            if (!in_array($tag, $tags_available)) {
+            if (in_array($tag, $tags_available)) {
                 $tags_validated[] = $tag;
-            // } else {
-            //     event(new EvilUserInput());
+                // } else {
+                //     event(new EvilUserInput());
             }
         }
-
         $data['tags'] = implode(',', $tags_validated);
+
         $data['members'] = implode(',', $team->users()->pluck('name')->toArray());
         $recruit = new Recruit($data);
         $recruit = $team->recruits()->save($recruit);
@@ -137,14 +138,14 @@ class RecruitController extends Controller
         $tags_available = config('mcm.recruit_tags');
         $tags_validated = [];
         foreach ($data['tags'] as $tag) {
-            if (!in_array($tag, $tags_available)) {
+            if (in_array($tag, $tags_available)) {
                 $tags_validated[] = $tag;
                 // } else {
                 //     event(new EvilUserInput());
             }
         }
+        $data['tags'] = implode(',', $tags_validated);
 
-        $data['tags'] = implode(',', $data['tags']);
         $recruit->update($data);
         return $recruit;
     }
