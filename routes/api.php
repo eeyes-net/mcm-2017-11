@@ -12,34 +12,46 @@
 */
 
 Route::namespace('Api')->group(function () {
-    Route::prefix('user')->middleware('auth')->group(function () {
-        Route::get('/', 'UserController@show');
-        Route::put('/', 'UserController@update');
+    // Non-login APIs
+    Route::middleware('throttle:6000,1')->group(function () {
+        Route::prefix('post')->group(function () {
+            Route::get('/', 'PostController@index');
+            Route::get('{post}', 'PostController@show');
+        });
+        Route::prefix('match')->group(function () {
+            Route::get('/', 'MatchController@index');
+            Route::get('{match}', 'MatchController@show');
+        });
+        Route::prefix('recruit')->group(function () {
+            Route::get('/', 'RecruitController@index');
+            Route::get('tags', 'RecruitController@tags');
+        });
     });
-    Route::prefix('post')->group(function () {
-        Route::get('/', 'PostController@index');
-        Route::get('{post}', 'PostController@show');
+    // User's APIs
+    Route::middleware(['auth', 'throttle:60,1'])->group(function () {
+        Route::prefix('user')->group(function () {
+            Route::get('/', 'UserController@show');
+            Route::put('/', 'UserController@update');
+        });
+        Route::prefix('match')->group(function () {
+            Route::post('{match}/apply', 'MatchController@apply');
+        });
+        Route::prefix('team')->group(function () {
+            Route::get('/', 'TeamController@index');
+            Route::post('/', 'TeamController@store');
+            Route::put('{team}', 'TeamController@update');
+            Route::post('{team}/verify', 'TeamController@verify');
+            Route::delete('{team}', 'TeamController@destory');
+        });
+        Route::prefix('recruit')->group(function () {
+            Route::get('current_user', 'RecruitController@currentUser');
+            Route::post('/', 'RecruitController@store');
+            Route::put('{recruit}', 'RecruitController@update');
+            Route::delete('{recruit}', 'RecruitController@destroy');
+        });
     });
-    Route::prefix('match')->group(function () {
-        Route::get('/', 'MatchController@index');
-        Route::get('{match}', 'MatchController@show');
-        Route::post('{match}/apply', 'MatchController@apply')->middleware('auth');
-    });
-    Route::prefix('team')->middleware('auth')->group(function () {
-        Route::get('/', 'TeamController@index');
-        Route::post('/', 'TeamController@store');
-        Route::put('{team}', 'TeamController@update');
-        Route::post('{team}/verify', 'TeamController@verify');
-        Route::delete('{team}', 'TeamController@destory');
-    });
-    Route::prefix('recruit')->group(function () {
-        Route::get('/', 'RecruitController@index');
-        Route::get('current_user', 'RecruitController@currentUser')->middleware('auth');
-        Route::post('/', 'RecruitController@store')->middleware('auth');
-        Route::put('{recruit}', 'RecruitController@update')->middleware('auth');
-        Route::delete('{recruit}', 'RecruitController@destroy')->middleware('auth');
-    });
-    Route::prefix('admin')->namespace('Admin')->middleware(['auth', 'admin'])->group(function () {
+    // Admin's APIs
+    Route::prefix('admin')->namespace('Admin')->middleware(['auth', 'throttle:600,1', 'admin'])->group(function () {
         Route::prefix('post')->group(function () {
             Route::get('/', 'PostController@index');
             Route::post('/', 'PostController@store');
