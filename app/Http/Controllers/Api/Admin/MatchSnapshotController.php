@@ -7,6 +7,7 @@ use App\Match;
 use App\MatchSnapshot;
 use App\MatchSnapshotUser;
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -45,13 +46,13 @@ class MatchSnapshotController extends Controller
             '队员2',
         ];
         $fields = [
-            '学号',
-            '姓名',
-            '班级',
-            '邮箱',
-            '联系方式',
-            '学院',
-            '专业',
+            'stu_id' => '学号',
+            'name' => '姓名',
+            'class' => '班级',
+            'email' => '邮箱',
+            'contact' => '联系方式',
+            'department' => '学院',
+            'major' => '专业',
         ];
         $column = 3;
         foreach ($positions as $position) {
@@ -63,7 +64,7 @@ class MatchSnapshotController extends Controller
         $index = 0;
         $column = 1;
         $last_team_id = 0;
-        $matchSnapshot->users()->orderBy('team_id', 'asc')->orderBy('position', 'asc')->orderBy('user_id', 'asc')->chunk(100, function ($users) use (&$sheet, &$index, &$column, &$last_team_id) {
+        $matchSnapshot->users()->orderBy('team_id', 'asc')->orderBy('position', 'asc')->orderBy('user_id', 'asc')->chunk(100, function ($users) use (&$sheet, &$index, &$column, &$last_team_id, &$fields) {
             $base_row = 1;
             /** @var MatchSnapshotUser $user */
             foreach ($users as $user) {
@@ -74,19 +75,17 @@ class MatchSnapshotController extends Controller
                     $sheet->setCellValueByColumnAndRow($column++, $base_row + $index, $index);
                     $sheet->setCellValueByColumnAndRow($column++, $base_row + $index, $user->team_id);
                 }
-                $sheet->setCellValueByColumnAndRow($column++, $base_row + $index, $user->stu_id);
-                $sheet->setCellValueByColumnAndRow($column++, $base_row + $index, $user->name);
-                $sheet->setCellValueByColumnAndRow($column++, $base_row + $index, $user->class);
-                $sheet->setCellValueByColumnAndRow($column++, $base_row + $index, $user->email);
-                $sheet->setCellValueByColumnAndRow($column++, $base_row + $index, $user->contact);
-                $sheet->setCellValueByColumnAndRow($column++, $base_row + $index, $user->department);
-                $sheet->setCellValueByColumnAndRow($column++, $base_row + $index, $user->major);
+                // TODO check is leader
+                foreach ($fields as $key => $field) {
+                    $sheet->getCellByColumnAndRow($column++, $base_row + $index)->setValueExplicit($user->$key, DataType::TYPE_STRING);
+                }
             }
         });
 
         $writer = new Xlsx($spreadsheet);
         ob_start();
         $writer->save('php://output');
+        // TODO avoid using output buffer
         return response(ob_get_clean(), 200, [
             'Content-Disposition' => 'attachment; filename=' . urlencode($matchSnapshot->title . '_' . $matchSnapshot->created_at->format('Ymd_His') . '.xlsx'),
             'Content-Type' => 'octet-stream',
