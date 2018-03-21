@@ -32,6 +32,9 @@ Vue.component('admin-match-edit', require('./components/admin/match/Edit.vue'));
 Vue.component('admin-match-table', require('./components/admin/match/Table.vue'));
 Vue.component('admin-match-editor', require('./components/admin/match/Editor.vue'));
 Vue.component('admin-match-team-index', require('./components/admin/match/team/Index.vue'));
+// Admin Match Snapshot Vue Component
+Vue.component('admin-match-snapshot-index', require('./components/admin/match_snapshot/Index.vue'));
+Vue.component('admin-match-snapshot-table', require('./components/admin/match_snapshot/Table.vue'));
 // Admin Team Vue Component
 Vue.component('admin-team-index', require('./components/admin/team/Index.vue'));
 Vue.component('admin-team-table', require('./components/admin/team/Table.vue'));
@@ -64,6 +67,7 @@ const router = new VueRouter({
         {path: '/admin/match/create', component: Vue.component('admin-match-create')},
         {path: '/admin/match/:match_id/edit', component: Vue.component('admin-match-edit')},
         {path: '/admin/match/:match_id/team', component: Vue.component('admin-match-team-index')},
+        {path: '/admin/match_snapshot', component: Vue.component('admin-match-snapshot-index')},
         {path: '/admin/recruit', component: Vue.component('admin-recruit-index')},
         {path: '/admin/recruit/:recruit_id/edit', component: Vue.component('admin-recruit-edit')},
     ]

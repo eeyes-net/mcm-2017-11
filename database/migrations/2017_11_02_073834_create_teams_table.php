@@ -15,7 +15,7 @@ class CreateTeamsTable extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('team_id', '50')->unique()->comment('队伍编号');
+            $table->string('team_id', 50)->unique()->comment('队伍编号');
             $table->timestamps();
         });
     }

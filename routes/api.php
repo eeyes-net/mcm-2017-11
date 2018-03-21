@@ -73,14 +73,22 @@ Route::namespace('Api')->group(function () {
             Route::delete('{team}', 'TeamController@destroy');
         });
         Route::prefix('match')->group(function () {
+            Route::prefix('snapshot')->group(function () {
+                Route::get('/', 'MatchSnapshotController@index');
+                Route::get('{match_snapshot}', 'MatchSnapshotController@show');
+                Route::get('{match_snapshot}/user', 'MatchSnapshotController@user');
+                Route::get('{match_snapshot}/user/export', 'MatchSnapshotController@export');
+            });
             Route::get('/', 'MatchController@index');
             Route::post('/', 'MatchController@store');
             Route::get('{match}', 'MatchController@show');
             Route::get('{match}/team', 'MatchController@team');
             Route::post('{match}/apply', 'MatchController@apply');
             Route::delete('{match}/team/{team}', 'MatchController@detach');
+            Route::post('{match}/team/alloc_number', 'MatchController@allocNumber');
             Route::put('{match}', 'MatchController@update');
             Route::delete('{match}', 'MatchController@destroy');
+            Route::post('{match}/snapshot', 'MatchController@snapshot');
         });
         Route::prefix('recruit')->group(function () {
             Route::get('/', 'RecruitController@index');

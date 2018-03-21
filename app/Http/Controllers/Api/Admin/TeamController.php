@@ -12,7 +12,7 @@ class TeamController extends Controller
 {
     public function index()
     {
-        return Team::with('users')->latest()->paginate();
+        return Team::with('users')->orderBy('id', 'desc')->paginate();
     }
 
     public function show(Team $team)

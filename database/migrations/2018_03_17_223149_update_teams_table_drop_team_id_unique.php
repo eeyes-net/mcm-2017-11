@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\QueryException;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class UpdateTeamsTableDropTeamIdUnique extends Migration
 {
@@ -14,9 +14,13 @@ class UpdateTeamsTableDropTeamIdUnique extends Migration
      */
     public function up()
     {
-        Schema::table('teams', function (Blueprint $table) {
-            $table->dropUnique('teams_team_id_unique');
-        });
+        try {
+            Schema::table('teams', function (Blueprint $table) {
+                $table->dropUnique('teams_team_id_unique');
+            });
+        } catch (QueryException $exception) {
+            \Illuminate\Support\Facades\Log::error($exception->getMessage());
+        }
     }
 
     /**
