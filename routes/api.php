@@ -35,6 +35,7 @@ Route::namespace('Api')->group(function () {
         });
         Route::prefix('match')->group(function () {
             Route::post('{match}/apply', 'MatchController@apply');
+            Route::post('{match}/cancel', 'MatchController@cancel');
         });
         Route::prefix('team')->group(function () {
             Route::get('/', 'TeamController@index');

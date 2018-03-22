@@ -12,9 +12,9 @@
                             </div>
                             <div class="panel-body">
                                 <p class="expires-at">报名截止日期 <span>{{ $match->expired_at }}</span></p>
-                                @if (auth()->check() && in_array($match->id, $applied_matches_id))
-                                    @if ($match->status === 'open')
-                                        <button type="button" class="btn btn-default sign" data-toggle="modal" data-target="#sign" disabled="disabled">已报名</button>
+                                @if (auth()->check() && array_key_exists($match->id, $applied_matches_id))
+                                    @if ($match->status === 'open' && in_array($applied_matches_id[$match->id], $leading_teams_id))
+                                        <button type="button" class="btn btn-danger cancel" data-match-id="{{ $match->id }}">取消报名</button>
                                     @else
                                         <button type="button" class="btn btn-default" disabled="disabled">已报名</button>
                                     @endif

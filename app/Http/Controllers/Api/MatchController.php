@@ -24,20 +24,21 @@ class MatchController extends Controller
 
     /**
      * 报名某一比赛
+     *
      * @param Request $request
      * @param Match $match
+     *
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|static|static[]
      * @throws CustomException
      */
     public function apply(Request $request, Match $match)
     {
-        if ($match->status !== 'open')
-        {
+        if ($match->status !== 'open') {
             throw new CustomException(__('比赛 :title 目前不开放', [
                 'title' => $match->title,
             ]));
         }
-        
+
         $team_id = $request->post('team_id');
         $user = Auth::user();
         /** @var Team $team */
@@ -50,7 +51,7 @@ class MatchController extends Controller
         }
         /** @var User $team_user */
         $errors = [];
-        foreach($team->users as $team_user) {
+        foreach ($team->users as $team_user) {
             /** @var Team $team_user_team */
             foreach ($team_user->teams as $team_user_team) {
                 if ($team_user_team->matches()->find($match->id)) {
@@ -66,5 +67,21 @@ class MatchController extends Controller
         }
         $match->teams()->save($team);
         return $team->load('matches');
+    }
+
+    public function cancel(Match $match)
+    {
+        $user = Auth::user();
+        $team_ids = $user->teams()->pluck('teams.id')->toArray();
+        /** @var Team $team */
+        $team = $match->teams()->whereIn('teams.id', $team_ids)->first();
+        if (!$team) {
+            throw new CustomException('您未报名这场比赛');
+        }
+        if (!$team->isLeader($user)) {
+            throw new CustomException('当前用户不是这支队伍的管理员');
+        }
+        $match->teams()->detach([$team->id]);
+        return $team;
     }
 }

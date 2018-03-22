@@ -13,15 +13,18 @@ class MatchController extends Controller
     {
         $applied_matches_id = [];
         if (Auth::check()) {
-            $applied_matches_id = Auth::user()->appliedMatchesId;
+            $user = Auth::user();
+            $applied_matches_id = $user->matches_id;
+            $leading_teams_id = $user->leading_teams_id;
         }
         $matches = Cache::tags('matches')->remember('matches' . request('page'), 1440, function () {
             return Match::ordered()->paginate(12);
         });
-        return view('index.match.index', [
-            'matches' => $matches,
-            'applied_matches_id' => $applied_matches_id,
-        ]);
+        return view('index.match.index', compact(
+            'matches',
+            'applied_matches_id',
+            'leading_teams_id'
+        ));
     }
 
     public function show(Match $match)

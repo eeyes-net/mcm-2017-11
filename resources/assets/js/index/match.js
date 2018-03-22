@@ -14,9 +14,29 @@ jQuery(function ($) {
         $(document).pjax('.pagination a', '#pjax-container', {
             scrollTo: $('#main').offset().top - $('.navbar').height() - 30
         });
-        $('.mcm-match .panel-body .btn').on('click', function () {
+        $('.mcm-match .panel-body .btn.available').on('click', function () {
             $modal.find('.modal-title').text($(this).closest('.panel').find('.panel-title').text());
             $matchId.val($(this).attr('data-match-id'));
+        });
+        $('.mcm-match .panel-body .btn.cancel').on('click', function () {
+            if (confirm('确认取消报名 《' + $(this).closest('.panel').find('.panel-title').text() + '》')) {
+                axios.post('/api/match/' + $(this).attr('data-match-id') + '/cancel').then(response => {
+                    if (response.data.id) {
+                        alert('取消报名成功');
+                        $.pjax.reload({container: '#pjax-container'});
+                    } else if (response.data.message) {
+                        alert(_.flatten(_.toArray(response.data)));
+                    } else {
+                        alert('出现了一些问题，请重试。');
+                    }
+                }).catch(error => {
+                    if (typeof error.response.data === 'object') {
+                        alert(_.flatten(_.toArray(error.response.data)));
+                    } else {
+                        alert('出现了一些问题，请重试。');
+                    }
+                });
+            }
         });
         $(document).on('pjax:complete', function () {
             registerLinkListener();

@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -39,13 +40,25 @@ class User extends Authenticatable
         return $this->group === 'admin';
     }
 
-    public function getAppliedMatchesIdAttribute() {
-        $matches_id = [];
-        /** @var Team $team */
-        foreach($this->teams as $team) {
-            // TODO optimise SQL query
-            $matches_id = array_merge($matches_id, $team->matches->pluck('id')->toArray());
-        }
-        return array_values(array_unique($matches_id));
+    /**
+     * 获取当前用户为队长的所有队伍
+     *
+     * @return array
+     */
+    public function getLeadingTeamsIdAttribute() {
+        return $this->teams()->wherePivot('position', Team::USER_POSITION_LEADER)->pluck('teams.id')->toArray();
+    }
+
+    /**
+     *  获取当前用户已报名的所有比赛ID，以 [比赛ID => 参赛的队伍ID] 的形式返回
+     *
+     * @return array Array like [match_id => team_id]
+     */
+    public function getMatchesIdAttribute()
+    {
+        // TODO optimise SQL query
+        $user_teams_id = $this->teams()->pluck('teams.id')->toArray();
+        $matches_id = DB::table('match_team')->select(['match_id', 'team_id'])->whereIn('team_id', $user_teams_id)->pluck('team_id', 'match_id')->toArray();
+        return $matches_id;
     }
 }
