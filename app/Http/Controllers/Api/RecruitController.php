@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Events\EvilUserInput;
 use App\Exceptions\CustomException;
+use App\Exceptions\EvilInputException;
 use App\Http\Controllers\Controller;
 use App\Recruit;
 use App\Team;
@@ -63,6 +63,7 @@ class RecruitController extends Controller
      *
      * @return $this|\Illuminate\Database\Eloquent\Model
      * @throws CustomException
+     * @throws EvilInputException
      */
     public function store(Request $request)
     {
@@ -76,8 +77,18 @@ class RecruitController extends Controller
         }
 
         // 检查用户数量
-        if ($team->users()->count() >= 3) { // TODO not use hard code 3
-            event(new EvilUserInput());
+        $user_count = $team->users()->count();
+        $user_limit = config('mcm.team_user_limit', 3);
+        if ($user_count === $user_limit) {
+            throw new CustomException(__('当前队伍已达到人数上限 :limit 人，不能发布招募', [
+                'limit' => $user_limit,
+            ]));
+        } elseif ($user_count > $user_limit) {
+            throw new EvilInputException(__('当前队伍（ID = :team_id）人数 :count 人，超过人数上限（:limit 人）', [
+                'team_id' => $team->id,
+                'count' => $user_count,
+                'limit' => $user_limit,
+            ]));
         }
 
         $data = $request->validate([
@@ -95,8 +106,6 @@ class RecruitController extends Controller
         foreach ($data['tags'] as $tag) {
             if (in_array($tag, $tags_available)) {
                 $tags_validated[] = $tag;
-                // } else {
-                //     event(new EvilUserInput());
             }
         }
         $data['tags'] = implode(',', $tags_validated);
@@ -140,8 +149,6 @@ class RecruitController extends Controller
         foreach ($data['tags'] as $tag) {
             if (in_array($tag, $tags_available)) {
                 $tags_validated[] = $tag;
-                // } else {
-                //     event(new EvilUserInput());
             }
         }
         $data['tags'] = implode(',', $tags_validated);

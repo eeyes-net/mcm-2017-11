@@ -62,9 +62,11 @@ class TeamController extends Controller
     public function store(Request $request)
     {
         $request_users = $request->post('users');
-
-        if (count($request_users) > 2) {
-            throw new CustomException(__('除队长外，最多 2 名队员，当前提交 :count 名', [
+        $team_member_limit = config('mcm.team_user_limit') - 1;
+        if (count($request_users) > $team_member_limit) {
+            // TODO use EvilInputException
+            throw new CustomException(__('除队长外，最多 :limit 名队员，当前提交 :count 名', [
+                'limit' => $team_member_limit,
                 'count' => count($request_users),
             ]));
         }
@@ -122,17 +124,20 @@ class TeamController extends Controller
      * @return Team|Team[]|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
      * @throws \Exception
      */
-    public function update(Team $team)
+    public function update(Request $request, Team $team)
     {
         $user = Auth::user();
         if (!$team->isLeader($user)) {
             throw new CustomException('这支队伍不由您管理');
         }
 
-        $request_users = request()->post('users');
-        if (count($request_users) > 2) {
-            throw new CustomException(__('最多 2 名队员，当前提交 :user_count 名', [
-                'user_count' => count($request_users),
+        $request_users = $request->post('users');
+        $team_member_limit = config('mcm.team_user_limit') - 1;
+        if (count($request_users) > $team_member_limit) {
+            // TODO use EvilInputException
+            throw new CustomException(__('除队长外，最多 :limit 名队员，当前提交 :count 名', [
+                'limit' => $team_member_limit,
+                'count' => count($request_users),
             ]));
         }
 

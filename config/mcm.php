@@ -6,4 +6,5 @@ return [
         '招募算法',
         '招募写作',
     ],
+    'team_user_limit' => 3,
 ];
