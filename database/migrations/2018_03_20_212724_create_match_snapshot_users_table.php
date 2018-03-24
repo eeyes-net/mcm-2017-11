@@ -16,7 +16,7 @@ class CreateMatchSnapshotUsersTable extends Migration
         Schema::create('match_snapshot_users', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('match_snapshot_id')->unsigned();
-            $table->foreign('match_snapshot_id')->references('id')->on('matches');
+            $table->foreign('match_snapshot_id')->references('id')->on('match_snapshots');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('team_id')->unsigned();
