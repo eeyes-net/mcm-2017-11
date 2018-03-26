@@ -14,7 +14,7 @@
                     <a class="nav-link" href="{{ action('Index\MatchController@index') }}">竞赛报名</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ action('Index\RecruitController@index') }}">发起组队</a>
+                    <a class="nav-link" href="{{ action('Index\RecruitController@index') }}">队伍招募</a>
                 </li>
             </ul>
             <ul class="navbar-nav">

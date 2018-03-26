@@ -14,7 +14,7 @@
                     <a class="nav-link" href="{{ url('/match') }}">竞赛报名</a>
                 </li>
                 <li class="nav-item @if(request()->is('recruit')) active @endif">
-                    <a class="nav-link" href="{{ url('/recruit') }}">发起组队</a>
+                    <a class="nav-link" href="{{ url('/recruit') }}">队伍招募</a>
                 </li>
             </ul>
             <ul class="navbar-nav">
