@@ -10,7 +10,7 @@
             <h4 class="card-title">队伍编号：{{ team.team_id ? team.team_id : '未分配' }}
                 <span class="float-right">
                     <b-button size="sm" @click="edit(team)" v-if="team.is_lead">编辑成员</b-button>
-                    <b-button size="sm" variant="primary" @click="verify(team)" v-if="!team.is_verified">同意邀请</b-button>
+                    <!--<b-button size="sm" variant="primary" @click="verify(team)" v-if="!team.is_verified">同意邀请</b-button>-->
                     <b-button size="sm" variant="danger" @click="destroy(team)">退出队伍</b-button>
                 </span>
             </h4>
@@ -104,8 +104,8 @@
                             user.positionText = this.positionOptionsMap[user.position].text;
                             if (user.position === 'leader') {
                                 user._rowVariant = 'secondary';
-                            } else if (user.status === 'verifying') {
-                                user._rowVariant = 'warning';
+                                // } else if (user.status === 'verifying') {
+                                //     user._rowVariant = 'warning';
                             }
                         }
                     }
@@ -242,7 +242,7 @@
                 this.errors = [];
                 $('.sidebar').width('');
                 /** @link https://stackoverflow.com/questions/1397329/how-to-remove-the-hash-from-window-location-url-with-javascript-without-page-r/5298684#5298684 */
-                window.history.pushState("", document.title, window.location.pathname + window.location.search);
+                window.history.pushState('', document.title, window.location.pathname + window.location.search);
             }
         },
         watch: {

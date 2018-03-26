@@ -41,7 +41,7 @@ Route::namespace('Api')->group(function () {
             Route::get('/', 'TeamController@index');
             Route::post('/', 'TeamController@store');
             Route::put('{team}', 'TeamController@update');
-            Route::post('{team}/verify', 'TeamController@verify');
+            // Route::post('{team}/verify', 'TeamController@verify');
             Route::delete('{team}', 'TeamController@destory');
         });
         Route::prefix('recruit')->group(function () {
