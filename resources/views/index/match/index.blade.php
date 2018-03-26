@@ -51,6 +51,7 @@
                             <div class="form-group">
                                 <label>选择队伍</label>
                                 <select name="team_id"></select>
+                                <a href="{{ url('/home#new_team') }}">前往个人中心新建队伍</a>
                             </div>
                             <div class="form-group">
                                 <label for="name">队伍信息</label>
