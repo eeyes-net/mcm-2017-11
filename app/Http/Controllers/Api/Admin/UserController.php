@@ -34,6 +34,8 @@ class UserController extends Controller
             'contact',
             'email',
             'group',
+            'experience',
+            'coach_name',
         ]));
         return $user;
     }

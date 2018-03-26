@@ -25,6 +25,12 @@
             <b-form-group label="E-mail" horizontal :label-cols="3">
                 <b-form-input type="email" v-model="form.email" required></b-form-input>
             </b-form-group>
+            <b-form-group label="参赛与获奖经历" horizontal :label-cols="3">
+                <b-form-input type="text" v-model="form.experience" required></b-form-input>
+            </b-form-group>
+            <b-form-group label="教练姓名" horizontal :label-cols="3">
+                <b-form-input type="text" v-model="form.coach_name" required></b-form-input>
+            </b-form-group>
             <b-form-group label="用户权限" horizontal :label-cols="3">
                 <b-form-select v-model="form.group" :options="options"></b-form-select>
             </b-form-group>
@@ -70,6 +76,8 @@
                 this.form.class = this.user.class;
                 this.form.contact = this.user.contact;
                 this.form.email = this.user.email;
+                this.form.experience = this.user.experience;
+                this.form.coach_name = this.user.coach_name;
                 this.form.group = this.user.group;
             }
         }

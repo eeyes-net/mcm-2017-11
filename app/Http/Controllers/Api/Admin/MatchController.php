@@ -72,6 +72,7 @@ class MatchController extends Controller
     public function destroy(Match $match)
     {
         $match->delete();
+        event(new MatchesTableUpdated());
         return $match;
     }
 
