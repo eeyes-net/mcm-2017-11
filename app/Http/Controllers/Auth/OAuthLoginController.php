@@ -24,9 +24,7 @@ class OAuthLoginController extends LoginController
                         'info-user_id.read',
                         'info-name.read',
                         'info-email.read',
-                        'info-email.write',
                         'info-mobile.read',
-                        'info-mobile.write',
                         'info-school.read',
                     ]),
                 ]));
