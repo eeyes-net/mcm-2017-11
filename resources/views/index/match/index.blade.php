@@ -25,6 +25,7 @@
                                         <button type="button" class="btn btn-default" disabled="disabled">已截止</button>
                                     @endif
                                 @endif
+                                <p class="team-count">已有 <span>{{ $match->teams_count }}</span> 支队伍报名</p>
                             </div>
                         </div>
                     </div>

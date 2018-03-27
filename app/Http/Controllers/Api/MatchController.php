@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\MatchTeamCountUpdated;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Match;
@@ -66,6 +67,7 @@ class MatchController extends Controller
             throw new CustomException('某用户已在其他队伍报名此比赛', $errors);
         }
         $match->teams()->save($team);
+        event(new MatchTeamCountUpdated());
         return $team->load('matches');
     }
 
@@ -82,6 +84,7 @@ class MatchController extends Controller
             throw new CustomException('当前用户不是这支队伍的管理员');
         }
         $match->teams()->detach([$team->id]);
+        event(new MatchTeamCountUpdated());
         return $team;
     }
 }

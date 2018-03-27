@@ -18,7 +18,7 @@ class MatchController extends Controller
             $leading_teams_id = $user->leading_teams_id;
         }
         $matches = Cache::tags('matches')->remember('matches' . request('page'), 1440, function () {
-            return Match::ordered()->paginate(12);
+            return Match::withCount('teams')->ordered()->paginate(12);
         });
         return view('index.match.index', compact(
             'matches',
