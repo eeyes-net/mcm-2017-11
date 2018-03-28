@@ -13,6 +13,8 @@ class LoginController extends Controller
         Auth::logout();
         Session::flush();
         Session::save();
+        session_start();
+        session_destroy();
         return redirect('/');
     }
 }

@@ -26,6 +26,7 @@ cd mcm-2017-11/
 composer install
 php artisan migrate
 php artisan vendor:publish
+php artisan storage:link
 php artisan install
 npm install
 npm run production
@@ -40,6 +41,26 @@ php artisan ide-helper:model
 php artisan db:seed
 npm run watch
 ```
+
+### 临时使用 CKFinder
+
+在 [CKFinder 官网](https://ckeditor.com/ckeditor-4/download/#ckfinder) 下载 [CKFinder 3 for PHP](https://download.cksource.com/CKFinder/CKFinder%20for%20PHP/3.4.2/ckfinder_php_3.4.2.zip)
+
+然后解压到 `public/dist/ckfinder/`，解压之后修改配置文件 `public/dist/ckfinder/config.php`。
+
+```php
+// 验证函数
+$config['authentication'] = function () {
+    session_start();
+    return (bool)$_SESSION['is_admin'];
+};
+// 文件存放目录
+$config['backends'][] = array(
+    'baseUrl'      => '/storage/',
+);
+```
+
+临时使用 DEMO 版即可。
 
 ## LICENSE
 

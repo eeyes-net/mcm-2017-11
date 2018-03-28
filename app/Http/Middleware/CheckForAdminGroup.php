@@ -22,6 +22,8 @@ class CheckForAdminGroup
         if (!$user->isAdmin()) {
             return redirect('/login/admin');
         }
+        session_start();
+        $_SESSION['is_admin'] = true;
         return $next($request);
     }
 }

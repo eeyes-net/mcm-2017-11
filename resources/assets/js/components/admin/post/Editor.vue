@@ -5,7 +5,7 @@
                 <b-form-input type="text" v-model="form.title" required></b-form-input>
             </b-form-group>
             <b-form-group label="公告内容">
-                <ckeditor v-model="form.content"></ckeditor>
+                <ckeditor v-model="form.content" :config="ckeditorConfig"></ckeditor>
             </b-form-group>
             <b-form-group label="发布时间" v-show="isEdit">
                 <b-form-input type="text" v-model="form.created_at"></b-form-input>
@@ -35,6 +35,9 @@
         computed: {
             isEdit() {
                 return this.type === 'edit';
+            },
+            ckeditorConfig() {
+                return require('../../../admin/ckeditor-config').default;
             }
         },
         watch: {
