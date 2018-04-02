@@ -15,6 +15,6 @@ class LoginController extends Controller
         Session::save();
         session_start();
         session_destroy();
-        return redirect('/');
+        return redirect(config('eeyes.account.url') . '/logout?url=' . urlencode(url('/')));
     }
 }
