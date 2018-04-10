@@ -42,7 +42,7 @@ Route::namespace('Api')->group(function () {
             Route::post('/', 'TeamController@store');
             Route::put('{team}', 'TeamController@update');
             // Route::post('{team}/verify', 'TeamController@verify');
-            Route::delete('{team}', 'TeamController@destory');
+            Route::delete('{team}', 'TeamController@destroy');
         });
         Route::prefix('recruit')->group(function () {
             Route::get('current_user', 'RecruitController@currentUser');
@@ -96,6 +96,9 @@ Route::namespace('Api')->group(function () {
             Route::get('{recruit}', 'RecruitController@show');
             Route::put('{recruit}', 'RecruitController@update');
             Route::delete('{recruit}', 'RecruitController@destroy');
+        });
+        Route::prefix('upload')->group(function () {
+            Route::post('image', 'UploadController@storeImage');
         });
     });
 });

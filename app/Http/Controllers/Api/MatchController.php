@@ -3,88 +3,54 @@
 namespace App\Http\Controllers\Api;
 
 use App\Events\MatchTeamCountUpdated;
-use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Match\Apply;
+use App\Http\Requests\Match\Cancel;
+use App\Http\Resources\Match as MatchResource;
 use App\Match;
-use App\Team;
-use App\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class MatchController extends Controller
 {
     public function index()
     {
-        return Match::ordered()->paginate();
+        $matches = (new Match)->append('is_applied')->withCount('teams')->ordered()->paginate();
+        return MatchResource::collection($matches);
     }
 
     public function show(Match $match)
     {
-        return $match;
+        return new MatchResource($match);
     }
 
     /**
      * 报名某一比赛
      *
-     * @param Request $request
-     * @param Match $match
+     * @param \App\Http\Requests\Match\Apply $request
+     * @param \App\Match $match
      *
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|static|static[]
-     * @throws CustomException
+     * @return \App\Http\Resources\Match
      */
-    public function apply(Request $request, Match $match)
+    public function apply(Apply $request, Match $match)
     {
-        if ($match->status !== 'open') {
-            throw new CustomException(__('比赛 :title 目前不开放', [
-                'title' => $match->title,
-            ]));
-        }
-
-        $team_id = $request->post('team_id');
-        $user = Auth::user();
-        /** @var Team $team */
-        $team = $user->teams()->wherePivot('position', 'leader')->find($team_id);
-        if (!$team) {
-            throw new CustomException('队伍不存在、你不在其中或者您不是队长');
-        }
-        if ($match->teams()->find($team->id)) {
-            throw new CustomException('此队伍已报名该比赛');
-        }
-        /** @var User $team_user */
-        $errors = [];
-        foreach ($team->users as $team_user) {
-            /** @var Team $team_user_team */
-            foreach ($team_user->teams as $team_user_team) {
-                if ($team_user_team->matches()->find($match->id)) {
-                    $errors[] = __('用户 :name 已在其他队伍报名此比赛', [
-                        'name' => $team_user->name,
-                    ]);
-                    break;
-                }
-            }
-        }
-        if ($errors) {
-            throw new CustomException('某用户已在其他队伍报名此比赛', $errors);
-        }
-        $match->teams()->save($team);
+        $match->teams()->syncWithoutDetaching($request->post('team_id'));
         event(new MatchTeamCountUpdated());
-        return $team->load('matches');
+        return new MatchResource($match);
     }
 
-    public function cancel(Match $match)
+    /**
+     * 取消报名比赛
+     *
+     * @param \App\Http\Requests\Match\Cancel $request
+     * @param \App\Match $match
+     *
+     * @return \App\Http\Resources\Match
+     */
+    public function cancel(Cancel $request, Match $match)
     {
-        $user = Auth::user();
-        $team_ids = $user->teams()->pluck('teams.id')->toArray();
-        /** @var Team $team */
-        $team = $match->teams()->whereIn('teams.id', $team_ids)->first();
-        if (!$team) {
-            throw new CustomException('您未报名这场比赛');
-        }
-        if (!$team->isLeader($user)) {
-            throw new CustomException('当前用户不是这支队伍的管理员');
-        }
+        /** @var \App\Team $team */
+        $team = $request->get('team');
         $match->teams()->detach([$team->id]);
         event(new MatchTeamCountUpdated());
-        return $team;
+        return new MatchResource($match);
     }
 }

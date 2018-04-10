@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\User as UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,16 +11,20 @@ class UserController extends Controller
 {
     /**
      * 获取当前用户信息
+     *
+     * @return \App\Http\Resources\User
      */
     public function show()
     {
-        return Auth::user();
+        return new UserResource(Auth::user());
     }
 
     /**
      * 修改当前用户信息
+     *
      * @param Request $request
-     * @return \App\User|\Illuminate\Contracts\Auth\Authenticatable|null
+     *
+     * @return \App\Http\Resources\User
      */
     public function update(Request $request)
     {
@@ -27,9 +32,9 @@ class UserController extends Controller
         $user->update($request->validate([
             'contact' => 'numeric',
             'email' => 'email',
-            'experience' => 'string',
-            'coach_name' => 'string',
+            'experience' => 'string|max:4096',
+            'coach_name' => 'string|max:255',
         ]));
-        return $user;
+        return new UserResource($user);
     }
 }

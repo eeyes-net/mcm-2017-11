@@ -6,5 +6,6 @@ return [
         '招募算法',
         '招募写作',
     ],
-    'team_user_limit' => 3,
+    'team_users_count_limit' => 3,
+    'team_recruits_count_limit' => 1,
 ];

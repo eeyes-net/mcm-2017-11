@@ -43,7 +43,7 @@ class Team extends Model
         } else {
             $user_id = $user;
         }
-        $leader = $this->users()->wherePivot('position', 'leader')->first();
+        $leader = $this->users()->wherePivot('position', Team::USER_POSITION_LEADER)->first();
         return $leader->id === $user_id;
     }
 

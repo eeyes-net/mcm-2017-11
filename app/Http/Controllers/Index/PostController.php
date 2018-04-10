@@ -10,8 +10,8 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Cache::tags('posts')->remember('posts' . request('page'), 1440, function () {
-            return Post::latest()->paginate();
+        $posts = Cache::tags('posts')->remember('post_page_' . request('page'), 1440, function () {
+            return Post::select(['id', 'title', 'created_at', 'updated_at'])->latest()->paginate();
         });
         return view('index.post.index', [
             'posts' => $posts,

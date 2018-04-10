@@ -2,12 +2,18 @@
 
 namespace App;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Match extends Model
 {
+    const STATUS_OPEN = 'open';
+    const STATUS_CLOSE = 'close';
+
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
@@ -27,7 +33,7 @@ class Match extends Model
         return $this->hasMany(MatchSnapshot::class);
     }
 
-    public function scopeOrdered($query)
+    public function scopeOrdered(Builder $query)
     {
         return $query->orderByRaw('status DESC, expired_at DESC, created_at DESC');
     }
@@ -74,5 +80,19 @@ class Match extends Model
             });
         });
         return $snapshot;
+    }
+
+    public function getIsAppliedAttribute()
+    {
+        if (!Auth::check()) {
+            return false;
+        }
+        $user = Auth::user();
+        return $user->isAppliedMatch($this);
+    }
+
+    public function getIsAvailableAttribute()
+    {
+        return $this->status === self::STATUS_OPEN && Carbon::now() <= $this->expired_at;
     }
 }
