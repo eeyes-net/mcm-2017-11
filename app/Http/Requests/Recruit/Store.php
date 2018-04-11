@@ -25,11 +25,21 @@ class Store extends FormRequest
         ];
     }
 
+    public function attributes()
+    {
+        return [
+            'team_id' => '队伍',
+            'tags' => '招募类型',
+            'description' => '队伍描述',
+            'contact' => '联系方式',
+        ];
+    }
+
     public function withValidator(Validator $validator)
     {
         $validator->after(function (Validator $validator) {
             $user = Auth::user();
-            $team_id = $this->request->get('team_id');
+            $team_id = $this->query('team_id');
             /** @var \App\Team $team */
             $team = $user->teams()->find($team_id);
             if (!$team) {

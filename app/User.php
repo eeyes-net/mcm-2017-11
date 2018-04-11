@@ -22,7 +22,6 @@ class User extends Authenticatable
         'class',
         'contact',
         'email',
-        'password',
         'group',
         'experience',
         'coach_name',
@@ -87,6 +86,6 @@ class User extends Authenticatable
         if ($match_id instanceof Match) {
             $match_id = $match_id->id;
         }
-        return array_has($this->matches_id, $match_id);
+        return isset($this->matches_id[$match_id]);
     }
 }

@@ -55,10 +55,8 @@ class Team extends Model
     public function hasUser($user)
     {
         if ($user instanceof User) {
-            $user_id = $user->id;
-        } else {
-            $user_id = $user;
+            $user = $user->id;
         }
-        return (bool)$this->users()->where('user_id', $user_id)->count();
+        return $this->users()->where('user_id', $user)->exists();
     }
 }

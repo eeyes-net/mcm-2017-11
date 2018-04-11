@@ -6,7 +6,6 @@ use App\Exceptions\EvilInputException;
 use App\Recruit;
 use App\Team;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
 
 class Update extends FormRequest
@@ -25,10 +24,19 @@ class Update extends FormRequest
         ];
     }
 
+    public function attributes()
+    {
+        return [
+            'tags' => '招募类型',
+            'description' => '队伍描述',
+            'contact' => '联系方式',
+        ];
+    }
+
     public function withValidator(Validator $validator)
     {
         $validator->after(function (Validator $validator) {
-            $user = Auth::user();
+            $user = $this->user();
             $recruit = $this->route('recruit');
             if (!$recruit || !($recruit instanceof Recruit)) {
                 $validator->errors()->add('recruit.exists', '招募不存在或您不属于此招募的队伍');

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\Update;
 use App\Http\Resources\User as UserResource;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -22,18 +22,18 @@ class UserController extends Controller
     /**
      * 修改当前用户信息
      *
-     * @param Request $request
+     * @param \App\Http\Requests\User\Update $request
      *
      * @return \App\Http\Resources\User
      */
-    public function update(Request $request)
+    public function update(Update $request)
     {
         $user = Auth::user();
-        $user->update($request->validate([
-            'contact' => 'numeric',
-            'email' => 'email',
-            'experience' => 'string|max:4096',
-            'coach_name' => 'string|max:255',
+        $user->update($request->only([
+            'contact',
+            'email',
+            'experience',
+            'coach_name',
         ]));
         return new UserResource($user);
     }
