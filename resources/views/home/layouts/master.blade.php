@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>个人中心 - 西安交通大学数学建模官方网站</title>
     <link rel="icon" href="/favicon.ico">
-    <link href="/css/home.css" rel="stylesheet">
+    <link href="{{ mix('/css/home.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -30,6 +30,6 @@
         </div>
     </div>
 
-    <script src="/js/home.js"></script>
+    <script src="{{ mix('/js/home.js') }}"></script>
 </body>
 </html>

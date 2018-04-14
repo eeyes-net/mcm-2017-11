@@ -5,7 +5,9 @@
                 <b-btn @click="create">创建新队伍</b-btn>
             </span>
         </h2>
-        <b-alert variant="danger" dismissible :show="!modalCreateShow && !modalEditShow && errors.length > 0"><p v-for="error in errors">{{ error }}</p></b-alert>
+
+        <layouts-error :show="!modalCreateShow && !modalEditShow" :errors="errors"></layouts-error>
+
         <b-card v-for="team in teams" :key="team.id">
             <h4 class="card-title">队伍编号：{{ team.team_id ? team.team_id : '未分配' }}
                 <span class="float-right">
@@ -18,7 +20,7 @@
         </b-card>
 
         <b-modal title="创建新队伍" class="team-create-modal" v-model="modalCreateShow" ok-title="创建" cancel-title="取消" @ok="store" @hidden="modalHidden()">
-            <b-alert variant="danger" dismissible :show="errors.length > 0"><p v-for="error in errors">{{ error }}</p></b-alert>
+            <layouts-error :errors="errors"></layouts-error>
             <b-form @submit="store">
                 <b-form-group horizontal :label-cols="2" :label="'队员' + (index + 1)" label-class="font-weight-bold" class="mb-0" v-for="(user, index) in form.users" :key="index">
                     <b-form-group horizontal :label-cols="2" label="姓名">
@@ -36,7 +38,7 @@
         </b-modal>
 
         <b-modal title="编辑队伍成员" class="team-create-modal" v-model="modalEditShow" ok-title="保存" cancel-title="取消" @ok="update" @hidden="modalHidden()">
-            <b-alert variant="danger" dismissible :show="errors.length > 0"><p v-for="error in errors">{{ error }}</p></b-alert>
+            <layouts-error :errors="errors"></layouts-error>
             <b-form @submit="update">
                 <b-form-group horizontal :label-cols="2" :label="'成员' + (index + 1)" label-class="font-weight-bold" class="mb-0" v-for="(user, index) in form.users" :key="index">
                     <b-form-group horizontal :label-cols="2" label="姓名">
@@ -59,6 +61,7 @@
     export default {
         data() {
             return {
+                user_id: 0,
                 errors: [],
                 fields: [
                     {key: 'positionText', label: '身份', sortable: true},
@@ -95,20 +98,30 @@
         },
         methods: {
             get() {
+                this.errors = [];
                 axios.get('/api/team').then(response => {
-                    this.teams = response.data;
-                    for (let i = 0; i < this.teams.length; ++i) {
-                        let team = this.teams[i];
-                        for (let j = 0; j < team.users.length; ++j) {
-                            let user = team.users[j];
-                            user.positionText = this.positionOptionsMap[user.position].text;
-                            if (user.position === 'leader') {
-                                user._rowVariant = 'secondary';
-                                // } else if (user.status === 'verifying') {
-                                //     user._rowVariant = 'warning';
-                            }
-                        }
+                    this.errors = [];
+                    if (response.data.data) {
+                        this.teams = response.data.data;
+                        this.user_id = response.data.meta.user_id;
+                        _.forEach(this.teams, team => {
+                            _.forEach(team.users, user => {
+                                user.positionText = this.positionOptionsMap[user.position].text;
+                                if (user.position === 'leader') {
+                                    user._rowVariant = 'secondary';
+                                    if (user.id === this.user_id) {
+                                        team.is_lead = true;
+                                    }
+//                              } else if (user.status === 'verifying') {
+//                                  user._rowVariant = 'warning';
+                                }
+                            });
+                        });
+                    } else {
+                        this.errors = response;
                     }
+                }).catch(error => {
+                    this.errors = error;
                 });
             },
             create() {
@@ -121,29 +134,23 @@
             },
             store(e) {
                 e.preventDefault();
+                this.errors = [];
                 axios.post('/api/team', this.form).then(response => {
-                    if (response.data.id) {
+                    if (response.data.data) {
                         this.errors = [];
                         this.get();
                         this.modalCreateShow = false;
-                    } else if (response.data.message) {
-                        this.errors = _.flatten(_.toArray(response.data));
                     } else {
-                        this.errors = ['出现了一些问题，请重试。'];
+                        this.errors = response;
                     }
                 }).catch(error => {
-                    if (typeof error.response.data === 'object') {
-                        this.errors = _.flatten(_.toArray(error.response.data));
-                    } else {
-                        this.errors = ['出现了一些问题，请重试。'];
-                    }
+                    this.errors = error;
                 });
             },
             edit(team) {
                 this.formClear();
                 this.form.team_id = team.id;
-                for (let i = 0; i < team.users.length; ++i) {
-                    let user = team.users[i];
+                _.forEach(team.users, user => {
                     if (user.position !== 'leader') {
                         this.form.users.push({
                             id: user.id,
@@ -151,7 +158,7 @@
                             stu_id: user.stu_id
                         });
                     }
-                }
+                });
                 this.errors = [];
                 this.modalEditShow = true;
             },
@@ -159,61 +166,43 @@
                 e.preventDefault();
                 this.errors = [];
                 axios.put('/api/team/' + this.form.team_id, this.form).then(response => {
-                    if (response.data.id) {
+                    if (response.data.data) {
                         this.errors = [];
                         this.get();
                         this.modalEditShow = false;
-                    } else if (response.data.message) {
-                        this.errors = _.flatten(_.toArray(response.data));
                     } else {
-                        this.errors = ['出现了一些问题，请重试。'];
+                        this.errors = response;
                     }
                 }).catch(error => {
-                    if (typeof error.response.data === 'object') {
-                        this.errors = _.flatten(_.toArray(error.response.data));
-                    } else {
-                        this.errors = ['出现了一些问题，请重试。'];
-                    }
+                    this.errors = error;
                 });
             },
-            verify(team) {
-                this.errors = [];
-                axios.post('/api/team/' + team.id + '/verify').then(response => {
-                    if (response.data.id) {
-                        this.errors = [];
-                        this.get();
-                        alert('已加入队伍（id = ' + response.data.id + '）');
-                    } else if (response.data.message) {
-                        this.errors = _.flatten(_.toArray(response.data));
-                    } else {
-                        this.errors = ['出现了一些问题，请重试。'];
-                    }
-                }).catch(error => {
-                    if (typeof error.response.data === 'object') {
-                        this.errors = _.flatten(_.toArray(error.response.data));
-                    } else {
-                        this.errors = ['出现了一些问题，请重试。'];
-                    }
-                });
-            },
+            // verify(team) {
+            //     this.errors = [];
+            //     axios.post('/api/team/' + team.id + '/verify').then(response => {
+            //         if (response.data.data) {
+            //             this.errors = [];
+            //             this.get();
+            //             alert('已加入队伍（id = ' + response.data.data.id + '）');
+            //         } else {
+            //             this.errors = response;
+            //         }
+            //     }).catch(error => {
+            //         this.errors = error;
+            //     });
+            // },
             destroy(team) {
                 if (confirm('您确定退出队伍' + team.id)) {
                     axios.delete('/api/team/' + team.id).then(response => {
-                        if (response.data.id) {
-                            this.user = response.data;
+                        if (response.data.data) {
                             this.errors = [];
                             this.get();
-                        } else if (response.data.message) {
-                            this.errors = _.flatten(_.toArray(response.data));
+                            alert('已退出队伍（id = ' + response.data.data.id + '）');
                         } else {
-                            this.errors = ['出现了一些问题，请重试。'];
+                            this.errors = response;
                         }
                     }).catch(error => {
-                        if (typeof error.response.data === 'object') {
-                            this.errors = _.flatten(_.toArray(error.response.data));
-                        } else {
-                            this.errors = ['出现了一些问题，请重试。'];
-                        }
+                        this.errors = error;
                     });
                 }
             },
@@ -239,7 +228,6 @@
                 this.form.users.splice(i, 1);
             },
             modalHidden() {
-                this.errors = [];
                 $('.sidebar').width('');
                 /** @link https://stackoverflow.com/questions/1397329/how-to-remove-the-hash-from-window-location-url-with-javascript-without-page-r/5298684#5298684 */
                 window.history.pushState('', document.title, window.location.pathname + window.location.search);
@@ -247,6 +235,7 @@
         },
         watch: {
             modalEditShow(val) {
+                this.errors = [];
                 if (val) {
                     $('.sidebar').width($('.sidebar').width());
                 }

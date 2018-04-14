@@ -2,6 +2,8 @@
     <div class="home-recruit">
         <h2>我的招募</h2>
 
+        <layouts-error :show="!modalShow" :errors="errors"></layouts-error>
+
         <b-row>
             <b-col sm="6" md="4" lg="3" v-for="recruit in recruits" :key="recruit.id">
                 <b-card>
@@ -29,7 +31,7 @@
         </b-row>
 
         <b-modal title="修改招募信息" class="recruit-edit-modal" v-model="modalShow" ok-title="保存" cancel-title="取消" @ok="handleOk" @hidden="modalHidden">
-            <b-alert variant="danger" dismissible :show="errors.length > 0"><p v-for="error in errors">{{ error }}</p></b-alert>
+            <layouts-error :errors="errors"></layouts-error>
             <b-form @submit="update()">
                 <b-form-group horizontal :label-cols="3" label="队伍编号">
                     <b-form-input :disabled="true" placeholder="请输入您的姓名" v-model="form.team_id"></b-form-input>
@@ -75,16 +77,33 @@
         },
         methods: {
             get() {
+                this.errors = [];
                 axios.get('/api/recruit/current_user').then(response => {
-                    this.recruits = response.data;
+                    this.errors = [];
+                    if (response.data.data) {
+                        this.recruits = response.data.data;
+                    } else {
+                        this.errors = response;
+                    }
+                }).catch(error => {
+                    this.errors = error;
                 });
             },
             getRecruitTags() {
+                this.errors = [];
                 axios.get('/api/recruit/tags').then(response => {
-                    this.recruitTagOptions = response.data;
+                    this.errors = [];
+                    if (response.data.data) {
+                        this.recruitTagOptions = response.data.data;
+                    } else {
+                        this.errors = response;
+                    }
+                }).catch(error => {
+                    this.errors = error;
                 });
             },
             edit(recruit) {
+                this.errors = [];
                 this.form.id = recruit.id;
                 this.form.team_id = recruit.team_id;
                 this.form.tags = recruit.tags.split(',');
@@ -94,64 +113,47 @@
                 this.modalShow = true;
             },
             update() {
+                this.errors = [];
                 let form = this.form;
                 axios.put('/api/recruit/' + form.id, {
-                    tags: form.tags.join(','),
+                    tags: form.tags,
                     members: form.members,
                     description: form.description,
                     contact: form.contact
                 }).then(response => {
-                    if (response.data.id) {
-                        let i = _.findIndex(this.recruits, {id: response.data.id});
-                        this.recruits[i] = response.data;
+                    this.errors = [];
+                    if (response.data.data) {
                         this.errors = [];
                         this.get();
                         this.modalShow = false;
-                    } else if (response.data.message) {
-                        this.errors = _.flatten(_.toArray(response.data));
                     } else {
-                        this.errors = ['出现了一些问题，请重试。'];
+                        this.errors = response;
                     }
                 }).catch(error => {
-                    if (typeof error.response.data === 'object') {
-                        this.errors = _.flatten(_.toArray(error.response.data));
-                    } else {
-                        this.errors = ['出现了一些问题，请重试。'];
-                    }
+                    this.errors = error;
                 });
             },
             destroy(recruit) {
                 if (confirm('确定删除这条招募？\n\n'
-                        + '队伍编号：' + recruit.team_id + '\n'
-                        + '招募类型：' + recruit.tags + '\n'
-                        + '当前队员：' + recruit.members + '\n'
-                        + '队伍描述：' + recruit.description + '\n'
-                        + '联系方式：' + recruit.contact)) {
+                    + '队伍编号：' + recruit.team_id + '\n'
+                    + '招募类型：' + recruit.tags + '\n'
+                    + '当前队员：' + recruit.members + '\n'
+                    + '队伍描述：' + recruit.description + '\n'
+                    + '联系方式：' + recruit.contact)) {
+                    this.errors = [];
                     axios.delete('/api/recruit/' + recruit.id).then(response => {
+                        this.errors = [];
                         if (response.data.id) {
                             this.errors = [];
                             this.get();
                             this.modalShow = false;
-                        } else if (response.data.message) {
-                            this.errors = _.flatten(_.toArray(response.data));
-                            this.showErrors();
                         } else {
-                            this.errors = ['出现了一些问题，请重试。'];
-                            this.showErrors();
+                            this.errors = response;
                         }
                     }).catch(error => {
-                        if (typeof error.response.data === 'object') {
-                            this.errors = _.flatten(_.toArray(error.response.data));
-                            this.showErrors();
-                        } else {
-                            this.errors = ['出现了一些问题，请重试。'];
-                            this.showErrors();
-                        }
+                        this.errors = error;
                     });
                 }
-            },
-            showErrors() {
-                alert(this.errors);
             },
             handleOk(e) {
                 e.preventDefault();
@@ -163,6 +165,7 @@
         },
         watch: {
             modalShow(val) {
+                this.errors = [];
                 if (val) {
                     $('.sidebar').width($('.sidebar').width());
                 }

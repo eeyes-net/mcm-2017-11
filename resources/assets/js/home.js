@@ -8,6 +8,7 @@ window.Vue = require('vue');
 require('bootstrap-vue');
 
 // Home Vue Component
+Vue.component('layouts-error', require('./components/layouts/Error.vue'));
 Vue.component('home-layouts-sidebar', require('./components/home/layouts/Sidebar.vue'));
 Vue.component('home-user', require('./components/home/User.vue'));
 Vue.component('home-team', require('./components/home/Team.vue'));
