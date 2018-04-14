@@ -91,7 +91,7 @@ class Update extends FormRequest
                                     'op_user_id' => $team_user->id,
                                 ]));
                             } else {
-                                $team_user_matches_ok = false;
+                                $team_user_matches_ok = true;
                                 foreach ($team_open_matches_id as $match_id) {
                                     // 报名了比赛，并且不是在本队伍
                                     if ($team_user->isAppliedMatch($match_id) && $team_user->matches_id[$match_id] !== $team->id) {
@@ -100,8 +100,8 @@ class Update extends FormRequest
                                             'name' => $request_user['name'],
                                             'match_title' => Match::find($match_id, ['title'])->title,
                                         ]));
+                                        $team_user_matches_ok = false;
                                     }
-                                    $team_user_matches_ok = true;
                                 }
                                 if ($team_user_matches_ok) {
                                     $users_id[] = $team_user->id;

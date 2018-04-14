@@ -94,10 +94,10 @@ class TeamController extends Controller
         $user = Auth::user();
         $sync_data[$user->id] = [];
 
-        $original_users = $team->users()->select('users.id')->get()->keyBy('id');
+        $original_users_id = $team->users()->pluck('users.id')->toArray();
         $users_id = $request->get('users_id');
         foreach ($users_id as $user_id) {
-            if (isset($original_users[$user_id])) {
+            if (in_array($user_id, $original_users_id)) {
                 $sync_data[$user_id] = [];
             } else {
                 $sync_data[$user_id] = [
@@ -137,7 +137,7 @@ class TeamController extends Controller
      * @param \App\Team $team
      *
      * @return \App\Http\Resources\Team
-     * @throws \Exception
+     * @throws \Throwable
      */
     public function destroy(Destroy $request, Team $team)
     {
@@ -153,6 +153,7 @@ class TeamController extends Controller
                 // 没有任何已验证成员了，删除
                 $team->users()->sync([]);
                 $team->delete();
+
             } elseif ($users->where('pivot.position', Team::USER_POSITION_LEADER)->count() <= 0) {
                 // 有已验证成员，但是没有队长了，分配一个队长
                 $team_user = $users->where('pivot.position', Team::USER_POSITION_MEMBER)->first();

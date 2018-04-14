@@ -24,8 +24,8 @@ class Update extends FormRequest
     public function attributes()
     {
         return [
-            'contact' => '联系方式',
-            'coach_name' => '联系电话',
+            'contact' => '联系电话',
+            'coach_name' => '教练姓名',
             'experience' => '参赛与获奖经历',
         ];
     }
