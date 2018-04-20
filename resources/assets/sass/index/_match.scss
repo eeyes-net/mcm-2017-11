@@ -14,7 +14,7 @@
         overflow: hidden;
       }
 
-      .expires-at {
+      .mcm-match-expires-at {
         font-size: .8em;
         margin-bottom: .8em;
 
@@ -23,46 +23,13 @@
         }
       }
 
-      .team-count {
+      .mcm-match-team-count {
         display: inline-block;
         margin-left: .5em;
         font-size: .8em;
 
         span {
           display: inline-block;
-        }
-      }
-    }
-  }
-
-  .modal {
-    .modal-content {
-      border: none;
-      border-radius: 0;
-      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
-    }
-
-    .modal-body {
-      form {
-        margin-bottom: -10px;
-      }
-
-      textarea.form-control {
-        resize: vertical;
-      }
-
-      textarea.form-control,
-      input[type="text"].form-control,
-      button.btn {
-        border-radius: 0;
-      }
-
-      button.btn[type="submit"] {
-        background-color: #2e8de6;
-        color: #fff;
-
-        &:hover {
-          background-color: #2675bf;
         }
       }
     }

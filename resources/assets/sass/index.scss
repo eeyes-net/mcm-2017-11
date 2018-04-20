@@ -1,9 +1,4 @@
-$border-radius: 0;
-$border-radius-lg: 0;
-$border-radius-sm: 0;
-$link-color: #47494e;
-$modal-backdrop-bg: #566;
-
+@import "layouts/variables";
 @import "~bootstrap/scss/bootstrap";
 @import "layouts/common";
 @import "index/common";

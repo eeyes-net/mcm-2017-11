@@ -11,7 +11,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h2 class="card-title">{{ $match->title }}</h2>
-                                <p class="expires-at">报名截止日期 <span>{{ $match->expired_at }}</span></p>
+                                <p class="mcm-match-expires-at">报名截止日期 <span>{{ $match->expired_at }}</span></p>
                                 @if (auth()->check() && array_key_exists($match->id, $applied_matches_id))
                                     @if ($match->is_available && in_array($applied_matches_id[$match->id], $leading_teams_id))
                                         <button type="button" class="btn btn-danger mcm-match-btn-cancel" data-match-id="{{ $match->id }}" data-match-title="{{ $match->title }}">取消报名</button>
@@ -25,7 +25,7 @@
                                         <button type="button" class="btn btn-secondary" disabled="disabled">已截止</button>
                                     @endif
                                 @endif
-                                <span class="team-count">已有 <span>{{ $match->teams_count }}</span> 支队伍报名</span>
+                                <span class="mcm-match-team-count">已有 <span>{{ $match->teams_count }}</span> 支队伍报名</span>
                             </div>
                         </div>
                     </div>

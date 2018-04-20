@@ -1,3 +1,8 @@
+body {
+  padding-top: 3.5rem;
+  font-family: "PingFang SC", "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", sans-serif;
+}
+
 .navbar-light {
   color: #2c312f;
   background-color: #fff;
@@ -48,5 +53,29 @@
 
   .page-item {
     margin: 0 .35em .7em;
+  }
+}
+
+.card,
+.modal-dialog {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
+}
+
+.mcm-team-info-table {
+  font-size: .9em;
+
+  &.mcm-team-info-table-full-info .table {
+    min-width: 768px;;
+  }
+
+  th {
+    border-top: none;
+    border-bottom: 1px solid #e9eef5;
+    padding: .7em 0;
+  }
+
+  td {
+    border: none;
+    padding: .7em 0;
   }
 }

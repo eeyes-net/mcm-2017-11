@@ -3,9 +3,6 @@
   padding-bottom: 1.25em;
 
   .card {
-    border: none;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
-
     .card-body {
       padding: 0;
 
@@ -40,12 +37,12 @@
             background-color: #eceff3 !important;
           }
 
-          .title h3 {
+          .mcm-post-title h3 {
             font-size: 1em;
             font-weight: normal;
           }
 
-          .date {
+          .mcm-post-date {
             color: #7e838b;
             font-size: .9em;
           }

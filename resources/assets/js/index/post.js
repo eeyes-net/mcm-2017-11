@@ -1,54 +1,25 @@
-function redirectToPostWithTimeout(postId) {
-    setTimeout(function () {
-        location.href = '/post/' + postId;
-    }, 1000);
-}
-
-function getPost(postId) {
-    axios.get('/api/post/' + postId)
-        .then(response => {
-            vmData.errors = [];
-            if (response.data.data) {
-                let data = response.data.data;
-                vmData.post.title = data.title;
-                vmData.post.created_at.str = data.created_at.str;
-                vmData.post.content = data.content;
-                vm.$forceUpdate();
-                vmData.modalShow = true;
-            } else {
-                vmData.errors = response;
-                redirectToPostWithTimeout(postId);
-            }
-        })
-        .catch(error => {
-            vmData.errors = error;
-            redirectToPostWithTimeout(postId);
-        });
-}
-
 let vmData = {
-    errors: [],
-    post: {
-        title: '',
-        created_at: {
-            str: ''
-        },
-        content: ''
-    },
+    postId: 0,
     modalShow: false
 };
 
 let vm = new Vue({
     el: '#main',
-    data: vmData
+    data: vmData,
+    method: {
+        onError() {
+            setTimeout(function () {
+                location.href = '/post/' + postId;
+            }, 1000);
+        }
+    }
 });
 
 let registerLinkListener = function () {
     $('.mcm-post #pjax-container .list-group .list-group-item a').on('click', function (event) {
         event.preventDefault();
-        vmData.errors = [];
-        let postId = $(this).attr('data-post-id');
-        getPost(postId);
+        vmData.postId = parseInt($(this).attr('data-post-id'));
+        vmData.modalShow = true;
         return true;
     });
     $(document).pjax('.pagination a', '#pjax-container', {
