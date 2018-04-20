@@ -7,7 +7,7 @@
         <b-row>
             <b-col sm="6" md="4" lg="3" v-for="recruit in recruits" :key="recruit.id">
                 <b-card>
-                    <h4 slot="header">队伍编号：{{ recruit.team_id }}
+                    <h4 slot="header">队伍编号：{{ recruit.team.number }}
                         <b-badge variant="info" v-for="(tag, index) in recruit.tags.split(',')" :key="index">{{ tag }}</b-badge>
                     </h4>
                     <b-row :no-gutters="true">
@@ -143,7 +143,7 @@
                     this.errors = [];
                     axios.delete('/api/recruit/' + recruit.id).then(response => {
                         this.errors = [];
-                        if (response.data.id) {
+                        if (response.data.data) {
                             this.errors = [];
                             this.get();
                             this.modalShow = false;

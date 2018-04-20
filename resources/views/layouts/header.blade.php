@@ -19,26 +19,32 @@
             </ul>
             <ul class="navbar-nav">
                 @if (auth()->check())
+                    <?php
+                    /** @var \App\User $user */
+                    $user = auth()->user();
+                    ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/home') }}">欢迎您：{{ auth()->user()->name }}</a>
+                        <a class="nav-link" href="{{ url('/home') }}">欢迎您：{{ $user->name }}</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item @if(request()->is('home')) active @endif">
                         <a class="nav-link" href="{{ url('/home') }}">个人中心</a>
                     </li>
-                    @if (auth()->user()->isAdmin())
-                        <li class="nav-item">
+                    @if ($user->isAdmin())
+                        <li class="nav-item @if(request()->is('admin')) active @endif">
                             <a class="nav-link" href="{{ url('/admin') }}">后台管理</a>
                         </li>
                     @endif
                     <li>
-                        <form action="{{ url('/logout') }}" method="POST">
+                        <form action="{{ route('logout') }}" method="POST">
                             {{ csrf_field() }}
-                            <button type="submit" class="btn btn-default navbar-btn">注销</button>
+                            <button type="submit" class="btn btn-outline-secondary navbar-btn">注销</button>
                         </form>
                     </li>
                 @else
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ action('Auth\LoginController@login') }}">CAS登录</a>
+                        <form action="{{ route('login') }}" method="GET">
+                            <button type="submit" class="btn btn-outline-secondary navbar-btn">CAS登录</button>
+                        </form>
                     </li>
                 @endif
             </ul>

@@ -12,11 +12,11 @@
 </head>
 
 <body>
-    @include('index.layouts.navbar')
+    @include('layouts.header')
     @include('index.layouts.jumbotron')
 
     <main id="main">
-        <div class="container">
+        <div class="container-fluid">
             @yield('main')
         </div>
     </main>

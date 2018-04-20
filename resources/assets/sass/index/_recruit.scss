@@ -1,99 +1,49 @@
 .mcm-recruit {
-  .options > div {
-    margin-bottom: 18px;
+  .mcm-recruit-controls {
+    margin-bottom: .5em;
   }
 
-  .options .btn {
-    border-radius: 0;
-  }
-
-  .panel {
-    padding: 18px;
+  .card {
+    margin-bottom: 1.25em;
     border: none;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
-    border-radius: 0;
 
-    @media (min-width: 768px) {
-      height: 282px;
-    }
+    .card-body {
+      padding: 1.15em;
+      overflow: hidden;
 
-    @media (min-width: 992px) {
-      height: 230px;
-    }
-
-    .panel-heading {
-      padding: 0;
-      background-color: initial;
-      border-bottom: none;
-
-      .panel-title {
-        height: 24px;
-        line-height: 24px;
-        overflow: hidden;
+      &:hover {
+        overflow: visible;
       }
 
-      .label {
-        border-radius: 0;
+      @media (min-width: 768px) {
+        height: 14em;
       }
 
-      .created-at {
-        font-size: 12px;
+      @media (min-width: 992px) {
+        height: 16em;
       }
-    }
 
-    .panel-body {
-      padding: 4px 0 0;
-      font-size: 12px;
-
-      .row {
-        margin-left: 0;
-        margin-right: 0;
-        line-height: 24px;
-        max-height: 96px;
+      .card-title {
+        font-size: 1.1em;
+        line-height: 1;
         overflow: hidden;
 
-        .item-title {
-          font-weight: bold;
-          padding-left: 0;
-          padding-right: 0;
-        }
-
-        .item-content {
-          padding-left: 0;
-          padding-right: 0;
+        .mcm-recruit-card-created-at {
+          font-weight: normal;
         }
       }
-    }
-  }
 
-  .modal {
-    .modal-content {
-      border: none;
-      border-radius: 0;
-      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
-    }
+      .mcm-recruit-card-content {
+        font-size: .85em;
 
-    .modal-body {
-      form {
-        margin-bottom: -10px;
-      }
+        & > div {
+          margin-bottom: 0.5em;
 
-      textarea.form-control {
-        resize: vertical;
-      }
-
-      textarea.form-control,
-      input[type="text"].form-control,
-      button.btn {
-        border-radius: 0;
-      }
-
-      button.btn[type="submit"] {
-        background-color: #2e8de6;
-        color: #fff;
-
-        &:hover {
-          background-color: #2675bf;
+          & > div:first-child {
+            margin-right: 1em;
+            font-weight: bold;
+          }
         }
       }
     }

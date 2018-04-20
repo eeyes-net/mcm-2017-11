@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Index;
 
 use App\Http\Controllers\Controller;
 use App\Match;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
@@ -17,7 +18,7 @@ class MatchController extends Controller
             $applied_matches_id = $user->matches_id;
             $leading_teams_id = $user->leading_teams_id;
         }
-        $matches = Cache::tags('matches')->remember('matches' . request('page'), 1440, function () {
+        $matches = Cache::tags('matches')->remember('matches_page_' . Paginator::resolveCurrentPage(), 1440, function () {
             return Match::withCount('teams')->ordered()->paginate(12);
         });
         return view('index.match.index', compact(

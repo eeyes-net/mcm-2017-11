@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    @include('home.layouts.header')
+    @include('layouts.header')
 
     <div class="container-fluid">
         <div class="row" id="home">

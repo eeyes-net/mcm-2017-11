@@ -1,46 +1,36 @@
 .mcm-match {
-  .panel {
-    padding: 18px;
+  .card {
+    margin-bottom: 1.25em;
     border: none;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
-    border-radius: 0;
 
-    .panel-heading {
-      padding: 0;
-      background-color: initial;
-      border-bottom: none;
+    .card-body {
+      padding: 1.4em 1.15em 1.15em;
 
-      .panel-title {
-        height: 24px;
-        line-height: 24px;
+      .card-title {
+        height: 1em;
+        font-size: 1.1em;
+        line-height: 1;
         overflow: hidden;
       }
-    }
-
-    .panel-body {
-      padding: 4px 0 0;
 
       .expires-at {
-        font-size: 12px;
+        font-size: .8em;
+        margin-bottom: .8em;
 
         span {
           display: inline-block;
         }
-
       }
 
       .team-count {
         display: inline-block;
         margin-left: .5em;
-        font-size: 12px;
+        font-size: .8em;
 
         span {
           display: inline-block;
         }
-      }
-
-      .btn {
-        border-radius: 0;
       }
     }
   }

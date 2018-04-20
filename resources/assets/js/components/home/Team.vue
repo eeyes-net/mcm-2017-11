@@ -9,7 +9,7 @@
         <layouts-error :show="!modalCreateShow && !modalEditShow" :errors="errors"></layouts-error>
 
         <b-card v-for="team in teams" :key="team.id">
-            <h4 class="card-title">队伍编号：{{ team.team_id ? team.team_id : '未分配' }}
+            <h4 class="card-title">队伍编号：{{ team.number }}
                 <span class="float-right">
                     <b-button size="sm" @click="edit(team)" v-if="team.is_lead">编辑成员</b-button>
                     <!--<b-button size="sm" variant="primary" @click="verify(team)" v-if="!team.is_verified">同意邀请</b-button>-->

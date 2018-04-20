@@ -1,0 +1,52 @@
+.navbar-light {
+  color: #2c312f;
+  background-color: #fff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.20);
+  overflow: hidden;
+
+  .navbar-collapse.collapsing {
+    overflow: initial;
+  }
+
+  .navbar-nav .nav-item {
+    position: relative;
+
+    &.active .nav-link {
+      &::after,
+      &:hover::after {
+        content: "";
+        display: block;
+        position: absolute;
+        left: -1rem;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background-color: #8ca4ba;
+      }
+
+      @media (min-width: 768px) {
+        &::after,
+        &:hover::after {
+          content: "";
+          display: block;
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: initial;
+          bottom: -0.5rem;
+          width: initial;
+          height: 4px;
+          background-color: #8ca4ba;
+        }
+      }
+    }
+  }
+}
+
+.pagination {
+  flex-wrap: wrap;
+
+  .page-item {
+    margin: 0 .35em .7em;
+  }
+}

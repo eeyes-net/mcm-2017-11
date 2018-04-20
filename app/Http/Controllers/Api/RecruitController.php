@@ -12,6 +12,7 @@ use App\Recruit;
 use App\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class RecruitController extends Controller
 {
@@ -51,9 +52,7 @@ class RecruitController extends Controller
     public function currentUser()
     {
         $user = Auth::user();
-        // 只有队长显示自己队伍的招募
-        $team_ids = $user->teams()->wherePivot('position', Team::USER_POSITION_LEADER)->pluck('teams.id');
-        $recruits = Recruit::whereIn('team_id', $team_ids)->get();
+        $recruits = Recruit::with('team')->whereIn('team_id', $user->leading_teams_id)->get();
         return RecruitResource::collection($recruits);
     }
 
@@ -86,6 +85,7 @@ class RecruitController extends Controller
         $data['members'] = implode(',', $team->users()->pluck('name')->toArray());
         $recruit = new Recruit($data);
         $recruit = $team->recruits()->save($recruit);
+        Cache::tags('recruits')->flush();
         return new RecruitResource($recruit);
     }
 
@@ -108,6 +108,7 @@ class RecruitController extends Controller
         $data['tags'] = implode(',', $request->post('tags'));
         $data['members'] = implode(',', $team->users()->pluck('name')->toArray());
         $recruit->update($data);
+        Cache::tags('recruits')->flush();
         return new RecruitResource($recruit);
     }
 
@@ -123,6 +124,7 @@ class RecruitController extends Controller
     public function destroy(Destroy $request, Recruit $recruit)
     {
         $recruit->delete();
+        Cache::tags('recruits')->flush();
         return new RecruitResource($recruit);
     }
 }

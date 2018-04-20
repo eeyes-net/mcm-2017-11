@@ -25,5 +25,6 @@ mix
     .sass('resources/assets/sass/index.scss', 'public/css')
     .js('resources/assets/js/home.js', 'public/js')
     .sass('resources/assets/sass/home.scss', 'public/css')
+    .version()
     .sourceMaps()
 ;

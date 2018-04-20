@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-alert variant="danger" dismissible :show="show && formattedError.length > 0"><span v-for="error in formattedError">{{ error }}<br></span></b-alert>
+        <b-alert variant="danger" dismissible :show="show && formattedErrors.length > 0"><span v-for="error in formattedErrors">{{ error }}<br></span></b-alert>
     </div>
 </template>
 
@@ -18,45 +18,58 @@
             }
         },
         computed: {
-            formattedError() {
+            formattedErrors() {
                 if (!this.show) {
                     return [];
                 }
                 let errors = this.errors;
                 if (errors instanceof Array) {
                     // errors is response.data.data
-                    return _.flatten(_.toArray(errors));
+                    return this.flattenArray(errors);
                 } else if (errors instanceof Error) {
                     // errors is error
-                    if (errors.message === 'Request failed with status code 422' && errors.response) {
-                        if (errors.response.data && errors.response.data.errors) {
-                            return _.flatten(_.toArray(errors.response.data.errors));
-                        } else {
-                            return ['出现了一些问题，请联系管理员。错误信息：' + errors.message + ' (' + errors.response.statusText + ')'];
-                        }
-                    } else {
-                        if (errors.response) {
-                            return ['出现了一些问题，请联系管理员。错误信息：' + errors.message + ' (' + errors.response.statusText + ')'];
-                        } else {
-                            return ['出现了一些问题，请联系管理员。错误信息：' + errors.message];
-                        }
-                    }
+                    return this.errorToArray(errors);
                 } else if (errors instanceof Object) {
-                    if (errors.data instanceof Object) {
+                    if (errors.data instanceof Object && errors.request instanceof XMLHttpRequest) {
                         // errors is response
-                        if (errors.data.message === 'Request failed with status code 422') {
-                            return _.flatten(_.toArray(errors.data.errors));
-                        } else {
-                            return ['出现了一些问题，请联系管理员。错误信息：' + errors.message];
-                        }
-                    } else if (errors.message === 'Request failed with status code 422') {
-                        // errors is response.data
-                        return _.flatten(_.toArray(errors.response.data.errors));
+                        return this.responseToArray(errors);
                     } else {
-                        return ['出现了一些未知问题，请联系管理员。'];
+                        // errors is response.data
+                        return this.responseDataToArray(errors);
                     }
                 } else {
                     return ['出现了一些未知问题，请联系管理员。'];
+                }
+            }
+        },
+        methods: {
+            flattenArray(errors) {
+                return _.flatten(_.toArray(errors));
+            },
+            errorToArray(error) {
+                if (error.response) {
+                    return this.responseToArray(error.response);
+                } else {
+                    return ['出现了一些问题，请联系管理员。错误信息：' + error.message];
+                }
+            },
+            responseToArray(response) {
+                if (response.data) {
+                    return this.responseDataToArray(response.data);
+                } else {
+                    return ['出现了一些问题，请联系管理员。错误信息：' + response.status + ' ' + response.statusText];
+                }
+            },
+            responseDataToArray(data) {
+                if (data.errors) {
+                    return this.flattenArray(data.errors);
+                } else if (data.message) {
+                    return [data.message];
+                } else {
+                    return _.concat(
+                        ['出现了一些问题，请联系管理员。错误信息：'],
+                        this.flattenArray(data)
+                    );
                 }
             }
         }

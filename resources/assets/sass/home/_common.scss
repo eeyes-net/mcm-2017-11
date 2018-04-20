@@ -23,67 +23,7 @@ body > header {
   padding-right: inherit;
 }
 
-.navbar {
-  color: #2c312f;
-  background-color: #fff;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.20);
-
-  .navbar-nav > li.active > a {
-    background-color: inherit;
-
-    &:hover {
-      background-color: inherit;
-    }
-
-    &::after,
-    &:hover::after {
-      content: "";
-      display: block;
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 4px;
-      background-color: #8ca4ba;
-    }
-
-    @media (min-width: 768px) {
-      &::after,
-      &:hover::after {
-        content: "";
-        display: block;
-        position: absolute;
-        left: 15px;
-        right: 15px;
-        top: initial;
-        bottom: 0;
-        width: initial;
-        height: 4px;
-        background-color: #8ca4ba;
-      }
-    }
-  }
-
-  .navbar-nav > li {
-    .navbar-text,
-    form {
-      @media (min-width: 768px) {
-        margin-right: 15px;
-        margin-left: 15px;
-      }
-    }
-
-    .navbar-btn {
-      border: 1px solid #ccc;
-      border-radius: 0;
-      background-color: inherit;
-
-      &:hover {
-        background-color: inherit;
-      }
-    }
-  }
-}
+@import "../layouts/common";
 
 .sidebar {
   position: fixed;
