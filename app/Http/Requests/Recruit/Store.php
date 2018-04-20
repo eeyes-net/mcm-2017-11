@@ -39,7 +39,7 @@ class Store extends FormRequest
     {
         $validator->after(function (Validator $validator) {
             $user = Auth::user();
-            $team_id = $this->query('team_id');
+            $team_id = $this->post('team_id');
             /** @var \App\Team $team */
             $team = $user->teams()->find($team_id);
             if (!$team) {

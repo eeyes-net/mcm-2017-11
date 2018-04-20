@@ -13,7 +13,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \Illuminate\Support\Carbon::serializeUsing(function (\Carbon\Carbon $carbon) {
+            $result = get_object_vars($carbon);
+            $result['str'] = $carbon->toDateTimeString();
+            $result['diff'] = $carbon->diffForHumans();
+            return $result;
+        });
     }
 
     /**
