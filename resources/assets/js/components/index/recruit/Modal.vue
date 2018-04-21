@@ -8,7 +8,7 @@
             <b-form-group label="选择队伍">
                 <div class="d-sm-flex flex-row">
                     <b-form-select v-model="form.team_id" :options="teamOptions" class="mr-sm-2 mb-2 mb-sm-0"></b-form-select>
-                    <b-btn variant="outline-primary">创建新队伍</b-btn>
+                    <a class="btn btn-outline-primary" href="/home#new_team" target="_blank">创建新队伍</a>
                 </div>
             </b-form-group>
             <b-form-group label="队伍信息">

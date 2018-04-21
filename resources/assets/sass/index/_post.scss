@@ -58,14 +58,17 @@
   .modal {
     .modal-header {
       padding: 1.75em 1.75em 1em;
+      border-bottom: 1px solid #e5e5e5;
 
-      h5 {
-        margin-bottom: 0;
-      }
+      .modal-title {
+        h5 {
+          margin-bottom: 0;
+        }
 
-      .post-date {
-        color: #7e838b;
-        font-size: .8em;
+        .post-date {
+          color: #7e838b;
+          font-size: .8em;
+        }
       }
     }
 

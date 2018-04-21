@@ -8,7 +8,7 @@
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item @if(request()->is('/') || request()->is('post') || request()->is('post/*')) active @endif">
-                    <a class="nav-link" href="{{ url('/post') }}">公告</a>
+                    <a class="nav-link" href="{{ url('/') }}">公告</a>
                 </li>
                 <li class="nav-item @if(request()->is('match')) active @endif">
                     <a class="nav-link" href="{{ url('/match') }}">竞赛报名</a>
