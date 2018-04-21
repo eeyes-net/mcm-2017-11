@@ -6,7 +6,7 @@ let vmData = {
 let vm = new Vue({
     el: '#main',
     data: vmData,
-    method: {
+    methods: {
         onError() {
             setTimeout(function () {
                 location.href = '/post/' + postId;
