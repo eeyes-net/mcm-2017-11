@@ -45,10 +45,6 @@
                 <b-col :cols="12" :md="3" :lg="2" class="font-weight-bold">教练姓名</b-col>
                 <b-col :cols="12" :md="9" :lg="10">{{ user.coach_name }}</b-col>
             </b-row>
-            <b-row v-show="user.group === 'admin'">
-                <b-col :cols="12" :md="3" :lg="2" class="font-weight-bold">用户组</b-col>
-                <b-col :cols="12" :md="9" :lg="10">管理员（<a href="/admin" target="_blank">点击进入后台管理</a>）</b-col>
-            </b-row>
         </b-card>
 
         <b-modal title="编辑个人信息" class="user-edit-modal" v-model="modalShow" ok-title="保存" cancel-title="取消" @ok="update" @hidden="modalHidden">

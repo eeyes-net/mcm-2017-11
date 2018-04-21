@@ -64,6 +64,10 @@ body {
 .mcm-team-info-table {
   font-size: .9em;
 
+  .table {
+    margin-bottom: 0;
+  }
+
   &.mcm-team-info-table-full-info .table {
     min-width: 768px;;
   }
@@ -71,11 +75,9 @@ body {
   th {
     border-top: none;
     border-bottom: 1px solid #e9eef5;
-    padding: .7em 0;
   }
 
   td {
     border: none;
-    padding: .7em 0;
   }
 }

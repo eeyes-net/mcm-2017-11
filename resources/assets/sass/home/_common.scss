@@ -1,107 +1,57 @@
-@mixin transition {
-  transition: 0.2s ease-in all;
-  -moz-transition: 0.2s ease-in all;
-  -webkit-transition: 0.2s ease-in all;
-  -o-transition: 0.2s ease-in all;
-}
-
-html {
-  font-size: 14px;
-}
-
 body {
   background-color: #eceff3;
-  font-family: "PingFang SC", "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", sans-serif;
-  padding-top: 50px;
 }
 
-a {
-  color: #47494e;
-}
+#home {
+  .sidebar {
+    position: fixed;
+    top: 3.5rem;
+    bottom: 0;
+    left: 0;
+    padding: 20px 0;
+    background-color: #2d435a;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 1000;
 
-body > header {
-  padding-right: inherit;
-}
-
-@import "../layouts/common";
-
-.sidebar {
-  position: fixed;
-  top: 3.5rem;
-  bottom: 0;
-  left: 0;
-  padding: 20px 0;
-  background-color: #2d435a;
-  overflow-x: hidden;
-  overflow-y: auto;
-  z-index: 1000;
-
-  .nav-pills {
-    color: #fff;
-
-    .nav-link {
-      padding: 1em 0;
-      display: block;
-      text-align: center;
-      border-radius: 0;
-
-      &.active {
-        color: #47494e;
-        background-color: #eceff3;
-      }
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-
-  @media (max-width: 576px) {
-    display: none;
-  }
-}
-
-textarea.form-control,
-input[type="text"].form-control,
-button.btn,
-select.form-control {
-  border-radius: 0;
-}
-
-.modal {
-  .modal-content {
-    border: none;
-    border-radius: 0;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
-  }
-
-  .modal-body {
-    form {
-      margin-bottom: -10px;
-    }
-
-    textarea.form-control {
-      resize: vertical;
-    }
-
-    button.btn[type="submit"] {
-      background-color: #2e8de6;
+    .nav-pills {
       color: #fff;
 
-      &:hover {
-        background-color: #2675bf;
+      .nav-link {
+        padding: 1em 0;
+        display: block;
+        text-align: center;
+        border-radius: 0;
+
+        &.active {
+          color: #47494e;
+          background-color: #eceff3;
+        }
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  #main {
+    padding-top: 1em;
+
+    .mcm-home {
+      .mcm-home-block {
+        margin-bottom: 4em;
+
+        h2 {
+          font-size: 1.3em;
+          margin: 1em 0;
+        }
       }
     }
   }
 }
 
-.home-index {
-  & > div {
-    margin-bottom: 4em;
-  }
-
-  h2 {
-    font-size: 1.3em;
-    margin: 1em 0;
-  }
+.footer {
+  padding-left: 0;
+  padding-right: 0;
 }

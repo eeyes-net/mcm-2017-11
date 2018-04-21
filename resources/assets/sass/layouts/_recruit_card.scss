@@ -1,0 +1,45 @@
+.card {
+  margin-bottom: 1.25em;
+  border: none;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
+
+  .card-body {
+    padding: 1.15em;
+    overflow: hidden;
+
+    &:hover {
+      overflow: visible;
+    }
+
+    @media (min-width: 768px) {
+      height: 14em;
+    }
+
+    @media (min-width: 992px) {
+      height: 16em;
+    }
+
+    .card-title {
+      font-size: 1.1em;
+      line-height: 1;
+      overflow: hidden;
+
+      .mcm-recruit-card-created-at {
+        font-weight: normal;
+      }
+    }
+
+    .mcm-recruit-card-content {
+      font-size: .85em;
+
+      & > div {
+        margin-bottom: 0.5em;
+
+        & > div:first-child {
+          width: 5em;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

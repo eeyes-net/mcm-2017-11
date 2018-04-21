@@ -1,34 +1,10 @@
 .home-team {
   .card {
     margin-bottom: 1em;
-    border: none;
-    border-radius: 0;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
-  }
 
-  .card-title {
-    margin: 1.5em 0;
-    font-size: 1em;
-  }
-
-  .card-body {
-    padding-top: .3em;
-    padding-bottom: .3em;
-
-    .table {
-      font-size: .9em;
-      min-width: 576px;
-
-      th {
-        border-top: none;
-        border-bottom: 1px solid #e9eef5;
-        padding: .7em 0;
-      }
-
-      td {
-        border: none;
-        padding: .7em 0;
-      }
+    .card-title {
+      font-size: 1em;
+      line-height: 2;
     }
   }
 }

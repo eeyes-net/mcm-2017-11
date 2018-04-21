@@ -16,7 +16,7 @@
                     <b-button size="sm" variant="danger" @click="destroy(team)">退出队伍</b-button>
                 </span>
             </h4>
-            <b-table small responsive :items="team.users" :fields="fields"></b-table>
+            <index-layouts-team-info :team="team" :is-full-info="true"></index-layouts-team-info>
         </b-card>
 
         <b-modal title="创建新队伍" class="team-create-modal" v-model="modalCreateShow" ok-title="创建" cancel-title="取消" @ok="store" @hidden="modalHidden()">

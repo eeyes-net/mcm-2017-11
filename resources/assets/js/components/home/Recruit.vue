@@ -5,28 +5,8 @@
         <layouts-error :show="!modalShow" :errors="errors"></layouts-error>
 
         <b-row>
-            <b-col sm="6" md="4" lg="3" v-for="recruit in recruits" :key="recruit.id">
-                <b-card>
-                    <h4 slot="header">队伍编号：{{ recruit.team.number }}
-                        <b-badge variant="info" v-for="(tag, index) in recruit.tags.split(',')" :key="index">{{ tag }}</b-badge>
-                    </h4>
-                    <b-row :no-gutters="true">
-                        <b-col cols="3" sm="5" xl="4">当前队员：</b-col>
-                        <b-col cols="9" sm="7" xl="8">{{ recruit.members }}</b-col>
-                    </b-row>
-                    <b-row :no-gutters="true">
-                        <b-col cols="3" sm="5" xl="4">队伍描述：</b-col>
-                        <b-col cols="9" sm="7" xl="8">{{ recruit.description }}</b-col>
-                    </b-row>
-                    <b-row :no-gutters="true">
-                        <b-col cols="3" sm="5" xl="4">联系方式：</b-col>
-                        <b-col cols="9" sm="7" xl="8">{{ recruit.contact }}</b-col>
-                    </b-row>
-                    <div class="home-recruit-edit-cover">
-                        <button class="edit" @click="edit(recruit)">编辑</button>
-                        <button class="delete" @click="destroy(recruit)">删除</button>
-                    </div>
-                </b-card>
+            <b-col md="6" lg="4" v-for="recruit in recruits" :key="recruit.id">
+                <home-recruit-card :recruit="recruit" @edit="edit" @destroy="destroy"></home-recruit-card>
             </b-col>
         </b-row>
 
@@ -40,7 +20,7 @@
                     <b-form-checkbox-group v-model="form.tags" :options="recruitTagOptions"></b-form-checkbox-group>
                 </b-form-group>
                 <b-form-group horizontal :label-cols="3" label="当前队员">
-                    <b-form-input placeholder="请留下您的队伍中当前队员信息" v-model="form.members" :rows="3"></b-form-input>
+                    <b-form-input placeholder="请留下您的队伍中当前队员信息" v-model="form.members" :rows="3" disabled></b-form-input>
                 </b-form-group>
                 <b-form-group horizontal :label-cols="3" label="队伍描述">
                     <b-form-textarea placeholder="请添加您的队伍描述，不超过48个字" v-model="form.description" :rows="3"></b-form-textarea>
@@ -75,6 +55,11 @@
             this.get();
             this.getRecruitTags();
         },
+        computed: {
+            recruitsbyId() {
+                return _.keyBy(this.recruits, 'id');
+            }
+        },
         methods: {
             get() {
                 this.errors = [];
@@ -103,10 +88,11 @@
                 });
             },
             edit(recruit) {
+                recruit = this.recruitsbyId[recruit.id];
                 this.errors = [];
                 this.form.id = recruit.id;
                 this.form.team_id = recruit.team_id;
-                this.form.tags = recruit.tags.split(',');
+                this.form.tags = recruit.tags;
                 this.form.members = recruit.members;
                 this.form.description = recruit.description;
                 this.form.contact = recruit.contact;

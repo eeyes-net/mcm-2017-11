@@ -1,17 +1,9 @@
 .home-user {
-  .card {
-    border: none;
-    border-radius: 0;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
-  }
-
-  .card-body {
-    padding-top: .3em;
-    padding-bottom: .3em;
-  }
-
   .row {
-    margin-top: .7em;
     margin-bottom: .7em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }

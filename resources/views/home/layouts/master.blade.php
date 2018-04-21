@@ -16,17 +16,17 @@
 
     <div class="container-fluid">
         <div class="row" id="home">
-            <nav class="col-sm-3 col-md-2 d-sm-block sidebar">
+            <nav class="col-md-2 col-sm-3 d-sm-block d-none sidebar">
                 <home-layouts-sidebar></home-layouts-sidebar>
             </nav>
-            <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+            <main role="main" class="col-md-10 col-sm-9 ml-sm-auto" id="main">
                 @yield('main')
             </main>
         </div>
         <div class="row">
-            <footer class="footer col-sm-9 ml-sm-auto col-md-10 pt-3">
+            <div class="col-md-10 col-sm-9 ml-sm-auto footer">
                 @include('layouts.footer')
-            </footer>
+            </div>
         </div>
     </div>
 

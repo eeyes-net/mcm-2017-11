@@ -1,14 +1,7 @@
+@import "layouts/variables";
 @import "~bootstrap/scss/bootstrap";
+@import "layouts/common";
 @import "home/common";
 @import "home/user";
 @import "home/team";
 @import "home/recruit";
-
-body {
-  padding-top: 3.5rem;
-}
-
-.footer {
-  padding-left: 0;
-  padding-right: 0;
-}
