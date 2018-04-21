@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>西安交通大学数学建模官方网站</title>
     <link rel="icon" href="/favicon.ico">
-    <link href="/css/index.css" rel="stylesheet">
+    <link href="{{ mix('/css/index.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -22,6 +22,6 @@
     </main>
 
     @include('layouts.footer')
-    <script src="/js/index.js"></script>
+    <script src="{{ mix('/js/index.js') }}"></script>
 </body>
 </html>

@@ -78,9 +78,7 @@
         },
         methods: {
             getRecruitTags() {
-                this.errors = [];
                 axios.get('/api/recruit/tags').then(response => {
-                    this.errors = [];
                     if (response.data.data) {
                         this.recruitTagOptions = response.data.data;
                     } else {
