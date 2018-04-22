@@ -9,4 +9,5 @@ return [
     'team_users_count_limit' => 3,
     'team_recruits_count_limit' => 1,
     'user_teams_count_limit' => 5,
+    'log_visit' => (bool)env('MCM_LOG_VISIT', true),
 ];

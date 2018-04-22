@@ -13,7 +13,7 @@
 
 Route::namespace('Api')->group(function () {
     // Non-login APIs
-    Route::middleware('throttle:6000,1')->group(function () {
+    Route::middleware(['throttle:6000,1', 'log'])->group(function () {
         Route::prefix('post')->group(function () {
             Route::get('/', 'PostController@index');
             Route::get('{post}', 'PostController@show');
@@ -28,7 +28,7 @@ Route::namespace('Api')->group(function () {
         });
     });
     // User's APIs
-    Route::middleware(['auth', 'throttle:60,1'])->group(function () {
+    Route::middleware(['auth', 'throttle:60,1', 'log:true'])->group(function () {
         Route::prefix('user')->group(function () {
             Route::get('/', 'UserController@show');
             Route::put('/', 'UserController@update');
