@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Libraries;
 
 use App\Match;
 use App\Post;
@@ -8,45 +8,20 @@ use App\Recruit;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 
-class GenerateSitemap extends Command
+class GenerateSitemap
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'sitemap';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Generate sitemap.xml';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
+    public static function sitemap()
     {
         /** @var \Roumen\Sitemap\Sitemap $sitemap */
         $sitemap = App::make("sitemap");
+        $sitemap->setCache(null, 1440);
+        if ($sitemap->isCached()) {
+            return $sitemap;
+        }
 
         $page = null;
         do {
-            $paginator = Post::latest()->paginate(12, ['id', 'created_at', 'updated_at'], 'page', $page);
+            $paginator = Post::latest()->paginate(12, ['id', 'title', 'created_at', 'updated_at'], 'page', $page);
             $page = $paginator->currentPage();
 
             $item = $paginator[0];
@@ -57,7 +32,7 @@ class GenerateSitemap extends Command
             }
 
             foreach ($paginator as $item) {
-                $sitemap->add(url('/post/' . $item->id), $item->updated_at ? $item->updated_at->toAtomString() : $item->created_at->toAtomString(), 'weekly');
+                $sitemap->add(url('/post/' . $item->id), $item->updated_at ? $item->updated_at->toAtomString() : $item->created_at->toAtomString(), null, 'weekly', [], $item->title);
             }
 
             ++$page;
@@ -93,6 +68,6 @@ class GenerateSitemap extends Command
             ++$page;
         } while ($paginator->hasMorePages());
 
-        $sitemap->store('xml', 'sitemap');
+        return $sitemap;
     }
 }

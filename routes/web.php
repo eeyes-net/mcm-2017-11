@@ -34,3 +34,7 @@ Route::view('home', 'home.index')->middleware(['auth', 'log']);
 Route::view('admin/{path?}', 'admin.admin')
     ->where('path', '.*')
     ->middleware(['auth', 'admin']);
+
+Route::get('sitemap.xml', function () {
+    return \App\Libraries\GenerateSitemap::sitemap()->render();
+});
