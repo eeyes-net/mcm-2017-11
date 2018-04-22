@@ -10,6 +10,20 @@ use Illuminate\Support\Facades\App;
 
 class GenerateSitemap
 {
+    public static function getPostImages($html) {
+        $result = [];
+        if (preg_match_all('/<img.*?>/su', $html, $matches)) {
+            foreach ($matches as $match) {
+                if (preg_match('/src="(.*?)"/u', $match[0], $matches1)) {
+                    $result[] = [
+                        'url' => url($matches1[1]),
+                    ];
+                }
+            }
+        }
+        return $result;
+    }
+
     public static function sitemap()
     {
         /** @var \Roumen\Sitemap\Sitemap $sitemap */
@@ -21,7 +35,7 @@ class GenerateSitemap
 
         $page = null;
         do {
-            $paginator = Post::latest()->paginate(12, ['id', 'title', 'created_at', 'updated_at'], 'page', $page);
+            $paginator = Post::latest()->paginate(12, ['id', 'title', 'content', 'created_at', 'updated_at'], 'page', $page);
             $page = $paginator->currentPage();
 
             $item = $paginator[0];
@@ -32,7 +46,7 @@ class GenerateSitemap
             }
 
             foreach ($paginator as $item) {
-                $sitemap->add(url('/post/' . $item->id), $item->updated_at ? $item->updated_at->toAtomString() : $item->created_at->toAtomString(), null, 'weekly', [], $item->title);
+                $sitemap->add(url('/post/' . $item->id), $item->updated_at ? $item->updated_at->toAtomString() : $item->created_at->toAtomString(), null, 'weekly', self::getPostImages($item->content), $item->title);
             }
 
             ++$page;
