@@ -16,7 +16,7 @@ class Team extends Resource
     {
         return [
             'id' => $this->id,
-            'number' => empty($this->team_id) ? '未分配' : $this->team_id,
+            'number' => empty($this->number) ? '未分配' : $this->number,
             'users' => User::collection($this->whenLoaded('users')),
         ];
     }

@@ -43,8 +43,7 @@ class Team extends Model
         } else {
             $user_id = $user;
         }
-        $leader = $this->users()->wherePivot('position', Team::USER_POSITION_LEADER)->first();
-        return $leader->id === $user_id;
+        return $this->users()->wherePivot('position', Team::USER_POSITION_LEADER)->wherePivot('user_id', $user_id)->exists();
     }
 
     /**
@@ -58,5 +57,9 @@ class Team extends Model
             $user = $user->id;
         }
         return $this->users()->where('user_id', $user)->exists();
+    }
+
+    public function getNumberAttribute() {
+        return $this->team_id;
     }
 }
