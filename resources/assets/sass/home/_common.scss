@@ -8,18 +8,17 @@ body {
     top: 3.5rem;
     bottom: 0;
     left: 0;
-    padding: 20px 0;
+    padding: 1.25rem 0;
     background-color: #2d435a;
     overflow-x: hidden;
     overflow-y: auto;
     z-index: 1000;
 
     .nav-pills {
-      color: #fff;
-
       .nav-link {
-        padding: 1em 0;
         display: block;
+        padding: 1em 0;
+        color: #fff;
         text-align: center;
         border-radius: 0;
 
@@ -49,9 +48,4 @@ body {
       }
     }
   }
-}
-
-.footer {
-  padding-left: 0;
-  padding-right: 0;
 }

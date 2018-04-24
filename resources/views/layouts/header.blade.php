@@ -7,7 +7,7 @@
 
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item @if(request()->is('/') || request()->is('post') || request()->is('post/*')) active @endif">
+                <li class="nav-item @if(request()->is('/') || request()->is('post/*')) active @endif">
                     <a class="nav-link" href="{{ url('/') }}">公告</a>
                 </li>
                 <li class="nav-item @if(request()->is('match')) active @endif">
@@ -30,7 +30,7 @@
                         <a class="nav-link" href="{{ url('/home') }}">个人中心</a>
                     </li>
                     @if ($user->isAdmin())
-                        <li class="nav-item @if(request()->is('admin')) active @endif">
+                        <li class="nav-item @if(request()->is('admin') || request()->is('admin/*')) ) active @endif">
                             <a class="nav-link" href="{{ url('/admin') }}">后台管理</a>
                         </li>
                     @endif

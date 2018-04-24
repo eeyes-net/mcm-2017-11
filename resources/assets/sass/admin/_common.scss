@@ -1,0 +1,54 @@
+body {
+  background-color: #eceff3;
+}
+
+.sidebar {
+  left: 0;
+  padding: 20px 0;
+  background-color: #2d435a;
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 1000;
+
+  @media (min-width: 576px) {
+    position: fixed;
+    top: 3.5rem;
+    bottom: 0;
+    z-index: 1000;
+    padding: 1.25rem 0;
+  }
+
+  .nav-pills {
+    .nav-link {
+      color: #fff;
+
+      &.router-link-active {
+        color: #47494e;
+        background-color: #eceff3;
+
+        &.must-exact {
+          color: #fff;
+          background-color: transparent;
+
+          &.router-link-exact-active {
+            color: #47494e;
+            background-color: #eceff3;
+          }
+        }
+      }
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+#main {
+  padding-top: .3em;
+
+  h2 {
+    font-size: 1.3em;
+    margin: 1em 0;
+  }
+}

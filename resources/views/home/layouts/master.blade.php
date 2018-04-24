@@ -23,12 +23,9 @@
                 @yield('main')
             </main>
         </div>
-        <div class="row">
-            <div class="col-md-10 col-sm-9 ml-sm-auto footer">
-                @include('layouts.footer')
-            </div>
-        </div>
     </div>
+
+    @include('layouts.admin_footer')
 
     <script src="{{ mix('/js/home.js') }}"></script>
 </body>
