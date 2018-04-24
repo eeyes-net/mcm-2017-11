@@ -76,9 +76,7 @@ Route::namespace('Api')->group(function () {
         Route::prefix('match')->group(function () {
             Route::prefix('snapshot')->group(function () {
                 Route::get('/', 'MatchSnapshotController@index');
-                Route::get('{match_snapshot}', 'MatchSnapshotController@show');
-                Route::get('{match_snapshot}/user', 'MatchSnapshotController@user');
-                Route::get('{match_snapshot}/user/export', 'MatchSnapshotController@export');
+                Route::get('download', 'MatchSnapshotController@download');
             });
             Route::get('/', 'MatchController@index');
             Route::post('/', 'MatchController@store');

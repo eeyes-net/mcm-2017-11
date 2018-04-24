@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Events\MatchesTableUpdated;
+use App\Exceptions\MatchDataException;
 use App\Http\Controllers\Controller;
+use App\Libraries\MatchDataExport;
 use App\Match;
 use App\Team;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class MatchController extends Controller
 {
@@ -106,6 +111,21 @@ class MatchController extends Controller
 
     public function snapshot(Match $match)
     {
-        return $match->makeSnapshot();
+        $errors = [];
+        try {
+            $spreadsheet = MatchDataExport::matchToSpreadsheet($match);
+        } catch (MatchDataException $e) {
+            $errors = $e->getErrors();
+            $spreadsheet = $e->getSpreadsheet();
+        }
+        $datetime = Carbon::now()->format('Ymd_His');
+        $filename = "Match_{$match->id}_{$match->title}_{$datetime}.xlsx";
+        $path = Storage::disk('match_snapshot')->path($filename);
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($path);
+        return [
+            'errors' => $errors,
+            'filename' => $filename,
+        ];
     }
 }

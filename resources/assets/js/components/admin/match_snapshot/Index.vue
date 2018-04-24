@@ -3,7 +3,7 @@
         <h2>
             竞赛快照列表
         </h2>
-        <admin-match-snapshot-table :match-snapshots="data.data" @export="exportUser"></admin-match-snapshot-table>
+        <admin-match-snapshot-table :match-snapshots="data.data" @download="download"></admin-match-snapshot-table>
         <b-pagination :total-rows="data.total" v-model="data.current_page" :per-page="data.per_page" :limit="10" @change="changePage"></b-pagination>
     </div>
 </template>
@@ -37,8 +37,8 @@
             changePage(page) {
                 this.$router.push('/admin/match?page=' + page);
             },
-            exportUser(matchSnapshot) {
-                window.open('/api/admin/match/snapshot/' + matchSnapshot.id + '/user/export');
+            download(matchSnapshot) {
+                window.open('/api/admin/match/snapshot/download?filename=' + encodeURIComponent(matchSnapshot));
             }
         }
     };

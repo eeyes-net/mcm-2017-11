@@ -79,8 +79,12 @@
             snapshot() {
                 let route = this.$router.currentRoute;
                 axios.post('/api/admin/match/' + route.params.match_id + '/snapshot').then(response => {
-                    if (response.data.id) {
-                        alert('生成快照成功');
+                    if (response.data.filename) {
+                        if (response.data.errors.length) {
+                            alert('生成快照成功，但数据存在以下问题（下载的表格中的第二张表格也有此错误信息）：\n' + response.data.errors.join('\n'));
+                        } else {
+                            alert('生成快照成功');
+                        }
                     } else {
                         alert('出现了一些问题，请重试。');
                     }
