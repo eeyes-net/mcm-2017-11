@@ -7,9 +7,17 @@ use App\Match;
 use App\Team;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class MatchDataExport
 {
+    public static function highlightRow(Worksheet $sheet, $row, $argb = 'FFFF0000')
+    {
+        $sheet->getStyle($row . ':' . $row)
+            ->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()->setARGB($argb);
+    }
+
     public static function matchToSpreadsheet(Match $match)
     {
         // ============================== 常量 ==============================
@@ -40,17 +48,17 @@ class MatchDataExport
         $sheet->setTitle('报名信息');
 
         // ============================== 表头 ==============================
-        $base_row = 1;
+        $row = 1;
         $column = 1;
-        $sheet->setCellValueByColumnAndRow($column++, $base_row, '序号');
-        $sheet->setCellValueByColumnAndRow($column++, $base_row, '队伍ID');
-        $sheet->setCellValueByColumnAndRow($column++, $base_row, '队伍编号');
+        $sheet->setCellValueByColumnAndRow($column++, $row, '序号');
+        $sheet->setCellValueByColumnAndRow($column++, $row, '队伍ID');
+        $sheet->setCellValueByColumnAndRow($column++, $row, '队伍编号');
         foreach ($positions as $position) {
             foreach ($fields as $key => $field) {
                 if ($key === 'name') {
-                    $sheet->setCellValueByColumnAndRow($column++, $base_row, $position . $field);
+                    $sheet->setCellValueByColumnAndRow($column++, $row, $position . $field);
                 } else {
-                    $sheet->setCellValueByColumnAndRow($column++, $base_row, $field);
+                    $sheet->setCellValueByColumnAndRow($column++, $row, $field);
                 }
             }
         }
@@ -59,17 +67,21 @@ class MatchDataExport
         $errors = [];
         $users_team = [];
         $index = 0;
-        $match->teams()->chunk(100, function ($teams) use (&$sheet, &$column, &$base_row, &$index, &$fields, &$users_team, &$errors, $team_users_count_limit) {
+        $match->teams()->chunk(100, function ($teams) use (&$sheet, &$column, &$row, &$index, &$fields, &$users_team, &$errors, $team_users_count_limit) {
             /** @var \App\Team $team */
             foreach ($teams as $team) {
-                $users = $team->users()->get();
+                // ============================== 新的一行 ==============================
+                ++$index;
+                ++$row;
 
                 // ============================== 异常行为检测 ==============================
+                $users = $team->users()->get();
                 if ($users->isEmpty()) {
                     $errors[] = __('队伍 :team_number（ID = :team_id）没有成员', [
                         'team_number' => $team->number,
                         'team_id' => $team->id,
                     ]);
+                    self::highlightRow($sheet, $row);
                 } elseif ($users->count() > $team_users_count_limit) {
                     $errors[] = __('队伍 :team_number（ID = :team_id）的成员数量 :count 个，超过上限 :limit', [
                         'team_number' => $team->number,
@@ -77,10 +89,11 @@ class MatchDataExport
                         'count' => $users->count(),
                         'limit' => $team_users_count_limit,
                     ]);
+                    self::highlightRow($sheet, $row);
                 }
 
                 // ============================== 用户身份排序 ==============================
-                $users = $users->sortBy(function ($user, $key) use (&$team, &$errors) {
+                $users = $users->sortBy(function ($user, $key) use (&$team, &$errors, &$sheet, &$row) {
                     switch ($user->pivot->position) {
                         case Team::USER_POSITION_LEADER:
                             return 1;
@@ -96,16 +109,16 @@ class MatchDataExport
                                 'stu_id' => $user->stu_id,
                                 'position' => $user->pivot->position,
                             ]);
+                            self::highlightRow($sheet, $row);
                             return 3;
                     }
                 })->values();
 
                 // ============================== 写入数据 ==============================
                 $column = 1;
-                ++$index;
-                $sheet->setCellValueByColumnAndRow($column++, $base_row + $index, $index);
-                $sheet->setCellValueByColumnAndRow($column++, $base_row + $index, $team->id);
-                $sheet->setCellValueByColumnAndRow($column++, $base_row + $index, $team->number);
+                $sheet->setCellValueByColumnAndRow($column++, $row, $index);
+                $sheet->setCellValueByColumnAndRow($column++, $row, $team->id);
+                $sheet->setCellValueByColumnAndRow($column++, $row, $team->number);
                 foreach ($users as $i => $user) {
                     // ============================== 异常行为检测 ==============================
                     if (isset($users_team[$user->id])) {
@@ -118,6 +131,7 @@ class MatchDataExport
                             'team_number_1' => $users_team[$user->id]['number'],
                             'team_id_1' => $users_team[$user->id]['id'],
                         ]);
+                        self::highlightRow($sheet, $row);
                     } else {
                         $users_team[$user->id] = [
                             'number' => $team->number,
@@ -135,6 +149,7 @@ class MatchDataExport
                                 'stu_id' => $user->stu_id,
                                 'position' => $user->pivot->position,
                             ]);
+                            self::highlightRow($sheet, $row);
                         }
                     } elseif ($user->pivot->position !== Team::USER_POSITION_MEMBER) {
                         $errors[] = __('队伍 :team_number（ID = :team_id）的第 :i 名成员 :name（ID = :user_id, 学号 = :stu_id）的身份 :position 不是队员', [
@@ -146,10 +161,11 @@ class MatchDataExport
                             'stu_id' => $user->stu_id,
                             'position' => $user->pivot->position,
                         ]);
+                        self::highlightRow($sheet, $row);
                     }
                     // ============================== 写入数据 ==============================
                     foreach ($fields as $key => $field) {
-                        $sheet->getCellByColumnAndRow($column++, $base_row + $index)->setValueExplicit($user->$key, DataType::TYPE_STRING);
+                        $sheet->getCellByColumnAndRow($column++, $row)->setValueExplicit($user->$key, DataType::TYPE_STRING);
                     }
                 }
             }
