@@ -39,7 +39,9 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
-        //
+        if (config('app.debug')) {
+            $this->mapTestRoutes();
+        }
     }
 
     /**
@@ -69,5 +71,20 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
+    }
+
+    /**
+     * Define the "test" routes for the application.
+     *
+     * These routes should only be load if config('app.debug') is true
+     *
+     * @return void
+     */
+    protected function mapTestRoutes()
+    {
+        Route::prefix('test')
+            ->middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/test.php'));
     }
 }
