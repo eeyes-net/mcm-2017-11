@@ -4,7 +4,7 @@
             参赛队伍列表
             <span class="float-right">
                 <b-button variant="primary" @click="allocNumber">分配编号</b-button>
-                <b-button variant="outline-info" @click="snapshot">生成快照</b-button>
+                <b-button variant="outline-info" @click="download">下载名单</b-button>
             </span>
         </h2>
         <admin-team-table :teams="teamsData.data" @showUser="showUser" @edit="edit" @destory="destory"></admin-team-table>
@@ -76,15 +76,22 @@
                     alert('出现了一些问题，请重试。');
                 });
             },
-            snapshot() {
+            download() {
                 let route = this.$router.currentRoute;
                 axios.post('/api/admin/match/' + route.params.match_id + '/snapshot').then(response => {
                     if (response.data.filename) {
                         if (response.data.errors.length) {
-                            alert('生成快照成功，但数据存在以下问题（下载的表格中的第二张表格也有此错误信息）：\n' + response.data.errors.join('\n'));
-                        } else {
-                            alert('生成快照成功');
+                            alert('生成快照成功，但数据存在以下问题（下载的表格中也包含此错误信息说明）：\n' + response.data.errors.join('\n'));
                         }
+
+                        function downloadURI(url) {
+                            let iframe = document.createElement('iframe');
+                            iframe.style.display = 'none';
+                            iframe.src = url;
+                            document.body.appendChild(iframe);
+                        }
+
+                        downloadURI('/api/admin/match/snapshot/download?filename=' + encodeURIComponent(response.data.filename));
                     } else {
                         alert('出现了一些问题，请重试。');
                     }

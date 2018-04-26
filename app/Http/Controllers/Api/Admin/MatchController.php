@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Events\MatchesTableUpdated;
 use App\Exceptions\MatchDataException;
 use App\Http\Controllers\Controller;
+use App\Libraries\AssignTeamNumber;
 use App\Libraries\MatchDataExport;
 use App\Match;
 use App\Team;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -83,30 +83,15 @@ class MatchController extends Controller
 
     public function allocNumber(Match $match)
     {
-        $team_numbers = [];
-        $team_numbers_all = $match->teams()->where('teams.team_id', '>', "''")->pluck('teams.team_id')->toArray();
-        $team_count = $match->teams()->count();
-        $team_number_available = 1;
-        $match->teams()->orderBy('id', 'asc')->chunk(100, function ($teams) use (&$team_numbers, &$team_numbers_all, &$team_count, &$team_number_available) {
-            foreach ($teams as $team) {
-                $team_number = $team->team_id;
-                if (empty($team_number) || in_array($team_number, $team_numbers)) {
-                    // TODO optimise algorithm
-                    for (; $team_number_available <= $team_count; ++$team_number_available) {
-                        $team_number_new = (string)$team_number_available;
-                        if (!in_array($team_number_new, $team_numbers_all)) {
-                            $team->team_id = $team_number_new;
-                            $team_numbers_all[] = $team_number_new;
-                            $team->save();
-                            ++$team_number_available;
-                            break;
-                        }
-                    }
-                }
-                $team_numbers[] = $team_number;
-            }
-        });
-        return $match;
+        $assignTeamNumber = new AssignTeamNumber($match);
+        if (!$assignTeamNumber->assign()) {
+            return [
+                'errors' => $assignTeamNumber->getErrors(),
+            ];
+        }
+        return [
+            'errors' => [],
+        ];
     }
 
     public function snapshot(Match $match)
@@ -118,14 +103,13 @@ class MatchController extends Controller
             $errors = $e->getErrors();
             $spreadsheet = $e->getSpreadsheet();
         }
-        $datetime = Carbon::now()->format('Ymd_His');
-        $filename = "Match_{$match->id}_{$match->title}_{$datetime}.xlsx";
-        $path = Storage::disk('match_snapshot')->path($filename);
+        $path = MatchDataExport::getPath($match);
+        Storage::disk('match_snapshot')->put($path['path'], '');
         $writer = new Xlsx($spreadsheet);
-        $writer->save($path);
+        $writer->save(Storage::disk('match_snapshot')->path($path['path']));
         return [
             'errors' => $errors,
-            'filename' => $filename,
+            'filename' => $path['path'],
         ];
     }
 }

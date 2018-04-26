@@ -5,6 +5,8 @@ namespace App\Libraries;
 use App\Exceptions\MatchDataException;
 use App\Match;
 use App\Team;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -66,23 +68,50 @@ class MatchDataExport
         // ============================== 数据 ==============================
         $errors = [];
         $users_team = [];
+        $teams_number = [];
         $index = 0;
-        $match->teams()->chunk(100, function ($teams) use (&$sheet, &$column, &$row, &$index, &$fields, &$users_team, &$errors, $team_users_count_limit) {
+        $match->teams()->chunk(100, function ($teams) use (&$sheet, &$column, &$row, &$index, &$fields, &$teams_number, &$users_team, &$errors, $team_users_count_limit) {
             /** @var \App\Team $team */
             foreach ($teams as $team) {
+                // ============================== 异常行为检测 ==============================
+                $users = $team->users()->get();
+                if ($users->isEmpty()) {
+                    Log::info(__('队伍 :team_number（ID = :team_id）没有成员', [
+                        'team_number' => $team->number,
+                        'team_id' => $team->id,
+                    ]));
+                    continue;
+                }
+
                 // ============================== 新的一行 ==============================
                 ++$index;
                 ++$row;
 
                 // ============================== 异常行为检测 ==============================
-                $users = $team->users()->get();
-                if ($users->isEmpty()) {
-                    $errors[] = __('队伍 :team_number（ID = :team_id）没有成员', [
+                if (empty($team->number)) {
+                    $errors[] = __('队伍 :team_number（ID = :team_id）的未分配编号', [
                         'team_number' => $team->number,
                         'team_id' => $team->id,
                     ]);
                     self::highlightRow($sheet, $row);
-                } elseif ($users->count() > $team_users_count_limit) {
+                } else {
+                    if (isset($teams_number[$team->number])) {
+                        $errors[] = __('队伍 :team_number（ID = :team_id）的队伍编号与队伍（ID = :team_id_1）相同', [
+                            'team_number' => $team->number,
+                            'team_id' => $team->id,
+                            'team_id_1' => $teams_number[$team->number]['team_id'],
+                        ]);
+                        self::highlightRow($sheet, $row);
+                        self::highlightRow($sheet, $teams_number[$team->number]['row']);
+                    } else {
+                        $teams_number[$team->number] = [
+                            'team_id' => $team->id,
+                            'row' => $row,
+                        ];
+                    }
+                }
+
+                if ($users->count() > $team_users_count_limit) {
                     $errors[] = __('队伍 :team_number（ID = :team_id）的成员数量 :count 个，超过上限 :limit', [
                         'team_number' => $team->number,
                         'team_id' => $team->id,
@@ -200,5 +229,30 @@ class MatchDataExport
             throw new MatchDataException($errors, $spreadsheet);
         }
         return $spreadsheet;
+    }
+
+    public static function getPath(Match $match)
+    {
+        $datetime = Carbon::now()->format('Ymd_His');
+        $filename = "{$datetime}_{$match->title}.xlsx";
+        $filename = self::sanitize_file_name($filename);
+        $dir_name = $match->id;
+        $path = $dir_name . DIRECTORY_SEPARATOR . $filename;
+        return compact('path', 'path', 'filename', 'dir_name', 'datetime');
+    }
+
+    /**
+     * Sanitizes a filename. You can use a better implement by WordPress
+     *
+     * @see https://github.com/WordPress/WordPress/blob/4.9.5/wp-includes/formatting.php#L1776
+     *
+     * @param string $filename
+     *
+     * @return mixed
+     */
+    public static function sanitize_file_name($filename)
+    {
+        $special_chars = ['\\', '/', ':', '*', '?', '"', '<', '>', '|'];
+        return str_replace($special_chars, '', $filename);
     }
 }

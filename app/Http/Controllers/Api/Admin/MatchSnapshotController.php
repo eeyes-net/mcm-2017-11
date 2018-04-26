@@ -4,23 +4,21 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Exceptions\EvilInputException;
 use App\Http\Controllers\Controller;
-use App\Match;
-use App\MatchSnapshot;
-use App\MatchSnapshotUser;
-use App\Team;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use PhpOffice\PhpSpreadsheet\Cell\DataType;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class MatchSnapshotController extends Controller
 {
     public function index()
     {
-        $files = Storage::disk('match_snapshot')->files();
+        $files = Storage::disk('match_snapshot')->allFiles();
+        array_walk($files, function (&$item) {
+            $parts = explode('/', $item);
+            $item = array_pop($parts);
+        });
+        $files = collect($files);
+        // $files = $files->sort()->values()->all(); // Storage::allFiles() has already sorted
         $pagination = new LengthAwarePaginator($files, count($files), 15);
         return $pagination;
     }
