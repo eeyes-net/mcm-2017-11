@@ -16,6 +16,7 @@ require('ckeditor');
 // CKEditor Vue Component
 Vue.component('ckeditor', require('vue-ckeditor2/src/Ckeditor.vue'));
 
+Vue.component('layouts-error', require('./components/layouts/Error.vue'));
 // Admin Vue Component
 Vue.component('admin-index', require('./components/admin/Index.vue'));
 Vue.component('admin-layouts-sidebar', require('./components/admin/layouts/Sidebar.vue'));

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Events\MatchesTableUpdated;
 use App\Exceptions\MatchDataException;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ArrayResource;
 use App\Libraries\AssignTeamNumber;
 use App\Libraries\MatchDataExport;
 use App\Match;
@@ -85,13 +86,15 @@ class MatchController extends Controller
     {
         $assignTeamNumber = new AssignTeamNumber($match);
         if (!$assignTeamNumber->assign()) {
-            return [
+            return new ArrayResource([
+                'message' => '分配编号成功，但数据存在问题',
                 'errors' => $assignTeamNumber->getErrors(),
-            ];
+            ]);
         }
-        return [
+        return new ArrayResource([
+            'message' => '分配编号成功',
             'errors' => [],
-        ];
+        ]);
     }
 
     public function snapshot(Match $match)
@@ -107,9 +110,9 @@ class MatchController extends Controller
         Storage::disk('match_snapshot')->put($path['path'], '');
         $writer = new Xlsx($spreadsheet);
         $writer->save(Storage::disk('match_snapshot')->path($path['path']));
-        return [
+        return new ArrayResource([
             'errors' => $errors,
             'filename' => $path['path'],
-        ];
+        ]);
     }
 }
