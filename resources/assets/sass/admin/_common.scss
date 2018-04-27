@@ -51,4 +51,18 @@ body {
     font-size: 1.3em;
     margin: 1em 0;
   }
+
+  h3 {
+    font-size: 1.2em;
+    margin: 1em 0;
+  }
+
+  .admin-layouts-bar-chart-container {
+    overflow: auto;
+
+    .admin-layouts-bar-chart {
+      height: 20em;
+      min-width: 750px;
+    }
+  }
 }

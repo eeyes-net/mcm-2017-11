@@ -24,6 +24,7 @@ class User extends Resource
             'position' => $this->whenPivotLoaded('team_user', function () {
                 return $this->pivot->position;
             }),
+            'created_at' => $this->created_at,
             // 'status' => $this->whenPivotLoaded('team_user', function () {
             //     return $this->pivot->status;
             // }),

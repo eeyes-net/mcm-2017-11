@@ -10,6 +10,12 @@ Vue.use(VueRouter);
 // Bootstrap Vue
 require('bootstrap-vue');
 
+// Chart.js
+window.Chart = require('chart.js');
+window.VueChartJs = require('vue-chartjs');
+require('chartjs-plugin-datalabels');
+
+
 // CKEditor
 window.CKEDITOR_BASEPATH = '/dist/ckeditor/';
 require('ckeditor');
@@ -20,6 +26,7 @@ Vue.component('layouts-error', require('./components/layouts/Error.vue'));
 // Admin Vue Component
 Vue.component('admin-index', require('./components/admin/Index.vue'));
 Vue.component('admin-layouts-sidebar', require('./components/admin/layouts/Sidebar.vue'));
+Vue.component('admin-layouts-bar-chart', require('./components/admin/layouts/BarChart.vue'));
 // Admin Post Vue Component
 Vue.component('admin-post-index', require('./components/admin/post/Index.vue'));
 Vue.component('admin-post-create', require('./components/admin/post/Create.vue'));

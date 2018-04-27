@@ -23,6 +23,9 @@ class Match extends Model
         'expired_at',
         'status',
     ];
+    protected $hidden = [
+        'users_id',
+    ];
 
     public function teams()
     {
@@ -46,5 +49,15 @@ class Match extends Model
     public function getIsAvailableAttribute()
     {
         return $this->status === self::STATUS_OPEN && Carbon::now() <= $this->expired_at;
+    }
+
+    public function getUsersIdAttribute($value) {
+        if (is_null($value)) {
+            // TODO optimise SQL query
+            $match_teams_id = $this->teams()->pluck('teams.id')->toArray();
+            $value = DB::table('team_user')->select(['user_id', 'team_id'])->whereIn('team_id', $match_teams_id)->pluck('team_id', 'user_id')->toArray();
+            $this->users_id = $value;
+        }
+        return $value;
     }
 }

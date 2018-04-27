@@ -53,6 +53,7 @@ Route::namespace('Api')->group(function () {
     });
     // Admin's APIs
     Route::prefix('admin')->namespace('Admin')->middleware(['auth', 'throttle:600,1', 'admin'])->group(function () {
+        Route::get('/', 'IndexController@index');
         Route::prefix('post')->group(function () {
             Route::get('/', 'PostController@index');
             Route::post('/', 'PostController@store');

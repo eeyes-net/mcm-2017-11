@@ -13,6 +13,8 @@
         "axios": "^0.17",
         "bootstrap": "^4.1.0",
         "bootstrap-vue": "^2.0.0-rc.8",
+        "chart.js": "^2.7.2",
+        "chartjs-plugin-datalabels": "^0.3.0",
         "ckeditor": "^4.9.2",
         "cross-env": "^5.1.4",
         "jquery": "^3.3.1",
@@ -21,6 +23,7 @@
         "lodash": "^4.17.5",
         "popper.js": "^1.14.3",
         "vue": "^2.5.16",
+        "vue-chartjs": "^3.3.1",
         "vue-ckeditor2": "^1.25.0",
         "vue-router": "^3.0.1",
         "vue-template-compiler": "^2.5.16"

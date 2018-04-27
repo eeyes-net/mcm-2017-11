@@ -30,6 +30,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'matches_id',
+        'leading_teams_id',
     ];
 
     public function teams()
