@@ -41,8 +41,14 @@ class OAuthLoginController extends LoginController
 
         $username = $data['username'];
         $user = User::where('username', $username)->first();
+        if ($user && $user->stu_id !== $data['user_id']) {
+            $user->update([
+                'username' => $user->username . '.conflict.' . $user->id,
+            ]);
+            $user = null;
+        }
         if (!$user) {
-            $user = User::create([
+            $user = new User([
                 'username' => $username,
                 'stu_id' => $data['user_id'],
                 'name' => $data['name'],
@@ -53,9 +59,10 @@ class OAuthLoginController extends LoginController
                 'email' => $data['email'],
                 'experience' => '',
                 'coach_name' => '',
-                'password' => '*',
                 'group' => 'student', // default as student
             ]);
+            $user->password = '*';
+            $user->save();
         }
         if (!in_array($user['group'], [
             'student',
