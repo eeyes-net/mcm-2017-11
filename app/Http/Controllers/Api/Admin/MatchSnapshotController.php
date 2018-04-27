@@ -6,6 +6,7 @@ use App\Exceptions\EvilInputException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Storage;
 
 class MatchSnapshotController extends Controller
@@ -19,7 +20,7 @@ class MatchSnapshotController extends Controller
         });
         $files = collect($files);
         // $files = $files->sort()->values()->all(); // Storage::allFiles() has already sorted
-        $pagination = new LengthAwarePaginator($files, count($files), 15);
+        $pagination = new LengthAwarePaginator($files->forPage(Paginator::resolveCurrentPage(), 15), count($files), 15);
         return $pagination;
     }
 
