@@ -29,7 +29,7 @@
                     {key: 'positionText', label: '身份', sortable: true},
                     {key: 'name', label: '姓名'},
                     {key: 'stu_id', label: '学号'}
-                    ];
+                ];
                 if (this.isFullInfo) {
                     fields = _.concat(fields, [
                         {key: 'class', label: '班级'},

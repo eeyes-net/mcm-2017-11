@@ -35,7 +35,7 @@
                 });
             },
             changePage(page) {
-                this.$router.push('/admin/match?page=' + page);
+                this.$router.push('/admin/match_snapshot?page=' + page);
             },
             download(matchSnapshot) {
                 window.open('/api/admin/match/snapshot/download?filename=' + encodeURIComponent(matchSnapshot));

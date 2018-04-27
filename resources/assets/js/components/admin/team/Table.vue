@@ -16,7 +16,7 @@
                     <td>{{ team.team_id }}</td>
                     <td>
                         <a href="javascript:" @click="$emit('showUser', user)" v-for="user in team.users">
-                            <b-badge>{{ user.name }}</b-badge>
+                            <b-badge class="mr-1">{{ user.name }}</b-badge>
                         </a>
                     </td>
                     <td>{{ team.created_at }}</td>

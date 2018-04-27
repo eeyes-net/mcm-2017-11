@@ -22,7 +22,6 @@ Route::middleware(['log'])->group(function () {
 
 Route::namespace('Index')->middleware(['log'])->group(function () {
     Route::get('/', 'PostController@index');
-    // Route::get('post', 'PostController@index');
     Route::get('post/{post}', 'PostController@show');
     Route::get('match', 'MatchController@index');
     Route::get('match/{match}', 'MatchController@show');

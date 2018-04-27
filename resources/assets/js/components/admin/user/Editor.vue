@@ -26,10 +26,10 @@
                 <b-form-input type="email" v-model="form.email" required></b-form-input>
             </b-form-group>
             <b-form-group label="参赛与获奖经历" horizontal :label-cols="3">
-                <b-form-input type="text" v-model="form.experience" required></b-form-input>
+                <b-form-input type="text" v-model="form.experience"></b-form-input>
             </b-form-group>
             <b-form-group label="教练姓名" horizontal :label-cols="3">
-                <b-form-input type="text" v-model="form.coach_name" required></b-form-input>
+                <b-form-input type="text" v-model="form.coach_name"></b-form-input>
             </b-form-group>
             <b-form-group label="用户权限" horizontal :label-cols="3">
                 <b-form-select v-model="form.group" :options="options"></b-form-select>
