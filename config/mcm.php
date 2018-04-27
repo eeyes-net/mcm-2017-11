@@ -11,5 +11,5 @@ return [
     'team_number_format' => '%d',
     'user_teams_count_limit' => 5,
     'log_visit' => (bool)env('MCM_LOG_VISIT', true),
-    'disallow_leader_leave_team' => false,
+    'disallow_leader_leave_team' => true,
 ];

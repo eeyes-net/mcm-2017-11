@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Team extends Model
 {
+    use SoftDeletes;
+
     const USER_POSITION_LEADER = 'leader';
     const USER_POSITION_MEMBER = 'member';
     const USER_STATUS_VERIFIED = 'verified';
