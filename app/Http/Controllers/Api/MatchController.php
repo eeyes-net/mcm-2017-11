@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Match\Apply;
 use App\Http\Requests\Match\Cancel;
 use App\Http\Resources\Match as MatchResource;
+use App\Libraries\AssignTeamNumber;
 use App\Match;
+use App\Team;
 
 class MatchController extends Controller
 {
@@ -32,7 +34,11 @@ class MatchController extends Controller
      */
     public function apply(Apply $request, Match $match)
     {
-        $match->teams()->syncWithoutDetaching($request->post('team_id'));
+        $team_id = $request->post('team_id');
+        $match->teams()->syncWithoutDetaching($team_id);
+        $team = Team::find($team_id);
+        $assignTeamNumber = new AssignTeamNumber($match);
+        $assignTeamNumber->assignOneTeam($team);
         event(new MatchTeamCountUpdated());
         return new MatchResource($match);
     }

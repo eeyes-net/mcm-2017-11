@@ -85,7 +85,7 @@ class MatchController extends Controller
     public function allocNumber(Match $match)
     {
         $assignTeamNumber = new AssignTeamNumber($match);
-        if (!$assignTeamNumber->assign()) {
+        if (!$assignTeamNumber->assignAllTeams()) {
             return new ArrayResource([
                 'message' => '分配编号成功，但数据存在问题',
                 'errors' => $assignTeamNumber->getErrors(),
