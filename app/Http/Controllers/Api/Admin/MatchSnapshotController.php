@@ -14,13 +14,15 @@ class MatchSnapshotController extends Controller
     public function index()
     {
         $files = Storage::disk('match_snapshot')->allFiles();
-        array_walk($files, function (&$item) {
+        $files = collect($files)->reverse()->map(function ($item) {
             $parts = explode('/', $item);
-            $item = array_pop($parts);
-        });
-        $files = collect($files);
-        // $files = $files->sort()->values()->all(); // Storage::allFiles() has already sorted
-        $pagination = new LengthAwarePaginator($files->forPage(Paginator::resolveCurrentPage(), 15), count($files), 15);
+            return [
+                'path' => $item,
+                'filename' => array_pop($parts),
+            ];
+        })->values();
+        $items = $files->forPage(Paginator::resolveCurrentPage(), 15)->values()->all();
+        $pagination = new LengthAwarePaginator($items, count($files), 15);
         return $pagination;
     }
 

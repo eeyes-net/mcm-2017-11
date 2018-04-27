@@ -9,9 +9,9 @@
             </thead>
             <tbody>
                 <tr v-for="matchSnapshot in matchSnapshots">
-                    <td>{{ matchSnapshot }}</td>
+                    <td>{{ matchSnapshot.filename }}</td>
                     <td>
-                        <b-button variant="primary" @click="$emit('download', matchSnapshot)">下载</b-button>
+                        <b-button variant="primary" @click="$emit('download', matchSnapshot.path)">下载</b-button>
                     </td>
                 </tr>
             </tbody>
