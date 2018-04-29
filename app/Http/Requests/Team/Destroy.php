@@ -29,7 +29,9 @@ class Destroy extends FormRequest
             }
             if (config('mcm.disallow_leader_leave_team', false)) {
                 if ($team->isLeader($user)) {
-                    $validator->errors()->add('team.position', '目前不允许队长退出队伍，您可以选择移除其他队员');
+                    if ($team->matches()->exists()) {
+                        $validator->errors()->add('team.position', '目前不允许队长退出队伍，您可以选择移除其他队员');
+                    }
                 }
             }
         });
