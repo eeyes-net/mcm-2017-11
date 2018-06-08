@@ -1,5 +1,7 @@
 @extends('index.layouts.master')
 
+@section('title'){{ $match->title }}@endsection
+
 @section('main')
     <div class="row justify-content-center">
         <div class="col-lg-8">

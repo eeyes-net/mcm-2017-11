@@ -1,5 +1,7 @@
 @extends('index.layouts.master')
 
+@section('title')队伍招募@endsection
+
 @section('main')
     <div class="mcm-recruit">
         <div class="d-flex mcm-recruit-controls">

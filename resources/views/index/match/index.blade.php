@@ -1,5 +1,7 @@
 @extends('index.layouts.master')
 
+@section('title')竞赛报名@endsection
+
 @section('main')
     <div class="mcm-match">
         <layouts-error :errors="errors"></layouts-error>

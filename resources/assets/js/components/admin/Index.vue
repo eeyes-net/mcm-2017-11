@@ -58,7 +58,7 @@
         </b-row>
         <b-row>
             <b-col :size="12" class="mb-2">
-                <h3>最近竞赛每日报名人数</h3>
+                <h3>最近竞赛每日报名队伍数</h3>
                 <div class="admin-layouts-bar-chart-container">
                     <admin-layouts-bar-chart :data="match_teams_growth.data" :label="match_teams_growth.match.title" class="admin-layouts-bar-chart"></admin-layouts-bar-chart>
                 </div>
