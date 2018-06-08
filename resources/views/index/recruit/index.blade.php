@@ -66,4 +66,4 @@
 
         <index-recruit-modal v-model="modalShow"></index-recruit-modal>
     </div>
-@stop
+@endsection

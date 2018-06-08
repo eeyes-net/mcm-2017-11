@@ -2,5 +2,5 @@
 
 @section('main')
     <router-view></router-view>
-@stop
+@endsection
 

@@ -25,4 +25,4 @@
 
         <index-post-modal v-model="modalShow" :post-id="postId" v-on:error="onError"></index-post-modal>
     </div>
-@stop
+@endsection

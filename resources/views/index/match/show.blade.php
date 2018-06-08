@@ -10,4 +10,4 @@
             <p>{{ $match->status }}</p>
         </div>
     </div>
-@stop
+@endsection

@@ -10,4 +10,4 @@
             <div>{!! $post->content !!}</div>
         </div>
     </div>
-@stop
+@endsection

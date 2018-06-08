@@ -38,4 +38,4 @@
 
         <index-match-modal :match="match" v-model="modalShow" v-on:ok="onApplyOk"></index-match-modal>
     </div>
-@stop
+@endsection
