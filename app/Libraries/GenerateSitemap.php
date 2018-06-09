@@ -5,14 +5,14 @@ namespace App\Libraries;
 use App\Match;
 use App\Post;
 use App\Recruit;
-use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 
 class GenerateSitemap
 {
-    public static function getPostImages($html) {
+    public static function getPostImages($html)
+    {
         $result = [];
-        if (preg_match_all('/<img.*?>/su', $html, $matches)) {
+        if (preg_match_all('/<img.*?>/su', $html, $matches, PREG_SET_ORDER)) {
             foreach ($matches as $match) {
                 if (preg_match('/src="(.*?)"/u', $match[0], $matches1)) {
                     $result[] = [

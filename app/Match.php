@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Libraries\AssignTeamNumber;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -51,7 +50,8 @@ class Match extends Model
         return $this->status === self::STATUS_OPEN && Carbon::now() <= $this->expired_at;
     }
 
-    public function getUsersIdAttribute($value) {
+    public function getUsersIdAttribute($value)
+    {
         if (is_null($value)) {
             // TODO optimise SQL query
             $match_teams_id = $this->teams()->pluck('teams.id')->toArray();

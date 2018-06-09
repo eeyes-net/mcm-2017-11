@@ -10,4 +10,9 @@ class Post extends Model
         'title',
         'content',
     ];
+
+    public function getPlainTextAttribute()
+    {
+        return preg_replace('/\\s+/', ' ', strip_tags($this->content));
+    }
 }

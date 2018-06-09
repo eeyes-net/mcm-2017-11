@@ -1,6 +1,7 @@
 @extends('index.layouts.master')
 
 @section('title'){{ $post->title }}@endsection
+@section('description'){{ mb_substr($post->plainText, 0, 100) }}@endsection
 
 @section('main')
     <div class="row justify-content-center">
