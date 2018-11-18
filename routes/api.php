@@ -72,7 +72,7 @@ Route::namespace('Api')->group(function () {
             Route::get('{team}', 'TeamController@show');
             Route::get('{team}/match', 'TeamController@match');
             Route::put('{team}', 'TeamController@update');
-            Route::delete('{team}', 'TeamController@destroy');
+            // Route::delete('{team}', 'TeamController@destroy');
         });
         Route::prefix('match')->group(function () {
             Route::prefix('snapshot')->group(function () {

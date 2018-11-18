@@ -22,7 +22,7 @@
                     <td>{{ team.created_at }}</td>
                     <td>
                         <b-button variant="primary" @click="$emit('edit', team)">编辑</b-button>
-                        <b-button variant="danger" @click="$emit('destory', team)">删除</b-button>
+                        <!--<b-button variant="danger" @click="$emit('destory', team)">删除</b-button>-->
                     </td>
                 </tr>
             </tbody>

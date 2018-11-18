@@ -20,7 +20,7 @@
                     <td>{{ user.created_at }}</td>
                     <td>
                         <b-button variant="primary" @click="$emit('edit', user)">编辑</b-button>
-                        <b-button variant="danger" @click="$emit('destory', user)">删除</b-button>
+                        <!--<b-button variant="danger" @click="$emit('destory', user)">删除</b-button>-->
                     </td>
                 </tr>
             </tbody>

@@ -65,7 +65,17 @@
                 if (confirm('您确定要删除 #' + user.id + ' 用户吗？')) {
                     axios.delete('/api/admin/user/' + user.id)
                         .then(response => {
+                            if (response.data) {
+                                alert('删除成功');
+                            } else {
+                                console.log(response);
+                                alert('删除失败');
+                            }
                             this.getUsers();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            alert('删除失败');
                         });
                 }
             },
