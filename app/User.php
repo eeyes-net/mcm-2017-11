@@ -34,6 +34,22 @@ class User extends Authenticatable
         'leading_teams_id',
     ];
 
+    public function scopeSearch($query, $q)
+    {
+        $like = "%$q%";
+        return $query->where('username', 'like', $like)
+            ->orWhere('stu_id', 'like', $like)
+            ->orWhere('name', 'like', $like)
+            ->orWhere('department', 'like', $like)
+            ->orWhere('major', 'like', $like)
+            ->orWhere('class', 'like', $like)
+            ->orWhere('contact', 'like', $like)
+            ->orWhere('email', 'like', $like)
+            ->orWhere('group', 'like', $like)
+            ->orWhere('experience', 'like', $like)
+            ->orWhere('coach_name', 'like', $like);
+    }
+
     public function teams()
     {
         return $this->belongsToMany(Team::class)->withPivot(['position', 'status'])->withTimestamps();

@@ -8,9 +8,14 @@ use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return User::latest()->paginate();
+        $user = new User();
+        $q = $request->get('q');
+        if ($q) {
+            $user = $user->search($q);
+        }
+        return $user->latest()->paginate();
     }
 
     public function show(User $user)
