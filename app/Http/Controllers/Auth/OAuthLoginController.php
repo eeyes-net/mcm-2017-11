@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Exceptions\CustomException;
 use App\User;
 use GuzzleHttp\Client;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -77,7 +77,7 @@ class OAuthLoginController extends LoginController
     public function callback(Request $request)
     {
         if ($request->has('error')) {
-            throw new CustomException($request->get('error'));
+            throw new AuthenticationException($request->get('error'));
         }
         try {
             $client = new Client;
@@ -137,7 +137,7 @@ class OAuthLoginController extends LoginController
     public function adminCallback(Request $request)
     {
         if ($request->has('error')) {
-            throw new CustomException($request->get('error'));
+            throw new AuthenticationException($request->get('error'));
         }
         try {
             $client = new Client;
