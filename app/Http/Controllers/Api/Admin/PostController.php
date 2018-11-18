@@ -43,6 +43,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
+        event(new PostsTableUpdated());
         return $post;
     }
 }
