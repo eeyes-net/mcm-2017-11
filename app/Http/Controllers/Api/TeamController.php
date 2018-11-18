@@ -24,17 +24,26 @@ class TeamController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $teams = $user->teams()->with(['users' => function (Relation $query) {
-            $query->select([
-                'users.id',
-                'users.stu_id',
-                'users.name',
-                'users.department',
-                'users.class',
-                'users.contact',
-                'users.email',
-            ]);
-        }])->get();
+        $teams = $user->teams()->with([
+            'users' => function (Relation $query) {
+                $query->select([
+                    'users.id',
+                    'users.stu_id',
+                    'users.name',
+                    'users.department',
+                    'users.class',
+                    'users.contact',
+                    'users.email',
+                ]);
+            },
+            'matches' => function (Relation $query) {
+                $query->select([
+                    'matches.id',
+                    'matches.title',
+                    'matches.expired_at',
+                    'matches.status',
+                ]);
+            }])->get();
         return TeamResource::collection($teams)->additional([
             'meta' => [
                 'user_id' => $user->id,

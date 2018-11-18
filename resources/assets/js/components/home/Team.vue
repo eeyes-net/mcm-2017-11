@@ -16,7 +16,7 @@
                     <b-button size="sm" variant="danger" @click="destroy(team)">退出队伍</b-button>
                 </span>
             </h4>
-            <index-layouts-team-info :team="team" :is-full-info="true"></index-layouts-team-info>
+            <index-layouts-team-info :team="team" :is-full-info="true" @cancel-match="cancelMatch"></index-layouts-team-info>
         </b-card>
 
         <b-modal title="创建新队伍" class="team-create-modal" v-model="modalCreateShow" ok-title="创建" cancel-title="取消" @ok="store" @hidden="modalHidden()">
@@ -231,6 +231,21 @@
                 $('.sidebar').width('');
                 /** @link https://stackoverflow.com/questions/1397329/how-to-remove-the-hash-from-window-location-url-with-javascript-without-page-r/5298684#5298684 */
                 window.history.pushState('', document.title, window.location.pathname + window.location.search);
+            },
+            cancelMatch(match) {
+                if (confirm(`确认取消报名 《${match.title}》`)) {
+                    this.errors = [];
+                    axios.post(`/api/match/${match.id}/cancel`).then(response => {
+                        if (response.data.data) {
+                            alert('取消报名成功');
+                            this.get();
+                        } else {
+                            this.errors = response;
+                        }
+                    }).catch(error => {
+                        this.errors = error;
+                    });
+                }
             }
         },
         watch: {

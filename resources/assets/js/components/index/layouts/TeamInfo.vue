@@ -1,5 +1,16 @@
 <template>
-    <b-table hover small responsive :items="items" :fields="fields" class="mcm-team-info-table" :class="{'mcm-team-info-table-full-info': isFullInfo}"></b-table>
+    <div>
+        <b-table hover small responsive :items="userItems" :fields="userFields" class="mcm-team-info-table" :class="{'mcm-team-info-table-full-info': isFullInfo}"></b-table>
+        <div v-if="isFullInfo">
+            <h5 class="mcm-team-info-match-title">已报名比赛</h5>
+            <b-table hover small responsive :items="matchItems" :fields="matchFields" class="mcm-team-info-table">
+                <template slot="cancel_match" slot-scope="row">
+                    <b-button variant="outline-danger" size="sm" @click.stop="cancelMatch(row)" v-if="row.item.canCancel">取消报名</b-button>
+                    <b-button size="sm" disabled v-else>已截止</b-button>
+                </template>
+            </b-table>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -12,9 +23,15 @@
             team: {
                 default() {
                     return {
-                        users: []
+                        users: [],
+                        matches: []
                     };
                 }
+            }
+        },
+        methods: {
+            cancelMatch(row) {
+                this.$emit('cancel-match', row.item);
             }
         },
         computed: {
@@ -24,7 +41,7 @@
                     member: '队员'
                 };
             },
-            fields() {
+            userFields() {
                 let fields = [
                     {key: 'positionText', label: '身份', sortable: true},
                     {key: 'name', label: '姓名'},
@@ -40,9 +57,9 @@
                 }
                 return fields;
             },
-            items() {
+            userItems() {
                 let items = [];
-                let positionTextMap = this.positionTextMap;
+                const positionTextMap = this.positionTextMap;
                 _.forEach(this.team.users, user => {
                     let item = {
                         positionText: positionTextMap[user.position],
@@ -54,8 +71,37 @@
                         email: user.email
                     };
                     if (user.position === 'leader') {
-                        item._rowVariant = 'secondary';
+                        item._rowVariant = 'info';
                     }
+                    items.push(item);
+                });
+                return items;
+            },
+            statusTextMap() {
+                return {
+                    open: '已报名',
+                    close: '已截止'
+                };
+            },
+            matchFields() {
+                return [
+                    {key: 'title', label: '名称'},
+                    {key: 'expired_at', label: '截止日期'},
+                    {key: 'statusText', label: '状态'},
+                    {key: 'cancel_match', label: '取消报名'}
+                ];
+            },
+            matchItems() {
+                let items = [];
+                const statusTextMap = this.statusTextMap;
+                _.forEach(this.team.matches, match => {
+                    let item = {
+                        id: match.id,
+                        title: match.title,
+                        expired_at: match.expired_at,
+                        statusText: statusTextMap[match.status],
+                        canCancel: match.status === 'open'
+                    };
                     items.push(item);
                 });
                 return items;

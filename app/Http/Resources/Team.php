@@ -18,6 +18,7 @@ class Team extends Resource
             'id' => $this->id,
             'number' => empty($this->number) ? '未分配' : $this->number,
             'users' => User::collection($this->whenLoaded('users')),
+            'matches' => Match::collection($this->whenLoaded('matches')),
         ];
     }
 }
