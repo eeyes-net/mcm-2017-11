@@ -32,6 +32,17 @@ npm install
 npm run production
 ```
 
+### 重置数据库
+
+重置数据库将 DROP 全部表，并重新执行 Migrate
+
+**请务必对数据库进行备份**
+
+```bash
+php artisan migrate:fresh
+php artisan cache:clear
+```
+
 ## 开发与测试
 
 ```bash
@@ -67,13 +78,13 @@ $config['backends'][] = array(
 [MIT License](https://opensource.org/licenses/MIT)
 
     Copyright (c) 2017 eeyes.net
-    
+
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
     in the Software without restriction, including without limitation the rights
     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
     copies of the Software, and to permit persons to whom the Software is
     furnished to do so, subject to the following conditions:
-    
+
     The above copyright notice and this permission notice shall be included in all
     copies or substantial portions of the Software.
