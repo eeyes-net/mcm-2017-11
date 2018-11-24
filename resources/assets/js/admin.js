@@ -57,6 +57,8 @@ Vue.component('admin-user-table', require('./components/admin/user/Table.vue'));
 Vue.component('admin-user-edit', require('./components/admin/user/Edit.vue'));
 Vue.component('admin-user-editor', require('./components/admin/user/Editor.vue'));
 Vue.component('admin-user-team-index', require('./components/admin/user/team/Index.vue'));
+// Admin Reset Database Vue Component
+Vue.component('admin-reset_db-index', require('./components/admin/reset_db/Index.vue'));
 
 const router = new VueRouter({
     mode: 'history',
@@ -78,6 +80,7 @@ const router = new VueRouter({
         {path: '/admin/match_snapshot', component: Vue.component('admin-match-snapshot-index')},
         {path: '/admin/recruit', component: Vue.component('admin-recruit-index')},
         {path: '/admin/recruit/:recruit_id/edit', component: Vue.component('admin-recruit-edit')},
+        {path: '/admin/reset_db', component: Vue.component('admin-reset_db-index')},
     ]
 });
 

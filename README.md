@@ -39,8 +39,9 @@ npm run production
 **请务必对数据库进行备份**
 
 ```bash
-php artisan migrate:fresh
+php artisan migrate:fresh --force
 php artisan cache:clear
+php artisan mcm:reset-team-number-auto-increment --yes
 ```
 
 ## 开发与测试

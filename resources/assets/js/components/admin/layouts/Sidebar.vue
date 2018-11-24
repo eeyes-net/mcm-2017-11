@@ -22,6 +22,9 @@
             <li class="nav-item">
                 <router-link class="nav-link" to="/admin/recruit">招募</router-link>
             </li>
+            <li class="nav-item">
+                <router-link class="nav-link" to="/admin/reset_db">重置数据库</router-link>
+            </li>
         </ul>
     </div>
 </template>

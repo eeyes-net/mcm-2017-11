@@ -99,5 +99,9 @@ Route::namespace('Api')->group(function () {
         Route::prefix('upload')->group(function () {
             Route::post('image', 'UploadController@storeImage');
         });
+        Route::prefix('reset_db')->group(function () {
+            Route::get('check', 'ResetDbController@check');
+            Route::post('/', 'ResetDbController@reset');
+        });
     });
 });
